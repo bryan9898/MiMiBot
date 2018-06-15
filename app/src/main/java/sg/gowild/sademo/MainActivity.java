@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.media.AudioFormat;
 import android.media.AudioRecord;
+import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.os.Environment;
 import android.speech.RecognitionListener;
@@ -18,6 +19,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import android.media.MediaPlayer;
+import android.media.MediaPlayer.OnCompletionListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -201,7 +205,13 @@ public class MainActivity extends AppCompatActivity {
 
     private void startTts(String text) {
         // TODO: Start TTS
-        textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null);
+        if(text.equalsIgnoreCase("song1")){
+           MediaPlayer mp = MediaPlayer.create(MainActivity.this,R.raw.shark);
+           mp.start();
+        } else {
+            textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null);
+        }
+
 
         // TODO: Wait for end and start hotword
         Runnable runnable = new Runnable() {
