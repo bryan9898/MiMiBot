@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MimibotWebserver.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MimibotWebserver.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class SpeechesController : ControllerBase

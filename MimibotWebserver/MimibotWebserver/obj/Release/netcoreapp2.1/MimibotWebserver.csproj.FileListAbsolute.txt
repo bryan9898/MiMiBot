@@ -1,0 +1,14 @@
+E:\GitHub\MiMiBot\MimibotWebserver\MimibotWebserver\bin\Release\netcoreapp2.1\MimibotWebserver.deps.json
+E:\GitHub\MiMiBot\MimibotWebserver\MimibotWebserver\bin\Release\netcoreapp2.1\MimibotWebserver.runtimeconfig.json
+E:\GitHub\MiMiBot\MimibotWebserver\MimibotWebserver\bin\Release\netcoreapp2.1\MimibotWebserver.runtimeconfig.dev.json
+E:\GitHub\MiMiBot\MimibotWebserver\MimibotWebserver\bin\Release\netcoreapp2.1\MimibotWebserver.dll
+E:\GitHub\MiMiBot\MimibotWebserver\MimibotWebserver\bin\Release\netcoreapp2.1\MimibotWebserver.pdb
+E:\GitHub\MiMiBot\MimibotWebserver\MimibotWebserver\obj\Release\netcoreapp2.1\MimibotWebserver.csproj.CoreCompileInputs.cache
+E:\GitHub\MiMiBot\MimibotWebserver\MimibotWebserver\obj\Release\netcoreapp2.1\MimibotWebserver.RazorAssemblyInfo.cache
+E:\GitHub\MiMiBot\MimibotWebserver\MimibotWebserver\obj\Release\netcoreapp2.1\MimibotWebserver.RazorAssemblyInfo.cs
+E:\GitHub\MiMiBot\MimibotWebserver\MimibotWebserver\obj\Release\netcoreapp2.1\MimibotWebserver.AssemblyInfoInputs.cache
+E:\GitHub\MiMiBot\MimibotWebserver\MimibotWebserver\obj\Release\netcoreapp2.1\MimibotWebserver.AssemblyInfo.cs
+E:\GitHub\MiMiBot\MimibotWebserver\MimibotWebserver\obj\Release\netcoreapp2.1\MimibotWebserver.RazorTargetAssemblyInfo.cache
+E:\GitHub\MiMiBot\MimibotWebserver\MimibotWebserver\obj\Release\netcoreapp2.1\MimibotWebserver.dll
+E:\GitHub\MiMiBot\MimibotWebserver\MimibotWebserver\obj\Release\netcoreapp2.1\MimibotWebserver.pdb
+E:\GitHub\MiMiBot\MimibotWebserver\MimibotWebserver\obj\Release\netcoreapp2.1\MimibotWebserver.csprojResolveAssemblyReference.cache
