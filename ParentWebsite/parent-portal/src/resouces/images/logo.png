@@ -1,0 +1,75 @@
+input{
+    max-width: 40% !important;
+}
+
+#questionNo{
+    margin-bottom: 2%;
+}
+
+#question{
+    margin-bottom: 4%;
+    display: inline-block;
+}
+
+.form-inline .form-control{
+    min-width: 40% !important;
+    width: inherit !important;
+    margin-right: 2% !important;
+    margin-bottom: 1.5% !important;
+}
+
+#question{
+    font-weight: bold;
+}
+
+input[type="radio"]{
+    margin-right: 1% !important;
+}
+
+label{
+    color: white;
+}
+
+input[type="radio"]:checked + label{
+    color: black;
+    outline: 0 !important;
+}
+
+#addQuestion:after{
+    content:" >>";
+    position: relative;
+    opacity: 0;
+    -webkit-transition: all 0.25s;
+    transition: all 0.25s;
+}
+
+#addQuestion:hover:after
+{
+    opacity: 1;
+    top: 0px;
+}
+
+.buttonDiv{
+    margin-top: 4.5%;
+}
+
+.btn:focus{
+    outline: 0;
+}
+
+.btn-success{
+    background-color: #82C7A5 !important;
+    border: 0.5px solid rgb(83, 143, 113);
+}
+
+.btn-success:hover{
+    background-color: rgb(103, 180, 139) !important;
+    border: 0.5px solid rgb(94, 160, 127) !important;
+    transition: 0.25s;
+}
+
+/*  KIV
+.btn-danger{
+   background-color: #0145acff !important; 
+}
+*/
