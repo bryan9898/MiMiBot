@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
 
         // TODO: Setup Components
         setupViews();
-        setupXiaoBaiButton();
+        //setupXiaoBaiButton();
         setupAsr();
         setupTts();
         setupNlu();
@@ -91,16 +91,16 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupViews() {
         textView = findViewById(R.id.textview);
-        button = findViewById(R.id.button);
+       /* button = findViewById(R.id.button);*/
 
-        button.setOnClickListener(new View.OnClickListener() {
+      /*  button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startAsr();
             }
-        });
+        }); */
     }
-
+/*
     private void setupXiaoBaiButton() {
         String BUTTON_ACTION = "com.gowild.action.clickDown_action";
 
@@ -115,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
             }
         };
         registerReceiver(broadcastReceiver, intentFilter);
-    }
+    } */
 
     private void setupAsr() {
         speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this);
