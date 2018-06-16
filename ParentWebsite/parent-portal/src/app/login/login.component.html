@@ -1,20 +1,54 @@
-<div class="container-fluid">
-  <div class="row">
-   <div class="col-sm-offset-4 col-sm-4 text-center padding-bottom">
-     <div class="col-sm-8 col-sm-offset-2 login-box">
-       <h2>Login</h2>
-       <mat-form-field>
-         <input matInput placeholder="Admin Number\Username" type="text">
-       </mat-form-field>
-       <mat-form-field>
-         <input matInput placeholder="Password" type="password" >
-       </mat-form-field>
-       <mat-radio-group>
-         <mat-radio-button value="Parent">Parent</mat-radio-button>
-       </mat-radio-group>
-       <p  style="color: red" *ngIf="this.error">Invalid Username/Password</p>
-       <button mat-button class="text-center"  (click)="login()">Login</button>
-     </div>
-   </div>
+<!-- <div class="container-fluid">
+  <div class="row" style="height: 100%">
+    <div class="col-sm-4">
+
+    </div>
+   <div class="col-sm-offset-4 col-sm-4 text-center padding-bottom" style="background-color:red">
+      <div class="row">
+          <div class="col-sm-2"></div>
+          <div class="col-sm-8 login-box">
+              <h2>Login</h2>
+              <mat-form-field>
+                <input placeholder="Admin Number\Username" type="text">
+              </mat-form-field>
+              <mat-form-field>
+                <input matInput placeholder="Password" type="password" >
+              </mat-form-field>
+              <mat-radio-group>
+                <mat-radio-button value="Parent">Parent</mat-radio-button>
+              </mat-radio-group>
+              <p  style="color: red" *ngIf="this.error">Invalid Username/Password</p>
+              <button mat-button class="text-center"  (click)="login()">Login</button>
+            </div>
+      </div>
+      
+    </div>
   </div>
-</div>
+</div> -->
+
+<div class="container-fluid">
+    <div class="row">
+     <div class="col-sm-4"></div>
+     <div class="col-sm-4 col-sm-offset-4  text-center padding-bottom" >
+       <div class="row">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-8 login-box">
+          <h2>Login</h2>
+          <form name="myform">
+          <mat-form-field>
+            <input matInput placeholder="Username" name="username" required="true"  type="text" [(ngModel)]="model.Username" >
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput placeholder="Password" name="password" required="true" type="password" [(ngModel)]="model.$Password"  >
+          </mat-form-field>
+          </form>
+          <p  style="color: red"  *ngIf="invalid == true " >Invalid Username or Password</p>
+          <button mat-button class="text-center" (click)="login()">Login </button>
+          
+        </div>
+      </div>
+     </div>
+    </div>
+  </div>
+  
+  
