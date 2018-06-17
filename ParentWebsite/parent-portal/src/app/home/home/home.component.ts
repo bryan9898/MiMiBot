@@ -13,7 +13,7 @@ export class HomeComponent implements OnInit {
   private loaded:Boolean = false;
   private tks:TokenService;
   private router;
-  public toggled = true;
+  public toggled = false;
   constructor(tks:TokenService , router:Router) { 
    this.tks = tks;
    this.router = router;

@@ -83,3 +83,8 @@ a, a:hover, a:focus {
     background: #FAFAFA;
 
 }
+
+.mat-icon-button{
+    border: none;
+    outline: none;
+}

@@ -26,6 +26,7 @@ const appRoutes: Routes = [
   { path: '', redirectTo: '/login' ,  pathMatch:'full' },
   { path:'login' , component: LoginComponent },
   { path:'home' , component: HomeComponent , children : [
+    { path: '' , component: DashboardComponent , outlet:"content"},
     { path:'dashboard' , component: DashboardComponent , outlet:"content" },
     { path:'upload' , component: HomeComponent , outlet: "content"},
   ]},

@@ -15,16 +15,41 @@ export class DashboardComponent implements OnInit {
 
   public barChartOptions:any = {
     scaleShowVerticalLines: false,
-    responsive: true
+    responsive: true, 
+    legends: [{
+        labels: {
+          defaultFontSize: 30,
+        }
+    }],
+    tooltips: {
+      callbacks: {
+          label: function(tooltipItem, data) {
+            console.log(data);
+            console.log(tooltipItem.yLabel);
+            console.log(tooltipItem);
+            return("There is " + tooltipItem.xLabel + " sentences related to " + tooltipItem.yLabel);
+          }
+        }
+      }
   };
-  public barChartLabels:string[] = ['2006', '2007', '2008', '2009', '2010', '2011', '2012'];
+  public barChartLabels:string[] = ['Topic One', 'Topic 2', 'Topic 3', 'Topic 4', 'Topic 5', 'Topic 6', 'Topic 7'];
   public barChartType:string = 'horizontalBar';
   public barChartLegend:boolean = true;
  
   public barChartData:any[] = [
-    {data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A'},
-    {data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B'}
+    {data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A' , backgroundColor: 'rgba(0,0,0,0)'}
   ];
+
+  public chartColors: Array<any> = [
+    { // first color
+      backgroundColor: '#82C7A5',
+      borderColor: 'rgba(225,10,24,0.2)',
+      pointBackgroundColor: 'rgba(225,10,24,0.2)',
+      pointBorderColor: '#fff',
+      pointHoverBackgroundColor: '#fff',
+      pointHoverBorderColor: 'rgba(225,10,24,0.2)'
+    },
+   ];
  
   // events
   public chartClicked(e:any):void {
