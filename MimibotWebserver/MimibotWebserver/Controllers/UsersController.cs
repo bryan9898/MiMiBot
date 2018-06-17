@@ -29,8 +29,9 @@ namespace MimibotWebserver.Controllers
             _context = context;
         }
 
-     
+
         // GET: api/Users
+        [EnableCors("MyPolicy")]
         [HttpGet]
         public IEnumerable<User> GetUsers()
         {
@@ -38,6 +39,7 @@ namespace MimibotWebserver.Controllers
         }
 
         // GET: api/Users/5
+        [EnableCors("MyPolicy")]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUser([FromRoute] string id)
         {
@@ -57,6 +59,7 @@ namespace MimibotWebserver.Controllers
         }
 
         // PUT: api/Users/5
+        [EnableCors("MyPolicy")]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutUser([FromRoute] string id, [FromBody] User user)
         {
@@ -92,6 +95,8 @@ namespace MimibotWebserver.Controllers
         }
 
         // POST: api/Users
+        [EnableCors("MyPolicy")]
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> PostUser([FromBody] User user)
         {
@@ -107,6 +112,7 @@ namespace MimibotWebserver.Controllers
         }
 
         // DELETE: api/Users/5
+        [EnableCors("MyPolicy")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser([FromRoute] string id)
         {

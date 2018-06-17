@@ -37,6 +37,8 @@ namespace MimibotWebserver.Migrations
                     b.Property<string>("UserId")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("Name");
+
                     b.Property<string>("Password");
 
                     b.HasKey("UserId");

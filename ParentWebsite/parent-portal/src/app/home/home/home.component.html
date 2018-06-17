@@ -1,0 +1,24 @@
+<div class="container-fluid"  >
+<div class="wrapper">
+  <nav *ngIf="toggled" id="sidebar"  >
+      <div class="sidebar-header">
+          <h3>Welcome {{user}}</h3>
+      </div>
+
+      <!-- Sidebar Links -->
+      <ul class="list-unstyled components">
+          <li routerLinkActive="active"><a  [routerLink]="['/home', { outlets: {'content':['dashboard']}}]">Dashboard</a></li>
+          <li routerLinkActive="active"><a  routerLink="/upload" >Personalize</a></li>
+
+
+      </ul>
+  </nav>
+
+  <button mat-icon-button>
+      <mat-icon> <i class="fa fa-bars fa-2x" aria-hidden="true" (click)="toggleNavBar()"> </i> </mat-icon>
+  </button>
+</div>
+
+<router-outlet name="content"></router-outlet>
+
+</div>

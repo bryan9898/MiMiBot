@@ -24,7 +24,10 @@
     "@angular/router": "^6.0.2",
     "angular-material": "^1.1.9",
     "bootstrap": "^3.3.7",
+    "chart.js": "^2.7.2",
     "core-js": "^2.5.4",
+    "font-awesome": "^4.7.0",
+    "ng2-charts": "^1.6.0",
     "rxjs": "^6.0.0",
     "zone.js": "^0.8.26"
   },

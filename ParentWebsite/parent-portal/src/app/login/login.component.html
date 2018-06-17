@@ -36,14 +36,14 @@
           <h2>Login</h2>
           <form name="myform">
           <mat-form-field>
-            <input matInput placeholder="Username" name="username" required="true"  type="text" [(ngModel)]="model.Username" >
+            <input matInput placeholder="Username" name="username" required="true"  type="text" [(ngModel)]="model.Username">
           </mat-form-field>
           <mat-form-field>
             <input matInput placeholder="Password" name="password" required="true" type="password" [(ngModel)]="model.$Password"  >
           </mat-form-field>
           </form>
           <p  style="color: red"  *ngIf="invalid == true " >Invalid Username or Password</p>
-          <button mat-button class="text-center" (click)="login()">Login </button>
+          <button mat-button class="text-center" (click)="login()" routerLink={{routerLinkDetails}}>Login </button>
           
         </div>
       </div>

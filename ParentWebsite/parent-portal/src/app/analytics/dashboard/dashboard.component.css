@@ -1,0 +1,13 @@
+.container-fluid {
+    /* background: transparent url(../../resources/hero.jpg) repeat center; */
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    min-height: 100vh;
+    background-size: cover;
+    padding: 0px; 
+    width: auto;
+    margin-left: 3%;
+    margin-top: 2%;
+    margin-bottom: 2%;
+}

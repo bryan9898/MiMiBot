@@ -13,11 +13,32 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { HomeComponent } from './home/home/home.component';
+import { RouterModule, Routes } from '@angular/router';
+import { TokenService } from 'src/app/login/token.service';
+import {MatIconModule} from '@angular/material/icon';
+import { DashboardComponent } from './analytics/dashboard/dashboard.component';
+import { ChartsModule } from 'ng2-charts';
+
+
+
+const appRoutes: Routes = [
+  { path: '', redirectTo: '/login' ,  pathMatch:'full' },
+  { path:'login' , component: LoginComponent },
+  { path:'home' , component: HomeComponent , children : [
+    { path:'dashboard' , component: DashboardComponent , outlet:"content" },
+    { path:'upload' , component: HomeComponent , outlet: "content"},
+  ]},
+ 
+
+]
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent
+    LoginComponent,
+    HomeComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,
@@ -30,10 +51,16 @@ import { HttpClientModule } from '@angular/common/http';
     MatRadioModule,
     MatInputModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    RouterModule,
+    RouterModule.forRoot(
+    appRoutes,),
+    MatIconModule, 
+    ChartsModule
+    
 
   ],
-  providers: [],
+  providers: [TokenService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

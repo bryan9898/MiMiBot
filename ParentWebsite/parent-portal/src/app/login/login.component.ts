@@ -6,13 +6,14 @@ import { HttpClient, HttpParams , HttpHeaders  , HttpRequest} from '@angular/com
 import { MatHorizontalStepper } from '@angular/material';
 import { Observable } from 'rxjs';
 import { utf8Encode } from '@angular/compiler/src/util';
-
+import {Router} from '@angular/router';
+import { TokenService } from 'src/app/login/token.service';
 
 @Injectable()
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.css'],
 })
 export class LoginComponent implements OnInit {
 
@@ -29,16 +30,21 @@ export class LoginComponent implements OnInit {
 
   }
   readonly ROOT_URL = "https://mimiwebserver.azurewebsites.net/api";
-
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, routerS: Router , tks: TokenService) { 
+    this.router = routerS;
+    this.tks = tks;
+  }
+  
   private token : string;
   public model = new Users(); 
   private invalid = false;
   private errorMsg = "hello";
-  
+  private routerLinkDetails = "/login";
+  private router;
+  private tks;
+
   ngOnInit() {
-    sessionStorage.clear();
-    localStorage.clear();
+    this.tks.clearStorage();
   }
   
   private async login()
@@ -58,11 +64,14 @@ export class LoginComponent implements OnInit {
           }
           else {
             this.invalid = false;
-            window.localStorage.setItem("token", token);
+            this.tks.setCurrentToken(token);
+            await this.tks.setCurrentUser(this.model.$Username);
+            this.router.navigateByUrl("/home");
           }
         }
         catch(ex)
         {
+          console.log(this.model.$Password);
           console.log("Exception in saving");
         }
         
