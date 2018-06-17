@@ -12331,6 +12331,7 @@
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v2.1": [
       "Microsoft.AspNetCore.App >= 2.1.0",
+      "Microsoft.AspNetCore.Cors >= 2.1.0",
       "Microsoft.EntityFrameworkCore.SqlServer >= 2.1.0",
       "Microsoft.EntityFrameworkCore.Tools >= 2.1.0",
       "Microsoft.NETCore.App >= 2.1.0",
@@ -12394,6 +12395,10 @@
           "Swashbuckle.AspNetCore.Swagger": {
             "target": "Package",
             "version": "2.5.0"
+          },
+          "Microsoft.AspNetCore.Cors": {
+            "target": "Package",
+            "version": "2.1.0"
           },
           "Microsoft.NETCore.App": {
             "target": "Package",

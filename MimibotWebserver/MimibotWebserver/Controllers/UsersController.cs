@@ -12,6 +12,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using MimibotWebserver.Controllers;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
+using Newtonsoft.Json.Linq;
 
 namespace MimibotWebserver.Controllers
 {
@@ -130,6 +132,7 @@ namespace MimibotWebserver.Controllers
             return _context.Users.Any(e => e.UserId == id);
         }
 
+        [EnableCors("MyPolicy")]
         [AllowAnonymous]
         [HttpPost("token")]
         public IActionResult Token()
@@ -145,7 +148,7 @@ namespace MimibotWebserver.Controllers
                 if (valid)
                 {
                     var claimsdata = new[] { new Claim(ClaimTypes.Name, userandpass[0]) };
-                    var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("casdinucnasdioucnrqweaiubrweidjcnaoklncoadisncadbuiyaqwe123123r0d81u98432eh@d91jc9x1q1x2"));
+                    var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("testingtestingtesting"));
                     var signinCred = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
                     var token = new JwtSecurityToken
                     (
@@ -158,11 +161,8 @@ namespace MimibotWebserver.Controllers
                     var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
                     return Ok(tokenString);
                 }
-                return BadRequest("Error");
-
             }
-
-            return BadRequest("Error");
+            return BadRequest("Test");
         }
 
         private Boolean validateUser(string[] userandpass)

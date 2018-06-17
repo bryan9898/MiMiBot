@@ -48,9 +48,16 @@ namespace MimibotWebserver
                     ValidateIssuerSigningKey = true,
                     ValidIssuer = "mimibotserver.com",
                     ValidAudience = "mimiaudience.com",
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("casdinucnasdioucnrqweaiubrweidjcnaoklncoadisncadbuiyaqwe123123r0d81u98432eh@d91jc9x1q1x2"))
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("testingtestingtesting"))
                 }
             );
+
+            services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
+            {
+                builder.AllowAnyOrigin()
+                       .AllowAnyMethod( )
+                       .AllowAnyHeader();
+            }));
         }
 
 
@@ -77,6 +84,7 @@ namespace MimibotWebserver
                 c.RoutePrefix = string.Empty;
 
             });
+
             app.UseAuthentication();
             app.UseHttpsRedirection();
             app.UseMvc();
