@@ -37,7 +37,8 @@ export class LoginComponent implements OnInit {
   private errorMsg = "hello";
   
   ngOnInit() {
-
+    sessionStorage.clear();
+    localStorage.clear();
   }
   
   private async login()
@@ -49,14 +50,22 @@ export class LoginComponent implements OnInit {
         {
           console.log("invalid");
         }
-        var token = await this.checkLogin(this.model);
-        if(token == null)
+        try{
+          var token = await this.checkLogin(this.model);
+          if(token == null)
+          {
+            this.invalid = true;
+          }
+          else {
+            this.invalid = false;
+            window.localStorage.setItem("token", token);
+          }
+        }
+        catch(ex)
         {
-          this.invalid = true;
+          console.log("Exception in saving");
         }
-        else {
-          this.invalid = false;
-        }
+        
   }
 
   private async checkLogin(model)
@@ -70,19 +79,9 @@ export class LoginComponent implements OnInit {
         'Authorization': 'Basic ' + btoa(username + ":" + password)
 
       });
-      try{
-        var token = await this.http.post(this.ROOT_URL + '/Users/token' ,  "123" ,  {headers:headerss , responseType: 'text' }).toPromise().catch(
-          e => {
-            console.log("bad request");
-          }
-          );
+      var token = await this.http.post(this.ROOT_URL + '/Users/token' ,  "123" ,  {headers:headerss , responseType: 'text' }).toPromise();
       return token;
-          
-      }
-      catch(ex)
-      {
-        
-      }
+      
      
    
   }
