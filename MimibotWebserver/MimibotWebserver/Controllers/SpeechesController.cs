@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace MimibotWebserver.Controllers
 {
-    [Authorize]
+    [AllowAnonymous]
     [Route("api/[controller]")]
     [ApiController]
     public class SpeechesController : ControllerBase

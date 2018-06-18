@@ -25,6 +25,8 @@ namespace MimibotWebserver.Migrations
 
                     b.Property<string>("SpeechDetails");
 
+                    b.Property<string>("Tags");
+
                     b.Property<string>("UserId");
 
                     b.HasKey("SpeechId");

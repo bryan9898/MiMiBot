@@ -17,6 +17,33 @@
     </div>
 
     <div *ngIf="showTopicDetails">
-        <app-topic-details></app-topic-details>
+        <app-topic-details *ngFor="let speech of activeSpeech" [speech]="speech" style="display: inline-block" ></app-topic-details>
     </div>
+</div>
+
+<div class="container-fluid">
+    <h1>Sentiment Analysis</h1>
+    <p style="font-style: italic">"Ever wondered whether your child is upset or happy"</p>
+    
+    <div style="display: block">
+        <canvas baseChart
+                [data]="pieChartData"
+                [labels]="pieChartLabels"
+                [chartType]="pieChartType"
+                (chartHover)="pieHovered($event)"
+                (chartClick)="pieClicked($event)"></canvas>
+      </div>
+    
+    
+    
+    
+    
+    <div>
+        <angular-tag-cloud
+          [data]="data"
+          [width]="options.width"
+          [height]="options.height"
+          [overflow]="options.overflow">
+        </angular-tag-cloud>
+      </div>
 </div>

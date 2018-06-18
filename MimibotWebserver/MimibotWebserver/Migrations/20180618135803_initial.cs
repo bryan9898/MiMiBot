@@ -2,7 +2,7 @@
 
 namespace MimibotWebserver.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -12,7 +12,8 @@ namespace MimibotWebserver.Migrations
                 {
                     SpeechId = table.Column<string>(nullable: false),
                     SpeechDetails = table.Column<string>(nullable: true),
-                    UserId = table.Column<string>(nullable: true)
+                    UserId = table.Column<string>(nullable: true),
+                    Tags = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {

@@ -6,7 +6,7 @@ import { LoginComponent } from './login/login.component';
 import { MatButtonModule, MatProgressBarModule } from '@angular/material';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatInputModule} from '@angular/material/input';
-
+import {MatCardModule} from '@angular/material/card';
 import { MatMenuModule } from '@angular/material';
 import { MatTabsModule } from '@angular/material';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -20,7 +20,7 @@ import {MatIconModule} from '@angular/material/icon';
 import { DashboardComponent } from './analytics/dashboard/dashboard.component';
 import { ChartsModule } from 'ng2-charts';
 import { TopicDetailsComponent } from './analytics/dashboard/modules/topic-details/topic-details.component';
-
+import { TagCloudModule } from 'angular-tag-cloud-module';
 
 
 const appRoutes: Routes = [
@@ -59,8 +59,9 @@ const appRoutes: Routes = [
     RouterModule.forRoot(
     appRoutes,),
     MatIconModule, 
-    ChartsModule
-    
+    ChartsModule,
+    MatCardModule, 
+    TagCloudModule
 
   ],
   providers: [TokenService],

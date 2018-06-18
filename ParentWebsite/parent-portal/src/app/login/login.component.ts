@@ -86,7 +86,6 @@ export class LoginComponent implements OnInit {
         'Content-Type' : 'application/json',
         'response-Type': 'XML/http',
         'Authorization': 'Basic ' + btoa(username + ":" + password)
-
       });
       var token = await this.http.post(this.ROOT_URL + '/Users/token' ,  "123" ,  {headers:headerss , responseType: 'text' }).toPromise();
       return token;

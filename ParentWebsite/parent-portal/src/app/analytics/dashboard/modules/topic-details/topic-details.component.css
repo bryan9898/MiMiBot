@@ -1,0 +1,53 @@
+.analyticsCard {
+    margin-top: 5%;
+    display: inline-block;
+    margin: 2%;
+    min-width: 30vw;
+  }
+  
+  .analyticsHeader {
+    display: inline-block;
+  }
+  
+  .cardHeader {
+    margin: 2% 0% 0% 2%;
+    display: inline-block;
+  }
+  
+  
+  .cardTitle {
+    font-size: 20px !important;
+    font-weight: bold;
+  }
+  
+  .cardButtonDiv {
+    margin: 0px 2% 0% 0%;
+    text-align: right;
+  }
+  
+  .cardIcon {
+    word-wrap: break-word;
+  }
+  
+  .cardButton {
+    outline: none;
+    width: 100%;
+  }
+  
+  h3 {
+    margin: 2% 0% 0% 2%;
+  }
+  
+  #analyticsSlideCard {
+    display: inline-block;
+    width: 100%;
+  }
+  
+  @media only screen and (max-width : 768px) {
+    .analyticsCard {
+      width: 400px;
+      display: inline-block;
+      margin: 2%;
+    }
+  }
+  

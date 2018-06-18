@@ -17,7 +17,7 @@ using Newtonsoft.Json.Linq;
 
 namespace MimibotWebserver.Controllers
 {
-    [Authorize]
+    [AllowAnonymous]
     [Route("api/[controller]")]
     [ApiController]
     public class UsersController : ControllerBase
@@ -136,6 +136,14 @@ namespace MimibotWebserver.Controllers
         private bool UserExists(string id)
         {
             return _context.Users.Any(e => e.UserId == id);
+        }
+
+        [EnableCors("MyPolicy")]
+        [AllowAnonymous]
+        [HttpPost("sentiment")]
+        public IActionResult Sentiment()
+        {
+
         }
 
         [EnableCors("MyPolicy")]

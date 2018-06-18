@@ -23,6 +23,7 @@
     "@angular/platform-browser-dynamic": "^6.0.2",
     "@angular/router": "^6.0.2",
     "angular-material": "^1.1.9",
+    "angular-tag-cloud-module": "^3.0.0",
     "bootstrap": "^3.3.7",
     "chart.js": "^2.7.2",
     "core-js": "^2.5.4",
