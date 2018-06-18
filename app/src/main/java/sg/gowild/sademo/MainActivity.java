@@ -8,6 +8,7 @@ import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
+import android.os.AsyncTask;
 import android.os.Environment;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
@@ -48,6 +49,13 @@ import ai.kitt.snowboy.SnowboyDetect;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
+import javax.net.ssl.HttpsURLConnection;
 
 public class MainActivity extends AppCompatActivity {
     // View Variables
@@ -66,6 +74,8 @@ public class MainActivity extends AppCompatActivity {
     // Hotword Variables
     private boolean shouldDetect;
     private SnowboyDetect snowboyDetect;
+    private MediaPlayer mp;
+    private final String USER_AGENT = "Mozilla/5.0";
 
     static {
         System.loadLibrary("snowboy-detect-android");
@@ -84,6 +94,25 @@ public class MainActivity extends AppCompatActivity {
         setupTts();
         setupNlu();
         setupHotword();
+        // talk to database
+
+        MainActivity http = new MainActivity();
+
+       /* System.out.println("Testing 1 - Send Http GET request");
+        try {
+            sendGet();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } */
+
+        System.out.println("\nTesting 2 - Send Http POST request");
+        try {
+            AsyncT asyncT = new AsyncT();
+            asyncT.execute();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
 
         // TODO: Start Hotword
         startHotword();
@@ -91,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupViews() {
         textView = findViewById(R.id.textview);
-       /* button = findViewById(R.id.button);*/
+        /* button = findViewById(R.id.button);*/
 
       /*  button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -205,9 +234,17 @@ public class MainActivity extends AppCompatActivity {
 
     private void startTts(String text) {
         // TODO: Start TTS
-        if(text.equalsIgnoreCase("song1")){
-           MediaPlayer mp = MediaPlayer.create(MainActivity.this,R.raw.shark);
-           mp.start();
+        if (text.equalsIgnoreCase("song1")) {
+            mp = MediaPlayer.create(MainActivity.this, R.raw.shark);
+            mp.start();
+        }
+        if (text.equalsIgnoreCase("stopping")) {
+            if (mp != null) {
+                mp.stop();
+                mp.release();
+                mp = null;
+                textToSpeech.speak("stopping", TextToSpeech.QUEUE_FLUSH, null);
+            }
         } else {
             textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null);
         }
@@ -252,7 +289,7 @@ public class MainActivity extends AppCompatActivity {
                     Result result = aiResponse.getResult();
                     Fulfillment fulfillment = result.getFulfillment();
                     String speech = fulfillment.getSpeech();
-                    Log.d("return by dialog flow" , speech);
+                    Log.d("return by dialog flow", speech);
                     if (speech.equalsIgnoreCase("weather_function")) {
                         String weatherSpeech = getWeather();
                         startTts(weatherSpeech);
@@ -364,4 +401,74 @@ public class MainActivity extends AppCompatActivity {
 
         return "No weather info";
     }
+
+
+    // HTTP GET request
+    private void sendGet() throws Exception {
+
+        String url = "http://www.google.com/search?q=mkyong";
+
+        URL obj = new URL(url);
+        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+
+        // optional default is GET
+        con.setRequestMethod("GET");
+
+        //add request header
+        con.setRequestProperty("User-Agent", USER_AGENT);
+
+        int responseCode = con.getResponseCode();
+        System.out.println("\nSending 'GET' request to URL : " + url);
+        System.out.println("Response Code : " + responseCode);
+
+        BufferedReader in = new BufferedReader(
+                new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer response = new StringBuffer();
+
+        while ((inputLine = in.readLine()) != null) {
+            response.append(inputLine);
+        }
+        in.close();
+
+        //print result
+        System.out.println(response.toString());
+
+    }
+
+    // HTTP POST request
+    class AsyncT extends AsyncTask<Void,Void,Void>{
+
+        @Override
+        protected Void doInBackground(Void... params) {
+
+            try {
+                URL url = new URL("https://mimiwebserver.azurewebsites.net/api/Users/token"); //Enter URL here
+                HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.setRequestMethod("POST"); // here you are telling that it is a POST request, which can be changed into "PUT", "GET", "DELETE" etc.
+                httpURLConnection.setRequestProperty("Content-Type", "application/json"); // here you are setting the `Content-Type` for the data you are sending which is `application/json`
+                httpURLConnection.connect();
+
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("string", "string");
+
+                DataOutputStream wr = new DataOutputStream(httpURLConnection.getOutputStream());
+                wr.writeBytes(jsonObject.toString());
+                wr.flush();
+                wr.close();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+
+    }
 }
+
+
