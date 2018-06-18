@@ -1,4 +1,6 @@
 <div class="container-fluid">
+  <h1>Topics Analysis</h1>
+  <p style="font-style: italic">"Ever wondered what topics your child talk about?"</p>
     <div>
         <div style="display: block">
           <canvas baseChart
@@ -11,6 +13,10 @@
                   (chartHover)="chartHovered($event)"
                   (chartClick)="chartClicked($event)"></canvas>
         </div>
-        <button>Update</button>
-      </div>
+        
+    </div>
+
+    <div *ngIf="showTopicDetails">
+        <app-topic-details></app-topic-details>
+    </div>
 </div>

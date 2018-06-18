@@ -30,6 +30,7 @@ export class TokenService {
 
   public clearStorage()
   {
+    console.log("is this")
     var cleared = false;
     try{
       sessionStorage.clear();

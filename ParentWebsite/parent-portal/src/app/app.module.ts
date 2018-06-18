@@ -19,6 +19,7 @@ import { TokenService } from 'src/app/login/token.service';
 import {MatIconModule} from '@angular/material/icon';
 import { DashboardComponent } from './analytics/dashboard/dashboard.component';
 import { ChartsModule } from 'ng2-charts';
+import { TopicDetailsComponent } from './analytics/dashboard/modules/topic-details/topic-details.component';
 
 
 
@@ -39,7 +40,8 @@ const appRoutes: Routes = [
     AppComponent,
     LoginComponent,
     HomeComponent,
-    DashboardComponent
+    DashboardComponent,
+    TopicDetailsComponent
   ],
   imports: [
     BrowserModule,
