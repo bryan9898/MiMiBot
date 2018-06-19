@@ -14,6 +14,7 @@ using MimibotWebserver.Controllers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Newtonsoft.Json.Linq;
+using System.Net.Http;
 
 namespace MimibotWebserver.Controllers
 {
@@ -138,12 +139,30 @@ namespace MimibotWebserver.Controllers
             return _context.Users.Any(e => e.UserId == id);
         }
 
+        HttpClient client = new HttpClient();
+       
         [EnableCors("MyPolicy")]
         [AllowAnonymous]
-        [HttpPost("sentiment")]
-        public IActionResult Sentiment()
-        {
+        [HttpPost("sentiment/{sentence}")]
+        public async Task<IActionResult> SentimentAsync( string sentence)
+        { 
 
+           
+            var values = new Dictionary<string, string>
+            {
+               { "text", sentence }
+            };
+            var content = new FormUrlEncodedContent(values);
+            try
+            {
+                var response = await client.PostAsync("http://text-processing.com/api/sentiment/", content);
+                var responseString = await response.Content.ReadAsStringAsync();
+                return Ok(responseString);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest("Error" + ex);
+            }
         }
 
         [EnableCors("MyPolicy")]

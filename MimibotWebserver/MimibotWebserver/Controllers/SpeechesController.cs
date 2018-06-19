@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MimibotWebserver.Models;
 using Microsoft.AspNetCore.Authorization;
+using System.Net.Http;
+using Microsoft.AspNetCore.Cors;
 
 namespace MimibotWebserver.Controllers
 {
@@ -92,10 +94,25 @@ namespace MimibotWebserver.Controllers
                 return BadRequest(ModelState);
             }
 
+            var response = await client.GetAsync("https://hoggersoh.pythonanywhere.com/" + speech.SpeechDetails);
+            var responseString = await response.Content.ReadAsStringAsync();
+            speech.Tags = responseString;
             _context.Speechs.Add(speech);
             await _context.SaveChangesAsync();
-
             return CreatedAtAction("GetSpeech", new { id = speech.SpeechId }, speech);
+        }
+
+
+        HttpClient client = new HttpClient();
+        [EnableCors("MyPolicy")]
+        [AllowAnonymous]
+        [HttpPost("topics/{content}")]
+        public async Task<IActionResult> getTopicsAsync(string content)
+        {
+            var response = await client.GetAsync("https://hoggersoh.pythonanywhere.com/" + content);
+            var responseString = await response.Content.ReadAsStringAsync();
+            return Ok(responseString);
+
         }
 
         // DELETE: api/Speeches/5
