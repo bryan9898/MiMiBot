@@ -54,6 +54,13 @@ import java.io.DataOutputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.Base64;
+import java.util.Random;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -106,13 +113,32 @@ public class MainActivity extends AppCompatActivity {
         } */
 
         System.out.println("\nTesting 2 - Send Http POST request");
-        try {
+    /*    try {
             AsyncT asyncT = new AsyncT();
             asyncT.execute();
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        } */
 
+        /*try {
+            URL url = new URL ("");
+            //String authStr = user + ":" + pass;
+           // String authEncoded = Base64.encodeBytes(authStr.getBytes());
+
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("POST");
+            connection.setDoOutput(true);
+            connection.setRequestProperty  ("Authorization", "Basic " );
+            InputStream content = (InputStream)connection.getInputStream();
+            BufferedReader in   =
+                    new BufferedReader (new InputStreamReader (content));
+            String line;
+            while ((line = in.readLine()) != null) {
+                System.out.println(line);
+            }
+        } catch(Exception e) {
+            e.printStackTrace();
+        } */
 
         // TODO: Start Hotword
         startHotword();
@@ -189,6 +215,17 @@ public class MainActivity extends AppCompatActivity {
                     String text = texts.get(0);
 
                     textView.setText(text);
+
+                    try {
+                        //sendPost(text);
+
+                        new AsyncT().execute(text);
+
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
                     startNlu(text);
                 }
             }
@@ -237,8 +274,7 @@ public class MainActivity extends AppCompatActivity {
         if (text.equalsIgnoreCase("song1")) {
             mp = MediaPlayer.create(MainActivity.this, R.raw.shark);
             mp.start();
-        }
-        if (text.equalsIgnoreCase("stopping")) {
+        } else if (text.equalsIgnoreCase("stopping")) {
             if (mp != null) {
                 mp.stop();
                 mp.release();
@@ -436,31 +472,45 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    // HTTP POST request
-    class AsyncT extends AsyncTask<Void,Void,Void>{
 
-        @Override
-        protected Void doInBackground(Void... params) {
+
+    // HTTP POST request
+    class AsyncT extends AsyncTask<String,Void,Void>{
+
+        private Exception exception;
+
+        protected Void doInBackground(String... text) {
 
             try {
-                URL url = new URL("https://mimiwebserver.azurewebsites.net/api/Users/token"); //Enter URL here
-                HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
+
+                URL url = new URL("https://mimiwebserver.azurewebsites.net/api/Speeches"); //Enter URL here
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                 httpURLConnection.setDoOutput(true);
                 httpURLConnection.setRequestMethod("POST"); // here you are telling that it is a POST request, which can be changed into "PUT", "GET", "DELETE" etc.
                 httpURLConnection.setRequestProperty("Content-Type", "application/json"); // here you are setting the `Content-Type` for the data you are sending which is `application/json`
                 httpURLConnection.connect();
 
+                Random r = new Random();
+
                 JSONObject jsonObject = new JSONObject();
-                jsonObject.put("string", "string");
+                jsonObject.put("speechId", r.nextInt(999999999) + r.nextInt(99999995));
+                jsonObject.put("speechDetails", text[0]);
+                Log.e("log", text[0]);
+                jsonObject.put("userId", "string");
+                jsonObject.put("tags", "string");
 
                 DataOutputStream wr = new DataOutputStream(httpURLConnection.getOutputStream());
                 wr.writeBytes(jsonObject.toString());
                 wr.flush();
                 wr.close();
-
+                Log.e("log", "sent data");
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            catch(Exception e)
+            {
                 e.printStackTrace();
             }
 
@@ -468,7 +518,64 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
+
+
+        protected void onPostExecute() {
+            // TODO: check this.exception
+            // TODO: do something with the feed
+        }
     }
+
+
+    // HTTP POST request
+    private void sendPost(String text) throws Exception {
+
+        String url = "https://mimiwebserver.azurewebsites.net/api/Speeches";
+        URL obj = new URL(url);
+        HttpsURLConnection con = (HttpsURLConnection) obj.openConnection();
+
+        //add reuqest header
+        con.setRequestMethod("POST");
+        con.setRequestProperty("User-Agent", USER_AGENT);
+        con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
+
+        Random r = new Random();
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("stringId", r.nextInt(999999999) + r.nextInt(99999995));
+        jsonObject.put("speechDetails", text);
+        jsonObject.put("userId", "string");
+        jsonObject.put("tags", "string");
+
+       // String urlParameters = "sn=C02G8416DRJM&cn=&locale=&caller=&num=12345";
+
+        // Send post request
+        con.setDoOutput(true);
+        DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+        wr.writeBytes(jsonObject.toString());
+        wr.flush();
+        wr.close();
+
+        int responseCode = con.getResponseCode();
+        System.out.println("\nSending 'POST' request to URL : " + url);
+        System.out.println("Post parameters : " + jsonObject.toString());
+        System.out.println("Response Code : " + responseCode);
+
+        BufferedReader in = new BufferedReader(
+                new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer response = new StringBuffer();
+
+        while ((inputLine = in.readLine()) != null) {
+            response.append(inputLine);
+        }
+        in.close();
+
+        //print result
+        System.out.println(response.toString());
+
+    }
+
 }
 
 
