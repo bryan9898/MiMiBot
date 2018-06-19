@@ -1,7 +1,7 @@
 <div class="container-fluid">
   <h1>Topics Analysis</h1>
   <p style="font-style: italic">"Ever wondered what topics your child talk about?"</p>
-    <div>
+    <div *ngIf="showChart">
         <div style="display: block">
           <canvas baseChart
                   [datasets]="barChartData"

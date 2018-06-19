@@ -16,38 +16,98 @@ export class DashboardComponent implements OnInit {
 
   private dataSet:Array<Speeches> = new Array<Speeches>(); 
   private filteredDataSetLabels:any;
-  public barChartLabels:string[] = new Array<string>();
-  public barChartData:any[]; 
+  public barChartLabels:string[];
+  public barChartData;
   public currentUser: Users;
   public tks: TokenService;
   private filteredDataset: Array<Speeches> = new Array<Speeches>();
-     
-  ngOnInit() {
+  private loaded:Boolean = false;
+  private showChart = false;
+
+   async ngOnInit() {
     // this.currentUser = this.tks.cu;
     // this.dataSet = this.retrieveFromDatabase(this.currentUser.$Username);
     // this.filteredDataSetLabels = this.filterDataset(this.dataSet , this.currentUser.$Username);
-    this.dataSet = this.retrieveFromDatabase("string");
-    this.filteredDataSetLabels = this.filterDataset(this.dataSet , "string");
-    console.log(this.filteredDataSetLabels[1]);
+
+    // this.dataSet = this.retrieveFromDatabase("string");
+    // this.filteredDataSetLabels = this.filterDataset(this.dataSet , "string");
+    // console.log(this.filteredDataSetLabels[1]);
+    // var labelArray = new Array<string>();
+    // var dataArray = new Array<number>();
+    // this.filteredDataSetLabels[1].forEach(element => {
+    //   labelArray.push(element);
+    //   dataArray.push(this.filteredDataSetLabels[0][element]);
+    // });
+  
+    // console.log(dataArray);
+ 
+    // this.barChartLabels = labelArray; 
+    // this.barChartData =  [
+    //   {data: dataArray, label: 'Series A' , backgroundColor: 'rgba(0,0,0,0)'}
+    // ];
+
+    var dataList = null;
+    dataList = await this.testing();
     var labelArray = new Array<string>();
     var dataArray = new Array<number>();
-    this.filteredDataSetLabels[1].forEach(element => {
-      labelArray.push(element);
-      dataArray.push(this.filteredDataSetLabels[0][element]);
-    });
-  
-    console.log(dataArray);
- 
-    this.barChartLabels = labelArray; 
-    this.barChartData =  [
-      {data: dataArray, label: 'Series A' , backgroundColor: 'rgba(0,0,0,0)'}
-    ];
+    if(dataList.length != 0)
+    {
+      
+      console.log(this.filteredDataSetLabels);
+      this.showChart = true;
+      this.filteredDataSetLabels = this.filterDataset(dataList , "string");
+      this.filteredDataSetLabels[1].forEach(element => {
+        console.log("Does this happen");
+        labelArray.push(element);
+        dataArray.push(this.filteredDataSetLabels[0][element]);
+      });
 
+      console.log(dataArray);
+      this.barChartLabels = labelArray;
+      this.barChartData =  [
+        {data: dataArray, label: 'Series A'}
+      ];
+      this.showChart = true;
+      // // console.log(labelArray);
+      // // console.log(dataArray + "check this");
+      // // this.barChartLabels = labelArray;
+      // // this.barChartLabels = labelArray; 
+      
+    }
+   
+    
+    
 
     // var value = await this.sentimentAnalysis(); 
 
   }
 
+  async testing() {
+    var bearer = {
+      'Content-Type' : 'application/json',
+      'Authorization': 'Bearer ' + sessionStorage.getItem("token")
+    }
+  
+    var results = await this.http.get("https://mimiwebserver.azurewebsites.net/api/Speeches" , {bearer}).toPromise();
+    var dataList:Array<Speeches> = new Array<Speeches>();
+    results.forEach(e => {
+      var data = this.convertToSpeeches(e);
+      dataList.push(data);
+    })
+
+    return dataList;
+  }
+
+  convertToSpeeches(data)
+  {
+    var speechId = data['speechId']; 
+    var speechDetails = data['speechDetails'];
+    var userId = data['userId'];
+    var tags = data['tags'];
+    var tagsArray = tags.split(",");
+    var class1 = new Speeches(speechId , speechDetails , userId , tagsArray);
+    return class1;
+  }
   async sentimentAnalysis() {
     // var url = "http://text-processing.com/api/sentiment/";
     // var headerss = new HttpHeaders({
