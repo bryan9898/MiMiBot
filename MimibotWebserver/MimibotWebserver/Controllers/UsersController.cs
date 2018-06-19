@@ -19,6 +19,7 @@ using System.Net.Http;
 namespace MimibotWebserver.Controllers
 {
     [AllowAnonymous]
+    [EnableCors("MyPolicy")]
     [Route("api/[controller]")]
     [ApiController]
     public class UsersController : ControllerBase

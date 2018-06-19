@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Cors;
 namespace MimibotWebserver.Controllers
 {
     [AllowAnonymous]
+    [EnableCors("MyPolicy")]
     [Route("api/[controller]")]
     [ApiController]
     public class SpeechesController : ControllerBase
@@ -25,6 +26,7 @@ namespace MimibotWebserver.Controllers
         }
 
         // GET: api/Speeches
+        [EnableCors("MyPolicy")]
         [HttpGet]
         public IEnumerable<Speech> GetSpeechs()
         {
@@ -32,6 +34,7 @@ namespace MimibotWebserver.Controllers
         }
 
         // GET: api/Speeches/5
+        [EnableCors("MyPolicy")]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetSpeech([FromRoute] string id)
         {
@@ -51,6 +54,7 @@ namespace MimibotWebserver.Controllers
         }
 
         // PUT: api/Speeches/5
+        [EnableCors("MyPolicy")]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutSpeech([FromRoute] string id, [FromBody] Speech speech)
         {
@@ -86,6 +90,7 @@ namespace MimibotWebserver.Controllers
         }
 
         // POST: api/Speeches
+        [EnableCors("MyPolicy")]
         [HttpPost]
         public async Task<IActionResult> PostSpeech([FromBody] Speech speech)
         {
