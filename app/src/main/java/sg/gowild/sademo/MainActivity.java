@@ -20,7 +20,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import java.io.UnsupportedEncodingException;
 
+import java.net.MalformedURLException;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 
@@ -274,14 +276,14 @@ public class MainActivity extends AppCompatActivity {
         if (text.equalsIgnoreCase("song1")) {
             mp = MediaPlayer.create(MainActivity.this, R.raw.shark);
             mp.start();
-        } else if (text.equalsIgnoreCase("stopping")) {
+        } /* else if (text.equalsIgnoreCase("stopping")) {
             if (mp != null) {
                 mp.stop();
                 mp.release();
                 mp = null;
                 textToSpeech.speak("stopping", TextToSpeech.QUEUE_FLUSH, null);
             }
-        } else {
+        } */ else {
             textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null);
         }
 
@@ -478,14 +480,18 @@ public class MainActivity extends AppCompatActivity {
     class AsyncT extends AsyncTask<String,Void,Void>{
 
         private Exception exception;
+        String response = "";
+
 
         protected Void doInBackground(String... text) {
 
-            try {
+            HttpURLConnection httpURLConnection = null;
 
+            try {
                 URL url = new URL("https://mimiwebserver.azurewebsites.net/api/Speeches"); //Enter URL here
-                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection = (HttpURLConnection) url.openConnection();
                 httpURLConnection.setDoOutput(true);
+                httpURLConnection.setDoInput(true);
                 httpURLConnection.setRequestMethod("POST"); // here you are telling that it is a POST request, which can be changed into "PUT", "GET", "DELETE" etc.
                 httpURLConnection.setRequestProperty("Content-Type", "application/json"); // here you are setting the `Content-Type` for the data you are sending which is `application/json`
                 httpURLConnection.connect();
@@ -493,9 +499,9 @@ public class MainActivity extends AppCompatActivity {
                 Random r = new Random();
 
                 JSONObject jsonObject = new JSONObject();
-                jsonObject.put("speechId", r.nextInt(999999999) + r.nextInt(99999995));
+                jsonObject.put("speechId", String.valueOf(r.nextInt(999999999) + r.nextInt(99999995)));
                 jsonObject.put("speechDetails", text[0]);
-                Log.e("log", text[0]);
+                Log.e("log", text[0] + "hello testing");
                 jsonObject.put("userId", "string");
                 jsonObject.put("tags", "string");
 
@@ -503,15 +509,34 @@ public class MainActivity extends AppCompatActivity {
                 wr.writeBytes(jsonObject.toString());
                 wr.flush();
                 wr.close();
+
+                int responseCode = httpURLConnection.getResponseCode();
+
+                if (responseCode == HttpsURLConnection.HTTP_OK) {
+                    String line;
+                    BufferedReader br = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
+                    while ((line = br.readLine()) != null) {
+                        response += line;
+                    }
+                }
+                else {
+                    response = "";
+                }
+                Log.e("log",response);
                 Log.e("log", "sent data");
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            catch(Exception e)
-            {
+            catch(Exception e) {
                 e.printStackTrace();
+            }
+
+            finally {
+                if( httpURLConnection != null) // Make sure the connection is not null.
+                    httpURLConnection.disconnect();
+
             }
 
             return null;
