@@ -276,14 +276,11 @@ public class MainActivity extends AppCompatActivity {
         if (text.equalsIgnoreCase("song1")) {
             mp = MediaPlayer.create(MainActivity.this, R.raw.shark);
             mp.start();
-        } /* else if (text.equalsIgnoreCase("stopping")) {
-            if (mp != null) {
-                mp.stop();
-                mp.release();
-                mp = null;
-                textToSpeech.speak("stopping", TextToSpeech.QUEUE_FLUSH, null);
-            }
-        } */ else {
+        } else if(text.equalsIgnoreCase("song2")){
+            mp = MediaPlayer.create(MainActivity.this, R.raw.mary);
+            mp.start();
+        }
+        else {
             textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null);
         }
 
