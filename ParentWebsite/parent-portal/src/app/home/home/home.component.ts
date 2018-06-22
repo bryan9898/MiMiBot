@@ -25,7 +25,7 @@ export class HomeComponent implements OnInit {
     }
     catch(ex)
     {
-      // this.router.navigateByUrl("/");
+      this.router.navigateByUrl("/");
     }
   }
 

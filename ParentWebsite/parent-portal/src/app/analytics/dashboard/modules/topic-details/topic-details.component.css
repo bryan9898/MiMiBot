@@ -3,6 +3,7 @@
     display: inline-block;
     margin: 2%;
     min-width: 30vw;
+    z-index: inherit;
   }
   
   .analyticsHeader {

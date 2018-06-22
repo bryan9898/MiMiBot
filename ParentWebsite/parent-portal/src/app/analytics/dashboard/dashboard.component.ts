@@ -50,12 +50,13 @@ export class DashboardComponent implements OnInit {
     dataList = await this.testing();
     var labelArray = new Array<string>();
     var dataArray = new Array<number>();
+    this.currentUser = this.tks.cu;
     if(dataList.length != 0)
     {
       
       console.log(this.filteredDataSetLabels);
       this.showChart = true;
-      this.filteredDataSetLabels = this.filterDataset(dataList , "string");
+      this.filteredDataSetLabels = this.filterDataset(dataList , this.currentUser.$Username);
       this.filteredDataSetLabels[1].forEach(element => {
         console.log("Does this happen");
         labelArray.push(element);
