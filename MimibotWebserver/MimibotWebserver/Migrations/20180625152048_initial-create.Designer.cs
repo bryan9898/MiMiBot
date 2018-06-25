@@ -9,8 +9,8 @@ using MimibotWebserver.Models;
 namespace MimibotWebserver.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20180618135803_initial")]
-    partial class initial
+    [Migration("20180625152048_initial-create")]
+    partial class initialcreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -24,6 +24,8 @@ namespace MimibotWebserver.Migrations
                 {
                     b.Property<string>("SpeechId")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Sentiment");
 
                     b.Property<string>("SpeechDetails");
 

@@ -99,9 +99,36 @@ namespace MimibotWebserver.Controllers
                 return BadRequest(ModelState);
             }
 
-            var response = await client.GetAsync("https://hoggersoh.pythonanywhere.com/" + speech.SpeechDetails);
+            var response = await client.GetAsync("https://hoggersoh.pythonanywhere.com/topic/" + speech.SpeechDetails);
             var responseString = await response.Content.ReadAsStringAsync();
             speech.Tags = responseString;
+
+            var emotion = await client.GetAsync("https://hoggersoh.pythonanywhere.com/emotion/" + speech.SpeechDetails);
+            var emotionString = await emotion.Content.ReadAsStringAsync();
+
+            string finalArray = "";
+            var emotionArray = emotionString.Split(",");
+            var integer = 0; 
+            foreach(var e in emotionArray)
+            {
+                if (integer < emotionArray.Length - 1)
+                {
+                    var data = e.Split(":");
+                    finalArray = finalArray + data[1] + ",";
+                }
+                else
+                {
+                    var data = e.Split(":");
+                    var endData = data[1].Split("}");
+                    finalArray = finalArray + endData[0].Substring(0, endData[0].Length - 2);
+
+                }
+                integer++;
+
+            }
+
+            speech.Sentiment = finalArray;
+
             _context.Speechs.Add(speech);
             await _context.SaveChangesAsync();
             return CreatedAtAction("GetSpeech", new { id = speech.SpeechId }, speech);
@@ -114,11 +141,13 @@ namespace MimibotWebserver.Controllers
         [HttpPost("topics/{content}")]
         public async Task<IActionResult> getTopicsAsync(string content)
         {
-            var response = await client.GetAsync("https://hoggersoh.pythonanywhere.com/" + content);
+            var response = await client.GetAsync("https://hoggersoh.pythonanywhere.com/topic/" + content);
             var responseString = await response.Content.ReadAsStringAsync();
             return Ok(responseString);
 
         }
+
+
 
         // DELETE: api/Speeches/5
         [HttpDelete("{id}")]
@@ -145,5 +174,43 @@ namespace MimibotWebserver.Controllers
         {
             return _context.Speechs.Any(e => e.SpeechId == id);
         }
+
+        [EnableCors("MyPolicy")]
+        [AllowAnonymous]
+        [HttpPost("sentiment/{sentence}")]
+        public async Task<IActionResult> SentimentAsync(string sentence)
+        {
+            try
+            {
+                var response = await client.GetAsync("https://hoggersoh.pythonanywhere.com/emotion/" + sentence);
+                var responseString = await response.Content.ReadAsStringAsync();
+                string finalArray = "";
+                var emotionArray = responseString.Split(",");
+                var integer = 0;
+                foreach (var e in emotionArray)
+                {
+                    if (integer < emotionArray.Length - 1)
+                    {
+                        var data = e.Split(":");
+                        finalArray = finalArray + data[1] + ",";
+                    }
+                    else
+                    {
+                        var data = e.Split(":");
+                        var endData = data[1].Split("}");
+                        finalArray = finalArray + endData[0].Substring(0, endData[0].Length -2);
+
+                    }
+                    integer++;
+
+                }
+                return Ok(finalArray);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Error" + ex);
+            }
+        }
+
     }
 }
