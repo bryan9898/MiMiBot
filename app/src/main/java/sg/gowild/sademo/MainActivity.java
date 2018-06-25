@@ -271,7 +271,7 @@ public class MainActivity extends AppCompatActivity {
         textToSpeech = new TextToSpeech(this, null);
     }
 
-    private void startTts(String text) {
+    private void startTts(final String text) {
         // TODO: Start TTS
         if (text.equalsIgnoreCase("song1")) {
             mp = MediaPlayer.create(MainActivity.this, R.raw.shark);
@@ -296,7 +296,12 @@ public class MainActivity extends AppCompatActivity {
                         Log.e("tts", e.getMessage(), e);
                     }
                 }
-                startAsr();
+                if(text.equalsIgnoreCase("stop")){
+                    startHotword();
+                } else {
+                    startAsr();
+                }
+
                 //startHotword();
             }
         };
@@ -499,7 +504,7 @@ public class MainActivity extends AppCompatActivity {
                 jsonObject.put("speechId", String.valueOf(r.nextInt(999999999) + r.nextInt(99999995)));
                 jsonObject.put("speechDetails", text[0]);
                 Log.e("log", text[0] + "hello testing");
-                jsonObject.put("userId", "string");
+                jsonObject.put("userId", "demo");
                 jsonObject.put("tags", "string");
 
                 DataOutputStream wr = new DataOutputStream(httpURLConnection.getOutputStream());
@@ -512,7 +517,7 @@ public class MainActivity extends AppCompatActivity {
                 if (responseCode == HttpsURLConnection.HTTP_OK) {
                     String line;
                     BufferedReader br = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
-                    while ((line = br.readLine()) != null) {
+                    while ((line d= br.readLine()) != null) {
                         response += line;
                     }
                 }
