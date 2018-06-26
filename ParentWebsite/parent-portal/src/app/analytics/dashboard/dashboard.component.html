@@ -25,11 +25,12 @@
     <h1>Sentiment Analysis</h1>
     <p style="font-style: italic">"Ever wondered whether your child is upset or happy"</p>
     <p> Building in progress</p>
-    <!-- <div style="display: block">
+    <div *ngIf="showChart" style="display: block">
         <canvas baseChart
                 [data]="pieChartData"
                 [labels]="pieChartLabels"
                 [chartType]="pieChartType"
+                [colors]="pieChartColor"
                 (chartHover)="pieHovered($event)"
                 (chartClick)="pieClicked($event)"></canvas>
       </div>
@@ -37,7 +38,7 @@
     
     
     
-    
+    <!--
     <div>
         <angular-tag-cloud
           [data]="data"

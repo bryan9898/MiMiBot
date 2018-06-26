@@ -5,6 +5,8 @@ import { Users } from '../../class/users';
 import { CloudData, CloudOptions } from 'angular-tag-cloud-module';
 import { HttpClient, HttpParams , HttpHeaders  , HttpRequest } from '@angular/common/http';
 import {URLSearchParams, QueryEncoder} from '@angular/http';
+import { element } from 'protractor';
+import { Emotion } from 'src/app/class/emotion';
 
 @Component({
   selector: 'app-dashboard',
@@ -23,28 +25,14 @@ export class DashboardComponent implements OnInit {
   private filteredDataset: Array<Speeches> = new Array<Speeches>();
   private loaded:Boolean = false;
   private showChart = false;
-
+  private emotionDataset:Array<Emotion>;
+  public pieChartLabels:string[];
+  public pieChartData:number[];
+  public pieChartDataset;
+  public biasData;
+  public pieChartType:string = 'doughnut';
    async ngOnInit() {
-    // this.currentUser = this.tks.cu;
-    // this.dataSet = this.retrieveFromDatabase(this.currentUser.$Username);
-    // this.filteredDataSetLabels = this.filterDataset(this.dataSet , this.currentUser.$Username);
-
-    // this.dataSet = this.retrieveFromDatabase("string");
-    // this.filteredDataSetLabels = this.filterDataset(this.dataSet , "string");
-    // console.log(this.filteredDataSetLabels[1]);
-    // var labelArray = new Array<string>();
-    // var dataArray = new Array<number>();
-    // this.filteredDataSetLabels[1].forEach(element => {
-    //   labelArray.push(element);
-    //   dataArray.push(this.filteredDataSetLabels[0][element]);
-    // });
   
-    // console.log(dataArray);
- 
-    // this.barChartLabels = labelArray; 
-    // this.barChartData =  [
-    //   {data: dataArray, label: 'Series A' , backgroundColor: 'rgba(0,0,0,0)'}
-    // ];
 
     var dataList = null;
     dataList = await this.testing();
@@ -54,21 +42,32 @@ export class DashboardComponent implements OnInit {
     if(dataList.length != 0)
     {
       
-      console.log(this.filteredDataSetLabels);
       this.showChart = true;
-      this.filteredDataSetLabels = this.filterDataset(dataList , this.currentUser.$Username);
+      this.filteredDataSetLabels = this.filterDataset(dataList , "string");
       this.filteredDataSetLabels[1].forEach(element => {
         console.log("Does this happen");
         labelArray.push(element);
         dataArray.push(this.filteredDataSetLabels[0][element]);
       });
 
-      console.log(dataArray);
+      console.log(dataList);
       this.barChartLabels = labelArray;
       this.barChartData =  [
         {data: dataArray, label: 'Series A'}
       ];
+
+
+      //Set up sentiment analysis
+      this.emotionDataset = this.processEmotion(dataList);
+      this.pieChartDataset = this.getPiechartData(this.emotionDataset);
+      this.biasData = this.sortBiasData(this.pieChartDataset);
+      console.log(this.pieChartDataset);
+      this.pieChartLabels = this.biasData[0];
+      this.pieChartData = this.biasData[1];
       this.showChart = true;
+      
+
+
       // // console.log(labelArray);
       // // console.log(dataArray + "check this");
       // // this.barChartLabels = labelArray;
@@ -80,6 +79,114 @@ export class DashboardComponent implements OnInit {
     
 
     // var value = await this.sentimentAnalysis(); 
+
+  }
+
+  sortBiasData(dataSet):any
+  {
+    var labels:Array<string> = new Array<string>();
+    var value:Array<number> = new Array<number>();
+    
+    dataSet[0].forEach(element => {
+      if(element[1] != 0 )
+      {
+        labels.push(element[0]);
+        value.push(Number.parseFloat(element[1]));
+      }
+      });
+
+    labels.push(dataSet[1][0][0]);
+    var test = dataSet[1][0][1];
+    value.push(test);
+    return ([labels, value]);
+  }
+
+  getPiechartData(dataSet:Array<Emotion>)
+  {
+    var biasSet:Array<Array<any>> = new Array<Array<any>>();
+    biasSet.push(["anger" , 0], ["fear" , 0] , ["joy" , 0] , ["sadness" , 0] , ["surprise" , 0]);
+    var neutralSet:Array<any> = new Array<any>();
+    neutralSet.push(["neutral" , 0]);
+    dataSet.forEach(ds => {
+      if(ds.$status == "bias")
+      {
+         ds.$biasEmotion.forEach(es => {
+           es.forEach((key:string, value:string) => {
+              for(var i =0; i < biasSet.length; i++)
+              {
+                console.log(biasSet[i][0] + "|" + value);
+                if(biasSet[i][0].toLowerCase() == value.toLowerCase())
+                {
+                  biasSet[i][1] = biasSet[i][1] + 1; 
+                }
+              }
+           })
+         })
+      }
+      else
+      {
+        for(var i = 0; i < neutralSet.length; i++)
+        {
+          neutralSet[i][1] = neutralSet[i][1]+ 1;
+        }
+      }
+    })
+
+    return ([biasSet , neutralSet]);
+  }
+
+  processEmotion(dataList:Array<Speeches>)
+  {
+    var setOfUnfilteredEmotion:Array<Map<string,string>> = new Array<Map<string,string>>();
+    dataList.forEach(element => {
+      setOfUnfilteredEmotion.push(element.$sentiment)
+    });
+
+    var integer = 0; 
+    var emotionFilteredList:Array<any> = new Array<any>();
+    setOfUnfilteredEmotion.forEach(emotion => {
+      var biasEmotion:Array<Map<string,string>> = new Array<Map<string,string>>();
+      var neturalEmotion:Array<Map<string,string>> = new Array<Map<string,string>>();
+      emotion.forEach((value: string, key: string) => {
+        var valid = false;
+        valid = this.checkIfSentimentIsAbove20(value);
+        if(valid == true)
+        {
+          var newMap = new Map();
+          newMap.set(key, value);
+          biasEmotion.push(newMap);
+          
+        }
+        else {
+          var newMap = new Map();
+          newMap.set(key, value);
+          neturalEmotion.push(newMap);
+        }
+      })
+
+      var newEmotionClass = new Emotion(biasEmotion , neturalEmotion , dataList[integer]);
+      emotionFilteredList.push(newEmotionClass);
+      integer++;
+
+    })
+
+
+
+
+    return emotionFilteredList; 
+    
+  }
+
+  checkIfSentimentIsAbove20(data)
+  {
+    var floatData = Number.parseFloat(data);
+    if(floatData > 0.25)
+    {
+      return true; 
+    }
+    else {
+      return false;
+    }
 
   }
 
@@ -101,12 +208,21 @@ export class DashboardComponent implements OnInit {
 
   convertToSpeeches(data)
   {
+    console.log(data);
     var speechId = data['speechId']; 
     var speechDetails = data['speechDetails'];
     var userId = data['userId'];
     var tags = data['tags'];
     var tagsArray = tags.split(",");
-    var class1 = new Speeches(speechId , speechDetails , userId , tagsArray);
+    var sentiment = data['sentiment'];
+    var sentimentArray = sentiment.split(",");
+    var map:Map<string, string> = new Map<string,string>();
+    var sentimentType:Array<string> = new Array<string>("Anger", "Fear", "Joy", "Sadness" , "Surprise"); 
+    for(var i = 0; i < sentimentType.length; i++)
+    {
+      map.set(sentimentType[i] , sentimentArray[i]);
+    }
+    var class1 = new Speeches(speechId , speechDetails , userId , tagsArray, map);
     return class1;
   }
   async sentimentAnalysis() {
@@ -180,7 +296,7 @@ export class DashboardComponent implements OnInit {
 
   public chartColors: Array<any> = [
     { // first color
-      backgroundColor: '#82C7A5',
+      backgroundColor: '#00A8FF',
       borderColor: 'rgba(225,10,24,0.2)',
       pointBackgroundColor: 'rgba(225,10,24,0.2)',
       pointBorderColor: '#fff',
@@ -188,6 +304,25 @@ export class DashboardComponent implements OnInit {
       pointHoverBorderColor: 'rgba(225,10,24,0.2)'
     },
    ];
+
+   public pieChartColor: Array<any> = [
+    { // first color
+      backgroundColor: ['#ED5565','#FC6E51','#FFCE54', '#48CFAD' , '#4FC1E9'  , '#AC92EC'],
+      borderColor:['#ED5565','#FC6E51','#FFCE54', '#48CFAD' , '#4FC1E9'  , '#AC92EC'],
+      pointBackgroundColor: ['#ED5565','#FC6E51','#FFCE54', '#48CFAD' , '#4FC1E9' , '#AC92EC'],
+      pointBorderColor: ['#ED5565','#FC6E51','#FFCE54', '#48CFAD' , '#4FC1E9'  , '#AC92EC'],
+      pointHoverBackgroundColor: ['#ED5565','#FC6E51','#FFCE54', '#48CFAD' , '#4FC1E9' , '#AC92EC'],
+      pointHoverBorderColor: ['#ED5565','#FC6E51','#FFCE54', '#48CFAD' , '#4FC1E9'  , '#AC92EC']
+    }
+   ];
+
+   
+  //#FC6E51
+  //#FFCE54
+  //#48CFAD
+  //#4FC1E9
+  //#5D9CEC
+  //#AC92EC
  
   public activeSpeech:Array<Speeches> = new Array<Speeches>();
   // events
@@ -217,15 +352,17 @@ export class DashboardComponent implements OnInit {
   {
     console.log(this.currentUser);
     //Fake data first 
-    var speech1 = new Speeches("1", "I want to play, i am bored" , "string" , ["Hunger" , "Toys" , "Games"] );
-    var speech2 = new Speeches("2" , "I am hungry" , "string" , ["Hunger" , "Food"] );
-    var speech3 = new Speeches("3" , "I miss mummy" , "string1" , ["Love", "Hunger"]);
-    var speechArray = new Array<Speeches>();
-    speechArray.push(speech1);
-    speechArray.push(speech2);
-    speechArray.push(speech3);
-    return speechArray;
+    // var speech1 = new Speeches("1", "I want to play, i am bored" , "string" , ["Hunger" , "Toys" , "Games"] );
+    // var speech2 = new Speeches("2" , "I am hungry" , "string" , ["Hunger" , "Food"] );
+    // var speech3 = new Speeches("3" , "I miss mummy" , "string1" , ["Love", "Hunger"]);
+    // var speechArray = new Array<Speeches>();
+    // speechArray.push(speech1);
+    // speechArray.push(speech2);
+    // speechArray.push(speech3);
+    // return speechArray;
   }
+
+ 
 
   private filterDataset(dataset,  userName)
   {
@@ -260,13 +397,12 @@ export class DashboardComponent implements OnInit {
     return [counts, mySet];
   }
 
-  public pieChartLabels:string[] = ['Happy', 'Sad'];
-  public pieChartData:number[] = [300, 500];
-  public pieChartType:string = 'pie';
+ 
  
   // events
   public pieClicked(e:any):void {
-    console.log(e);
+    var integer =0;
+    //do soime functionm 
   }
  
   public pieHovered(e:any):void {
