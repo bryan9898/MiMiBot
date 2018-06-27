@@ -31,41 +31,31 @@ export class DashboardComponent implements OnInit {
   public pieChartDataset;
   public biasData;
   public pieChartType:string = 'doughnut';
+  public dataList:Array<Speeches> = null;
    async ngOnInit() {
   
 
-    var dataList = null;
-    dataList = await this.testing();
+    this.dataList = await this.testing();
     var labelArray = new Array<string>();
     var dataArray = new Array<number>();
     this.currentUser = this.tks.cu;
-    if(dataList.length != 0)
+    if(this.dataList.length != 0)
     {
       
       this.showChart = true;
-      this.filteredDataSetLabels = this.filterDataset(dataList , "string");
+      this.filteredDataSetLabels = this.filterDataset(this.dataList , "string");
       this.filteredDataSetLabels[1].forEach(element => {
-        console.log("Does this happen");
         labelArray.push(element);
         dataArray.push(this.filteredDataSetLabels[0][element]);
       });
 
-      console.log(dataList);
       this.barChartLabels = labelArray;
       this.barChartData =  [
         {data: dataArray, label: 'Series A'}
       ];
 
 
-      //Set up sentiment analysis
-      this.emotionDataset = this.processEmotion(dataList);
-      this.pieChartDataset = this.getPiechartData(this.emotionDataset);
-      this.biasData = this.sortBiasData(this.pieChartDataset);
-      console.log(this.pieChartDataset);
-      this.pieChartLabels = this.biasData[0];
-      this.pieChartData = this.biasData[1];
-      this.showChart = true;
-      
+     
 
 
       // // console.log(labelArray);
@@ -104,9 +94,9 @@ export class DashboardComponent implements OnInit {
   getPiechartData(dataSet:Array<Emotion>)
   {
     var biasSet:Array<Array<any>> = new Array<Array<any>>();
-    biasSet.push(["anger" , 0], ["fear" , 0] , ["joy" , 0] , ["sadness" , 0] , ["surprise" , 0]);
+    biasSet.push(["anger" , 0 , new Array<Emotion>()], ["fear" , 0 , new Array<Emotion>()] , ["joy" , 0 , new Array<Emotion>()] , ["sadness" , 0 , new Array<Emotion>()] , ["surprise" , 0 , new Array<Emotion>()]);
     var neutralSet:Array<any> = new Array<any>();
-    neutralSet.push(["neutral" , 0]);
+    neutralSet.push(["neutral" , 0 , new Array<Emotion>()]);
     dataSet.forEach(ds => {
       if(ds.$status == "bias")
       {
@@ -114,10 +104,10 @@ export class DashboardComponent implements OnInit {
            es.forEach((key:string, value:string) => {
               for(var i =0; i < biasSet.length; i++)
               {
-                console.log(biasSet[i][0] + "|" + value);
                 if(biasSet[i][0].toLowerCase() == value.toLowerCase())
                 {
                   biasSet[i][1] = biasSet[i][1] + 1; 
+                  biasSet[i][2].push(ds);
                 }
               }
            })
@@ -128,10 +118,10 @@ export class DashboardComponent implements OnInit {
         for(var i = 0; i < neutralSet.length; i++)
         {
           neutralSet[i][1] = neutralSet[i][1]+ 1;
+          neutralSet[i][2].push(ds);
         }
       }
     })
-
     return ([biasSet , neutralSet]);
   }
 
@@ -208,7 +198,6 @@ export class DashboardComponent implements OnInit {
 
   convertToSpeeches(data)
   {
-    console.log(data);
     var speechId = data['speechId']; 
     var speechDetails = data['speechDetails'];
     var userId = data['userId'];
@@ -222,21 +211,26 @@ export class DashboardComponent implements OnInit {
     {
       map.set(sentimentType[i] , sentimentArray[i]);
     }
-    var class1 = new Speeches(speechId , speechDetails , userId , tagsArray, map);
+
+    var keyword = data['keyword'];
+    var keywordData = keyword.split(",");
+    var keywordMap:Map<string ,string> = new Map <string, string>(); 
+    var integer = 0; 
+    keywordData.forEach(element => {
+      if(integer < keywordData.length -1)
+      {
+        var valuePair = element.split(":");
+        keywordMap.set(valuePair[0], valuePair[1]);
+      
+      }
+      
+      integer++; 
+    });
+    console.log(keyword);
+    var class1 = new Speeches(speechId , speechDetails , userId , tagsArray, map , keywordMap);
     return class1;
   }
-  async sentimentAnalysis() {
-    // var url = "http://text-processing.com/api/sentiment/";
-    // var headerss = new HttpHeaders({
-    //   'Content-Type' : 'application/X-www-form-urlencoded',
-
-    // });
-    // let body = new URLSearchParams();
-    // body.set('text', "I am very happy");
-    // var result =  await this.http.post(url , body ).toPromise();
-
-    throw new Error("Method not implemented.");
-  }
+ 
 
   private http;
   constructor(tks: TokenService , http: HttpClient) { 
@@ -316,13 +310,6 @@ export class DashboardComponent implements OnInit {
     }
    ];
 
-   
-  //#FC6E51
-  //#FFCE54
-  //#48CFAD
-  //#4FC1E9
-  //#5D9CEC
-  //#AC92EC
  
   public activeSpeech:Array<Speeches> = new Array<Speeches>();
   // events
@@ -331,7 +318,6 @@ export class DashboardComponent implements OnInit {
     this.showTopicDetails = true;
     var topic = e['active']['0']._model['label'];
    
-    console.log(this.filteredDataset);
     this.filteredDataset.forEach(e => {
       for(var i = 0; i < e.$topics.length; i++)
       {
@@ -350,7 +336,6 @@ export class DashboardComponent implements OnInit {
 
   private retrieveFromDatabase(currentUser)
   {
-    console.log(this.currentUser);
     //Fake data first 
     // var speech1 = new Speeches("1", "I want to play, i am bored" , "string" , ["Hunger" , "Toys" , "Games"] );
     // var speech2 = new Speeches("2" , "I am hungry" , "string" , ["Hunger" , "Food"] );
@@ -398,16 +383,49 @@ export class DashboardComponent implements OnInit {
   }
 
  
+  // public pieChartColor: Array<any> = [
+  //   { // first color
+  //     backgroundColor: ['#ED5565','#FC6E51','#FFCE54', '#48CFAD' , '#4FC1E9'  , '#AC92EC'],
+  //     borderColor:['#ED5565','#FC6E51','#FFCE54', '#48CFAD' , '#4FC1E9'  , '#AC92EC'],
+  //     pointBackgroundColor: ['#ED5565','#FC6E51','#FFCE54', '#48CFAD' , '#4FC1E9' , '#AC92EC'],
+  //     pointBorderColor: ['#ED5565','#FC6E51','#FFCE54', '#48CFAD' , '#4FC1E9'  , '#AC92EC'],
+  //     pointHoverBackgroundColor: ['#ED5565','#FC6E51','#FFCE54', '#48CFAD' , '#4FC1E9' , '#AC92EC'],
+  //     pointHoverBorderColor: ['#ED5565','#FC6E51','#FFCE54', '#48CFAD' , '#4FC1E9'  , '#AC92EC']
+  //   }
+  //  ];
+
+  // // events
+  // public pieClicked(e:any):void {
+  //   var integer =0;
+  //   var mainArray:Array<Array<Emotion>> = new Array<Array<Emotion>>();
+  //   var tempArray = new Array();
+  //   this.pieChartDataset.forEach(element => {
+  //     element.forEach(data => {
+  //       tempArray.push(data);
+  //     });
+  //   });
+
+  //  tempArray.forEach(data => {
+  //    if(data[2] != 0)
+  //    {
+  //      mainArray.push(data);
+  //    }
+  //  })
+  //  try{
+  //   var currentIndex = e['active'][0]._index;
+  //   var currentDataset = mainArray[currentIndex];
+  //   console.log(currentDataset);
+  //  }
+  //  catch{
+  //    console.log("error");
+  //  }
  
-  // events
-  public pieClicked(e:any):void {
-    var integer =0;
-    //do soime functionm 
-  }
+
+  // }
  
-  public pieHovered(e:any):void {
-    console.log(e);
-  }
+  // public pieHovered(e:any):void {
+  //   console.log(e);
+  // }
 
 
 

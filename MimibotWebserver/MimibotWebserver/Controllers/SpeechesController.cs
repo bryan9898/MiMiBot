@@ -9,6 +9,7 @@ using MimibotWebserver.Models;
 using Microsoft.AspNetCore.Authorization;
 using System.Net.Http;
 using Microsoft.AspNetCore.Cors;
+using System.Text.RegularExpressions;
 
 namespace MimibotWebserver.Controllers
 {
@@ -106,6 +107,10 @@ namespace MimibotWebserver.Controllers
             var emotion = await client.GetAsync("https://hoggersoh.pythonanywhere.com/emotion/" + speech.SpeechDetails);
             var emotionString = await emotion.Content.ReadAsStringAsync();
 
+            var keywords = await client.GetAsync("https://hoggersoh.pythonanywhere.com/keywords/" + speech.SpeechDetails);
+            var keywordsString = await keywords.Content.ReadAsStringAsync();
+            speech.Keyword = keywordsString;
+
             string finalArray = "";
             var emotionArray = emotionString.Split(",");
             var integer = 0; 
@@ -128,7 +133,6 @@ namespace MimibotWebserver.Controllers
             }
 
             speech.Sentiment = finalArray;
-
             _context.Speechs.Add(speech);
             await _context.SaveChangesAsync();
             return CreatedAtAction("GetSpeech", new { id = speech.SpeechId }, speech);
@@ -205,6 +209,24 @@ namespace MimibotWebserver.Controllers
 
                 }
                 return Ok(finalArray);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Error" + ex);
+            }
+        }
+
+
+        [EnableCors("MyPolicy")]
+        [AllowAnonymous]
+        [HttpPost("keyword/{keyword}")]
+        public async Task<IActionResult> EmotionAsync(string keyword)
+        {
+            try
+            {
+                var response = await client.GetAsync("https://hoggersoh.pythonanywhere.com/keywords/" + keyword);
+                var responseString = await response.Content.ReadAsStringAsync();
+                return Ok(responseString);
             }
             catch (Exception ex)
             {

@@ -1,0 +1,23 @@
+<div class="container-fluid">
+  <h1>Emotion Analysis</h1>
+  <p style="font-style: italic">"Ever wondered what your child is feeling and what words he is saying?"</p>
+  <div style="display: block">
+      <canvas baseChart
+              [data]="pieChartData"
+              [labels]="pieChartLabels"
+              [chartType]="pieChartType"
+              [colors]="pieChartColor"
+              (chartHover)="pieHovered($event)"
+              (chartClick)="pieClicked($event)"></canvas>
+  </div>
+
+  <div style="background:red" *ngIf="chartDetails">
+      <angular-tag-cloud
+        [data]="CloudData"
+        [overflow]="options.overflow"
+        [zoomOnHover]="zoomOnHoverOptions"
+        >
+      </angular-tag-cloud>
+  </div>
+
+</div>

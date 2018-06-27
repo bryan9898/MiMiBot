@@ -6,14 +6,11 @@ using System.Threading.Tasks;
 
 namespace MimibotWebserver.Models
 {
-    public class Speech
+    public class Upload
     {
         [Key]
-        public string SpeechId { get; set; }
-        public string SpeechDetails { get; set; }
+        public string UploadId { get; set; }
+        public string Password { get; set; }
         public string UserId { get; set; }
-        public string Tags { get; set; }
-        public string Sentiment { get; set; }
-        public string Keyword { get; set; }
     }
 }

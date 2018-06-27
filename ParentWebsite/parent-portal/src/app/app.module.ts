@@ -22,6 +22,7 @@ import { ChartsModule } from 'ng2-charts';
 import { TopicDetailsComponent } from './analytics/dashboard/modules/topic-details/topic-details.component';
 import { TagCloudModule } from 'angular-tag-cloud-module';
 import { UploadsComponent } from './personalize/uploads/uploads.component';
+import { EmotionAnalysisComponent } from './analytics/dashboard/modules/emotion-analysis/emotion-analysis.component';
 
 
 const appRoutes: Routes = [
@@ -43,7 +44,8 @@ const appRoutes: Routes = [
     HomeComponent,
     DashboardComponent,
     TopicDetailsComponent,
-    UploadsComponent
+    UploadsComponent,
+    EmotionAnalysisComponent
   ],
   imports: [
     BrowserModule,

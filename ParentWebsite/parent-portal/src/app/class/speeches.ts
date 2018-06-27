@@ -5,14 +5,16 @@ export class Speeches {
     private userId : string ;
     private topics : Array<string>;
     private sentiment: Map<string, string>;
+    private keywords: Map<string, string>;
 
 
-	constructor(speechId, speechDetails, userId, topics, sentiment) {
+	constructor(speechId, speechDetails, userId, topics, sentiment , keywords) {
         this.speechId = speechId; 
         this.speechDetails = speechDetails; 
         this.userId = userId ; 
         this.topics = topics;
         this.sentiment = sentiment;
+        this.keywords = keywords; 
 	}
     
 
@@ -95,6 +97,24 @@ export class Speeches {
      */
 	public set $sentiment(value: Map<string, string>) {
 		this.sentiment = value;
+    }
+    
+
+    /**
+     * Getter $keywords
+     * @return {Map<string, string>}
+     */
+	public get $keywords(): Map<string, string> {
+		return this.keywords;
 	}
+
+    /**
+     * Setter $keywords
+     * @param {Map<string, string>} value
+     */
+	public set $keywords(value: Map<string, string>) {
+		this.keywords = value;
+	}
+    
     
 }

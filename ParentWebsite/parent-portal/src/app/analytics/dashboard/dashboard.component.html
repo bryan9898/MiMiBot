@@ -21,7 +21,8 @@
     </div>
 </div>
 
-<div class="container-fluid">
+<app-emotion-analysis *ngIf="showChart" [dataList]="dataList"></app-emotion-analysis>
+<!-- <div class="container-fluid">
     <h1>Sentiment Analysis</h1>
     <p style="font-style: italic">"Ever wondered whether your child is upset or happy"</p>
     <p> Building in progress</p>
@@ -33,7 +34,7 @@
                 [colors]="pieChartColor"
                 (chartHover)="pieHovered($event)"
                 (chartClick)="pieClicked($event)"></canvas>
-      </div>
+      </div> -->
     
     
     
@@ -47,4 +48,3 @@
           [overflow]="options.overflow">
         </angular-tag-cloud>
       </div> -->
-</div>
