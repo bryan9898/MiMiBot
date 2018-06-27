@@ -21,6 +21,7 @@ import { DashboardComponent } from './analytics/dashboard/dashboard.component';
 import { ChartsModule } from 'ng2-charts';
 import { TopicDetailsComponent } from './analytics/dashboard/modules/topic-details/topic-details.component';
 import { TagCloudModule } from 'angular-tag-cloud-module';
+import { UploadsComponent } from './personalize/uploads/uploads.component';
 
 
 const appRoutes: Routes = [
@@ -29,7 +30,7 @@ const appRoutes: Routes = [
   { path:'home' , component: HomeComponent , children : [
     { path: '' , component: DashboardComponent , outlet:"content"},
     { path:'dashboard' , component: DashboardComponent , outlet:"content" },
-    { path:'upload' , component: HomeComponent , outlet: "content"},
+    { path:'upload' , component: UploadsComponent , outlet: "content"},
   ]},
  
 
@@ -41,7 +42,8 @@ const appRoutes: Routes = [
     LoginComponent,
     HomeComponent,
     DashboardComponent,
-    TopicDetailsComponent
+    TopicDetailsComponent,
+    UploadsComponent
   ],
   imports: [
     BrowserModule,

@@ -8,7 +8,7 @@
       <!-- Sidebar Links -->
       <ul class="list-unstyled components">
           <li routerLinkActive="active"><a  [routerLink]="['/home', { outlets: {'content':['dashboard']}}]">Dashboard</a></li>
-          <li routerLinkActive="active"><a  routerLink="/upload" >Personalize</a></li>
+          <li routerLinkActive="active"><a  [routerLink]="['/home', { outlets: {'content':['upload']}}]" >Personalize</a></li>
 
 
       </ul>
