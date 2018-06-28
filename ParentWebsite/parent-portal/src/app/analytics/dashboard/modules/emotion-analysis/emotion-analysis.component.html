@@ -1,6 +1,6 @@
 <div class="container-fluid">
   <h1>Emotion Analysis</h1>
-  <p style="font-style: italic">"Ever wondered what your child is feeling and what words he is saying?"</p>
+  <p style="font-style: italic">"Ever wanted a summary of what your child is feeling? wondered what your child is feeling and what words he is saying?"</p>
   <div style="display: block">
       <canvas baseChart
               [data]="pieChartData"
@@ -10,14 +10,28 @@
               (chartHover)="pieHovered($event)"
               (chartClick)="pieClicked($event)"></canvas>
   </div>
+  
 
-  <div style="background:red" *ngIf="chartDetails">
-      <angular-tag-cloud
-        [data]="CloudData"
-        [overflow]="options.overflow"
-        [zoomOnHover]="zoomOnHoverOptions"
-        >
-      </angular-tag-cloud>
+  <div id="chartDetailsID" style="margin-top: 2%" *ngIf="chartDetails">
+    <h1>Keyword Summary</h1>
+    <p style="font-style: italic">"We summarize all the keywords based on the sentences tagged with the emotion <i><b>{{currentTopic}}</b></i>" </p>
+    <div class="row">
+      <div class="col-sm-2"></div>
+      <div class="col-sm-8">
+          <angular-tag-cloud style="margin: auto; width: 100%; font-size: 15px; font-weight:bold"
+          [data]="CloudData"
+          [overflow]="options.overflow"
+          [zoomOnHover]="zoomOnHoverOptions"
+          (clicked)="cloudClicked($event)"></angular-tag-cloud>
+      </div>
+      <div class="col-sm-2"></div>
+    </div>
   </div>
+
+  <div *ngIf="cloudDetails">
+      
+  </div>
+
+  
 
 </div>

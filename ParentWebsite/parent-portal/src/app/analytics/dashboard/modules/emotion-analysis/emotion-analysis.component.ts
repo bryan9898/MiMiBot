@@ -18,6 +18,8 @@ export class EmotionAnalysisComponent implements OnInit {
   public pieChartType:string = 'doughnut';
   public chartDetails:Boolean = false;
   public wordCloudDataMap:Map<string,number>;
+  public currentTopic
+  public currentDataset;
   constructor() { }
 
   @Input() dataList:Array<Speeches>;
@@ -47,10 +49,13 @@ export class EmotionAnalysisComponent implements OnInit {
         value.push(Number.parseFloat(element[1]));
       }
       });
-
-    labels.push(dataSet[1][0][0]);
-    var test = dataSet[1][0][1];
-    value.push(test);
+    
+    if(dataSet[1][0][1] != 0)
+    {
+      labels.push(dataSet[1][0][0]);
+      var test = dataSet[1][0][1];
+      value.push(test);
+    }
     return ([labels, value]);
   }
 
@@ -143,19 +148,22 @@ export class EmotionAnalysisComponent implements OnInit {
 
   }
 
+  public colorscheme = ['#ED5565','#FC6E51','#FFCE54', '#48CFAD' , '#4FC1E9'  , '#AC92EC'];
   public pieChartColor: Array<any> = [
     { // first color
-      backgroundColor: ['#ED5565','#FC6E51','#FFCE54', '#48CFAD' , '#4FC1E9'  , '#AC92EC'],
-      borderColor:['#ED5565','#FC6E51','#FFCE54', '#48CFAD' , '#4FC1E9'  , '#AC92EC'],
-      pointBackgroundColor: ['#ED5565','#FC6E51','#FFCE54', '#48CFAD' , '#4FC1E9' , '#AC92EC'],
-      pointBorderColor: ['#ED5565','#FC6E51','#FFCE54', '#48CFAD' , '#4FC1E9'  , '#AC92EC'],
-      pointHoverBackgroundColor: ['#ED5565','#FC6E51','#FFCE54', '#48CFAD' , '#4FC1E9' , '#AC92EC'],
-      pointHoverBorderColor: ['#ED5565','#FC6E51','#FFCE54', '#48CFAD' , '#4FC1E9'  , '#AC92EC']
+      backgroundColor:this.colorscheme,
+      borderColor:this.colorscheme,
+      pointBackgroundColor: this.colorscheme,
+      pointBorderColor:this.colorscheme,
+      pointHoverBackgroundColor: this.colorscheme,
+      pointHoverBorderColor: this.colorscheme
     }
    ];
 
   // events
   public pieClicked(e:any):void {
+    this.cloudDetails = false;
+    this.chartDetails = false;
     var integer =0;
     var mainArray:Array<Array<Emotion>> = new Array<Array<Emotion>>();
     var tempArray = new Array();
@@ -173,24 +181,35 @@ export class EmotionAnalysisComponent implements OnInit {
    })
    try{
     var currentIndex = e['active'][0]._index;
-    var currentDataset = mainArray[currentIndex];
-    console.log(currentDataset);
+    var currentColor = this.colorscheme[currentIndex];
+    this.currentDataset = mainArray[currentIndex];
+    console.log(this.currentDataset);
+    this.currentTopic = this.currentDataset[0];
     this.chartDetails = true;
-    this.wordCloudDataMap = this.createWordCloudData(currentDataset);
+    this.wordCloudDataMap = this.createWordCloudData(this.currentDataset);
     var wordCloudArray = new Array();
     this.wordCloudDataMap.forEach((counts, topic) => {
-      var newFormat = {text:topic , weight:counts , color: "black" , fontWeight: "bold"};
+      var newFormat = {text:topic , weight:counts , color: currentColor , fontWeight: "bold"};
       wordCloudArray.push(newFormat);
     })
     this.CloudData = wordCloudArray;
+    var chartElement = document.getElementById("chartDetailsID")
+    if(chartElement != null)
+    {
+      chartElement.scrollIntoView({behavior:"smooth"});
+    }
+    
    }
    catch{
      console.log("error");
      this.chartDetails = false;
    }
- 
+
+   
 
   }
+
+  
  
   public pieHovered(e:any):void {
     console.log(e);
@@ -241,7 +260,7 @@ export class EmotionAnalysisComponent implements OnInit {
     // if width is between 0 and 1 it will be set to the size of the upper element multiplied by the value 
     overflow: true,
     realignOnResize: true,
-    width: 1000, 
+    width: 500, 
     
   }
 
@@ -252,5 +271,22 @@ export class EmotionAnalysisComponent implements OnInit {
   };
  
   CloudData: CloudData[];
+
+
+  public cloudDetails = false;
+  cloudClicked(event:CloudData)
+  {
+    var keyword = event.text;
+    var allEmotions:Array<Emotion> = new Array<Emotion>();
+    this.currentDataset[2].forEach(element => {
+      allEmotions.push(element);
+      // allSpeeches.push(speechesCurrent);s
+    });
+    console.log(allEmotions);
+
+    
+    this.cloudDetails = true;
+  }
+
 
 }

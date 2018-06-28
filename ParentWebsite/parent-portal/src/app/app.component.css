@@ -1,19 +1,23 @@
 
+.row {
+  width: 100%; padding: 0px; margin:0px;
+}
 .myContent {
-    width: 100%;
-    position:fixed;
     margin: 0px;
     padding: 0px;
-      height: 100%;
-    }
-    .container-fluid
-    {
-      height: 100% !important;
-    }
+    height: 100vh;
+    width: 100%;
+    background: red;
+}
+.container-fluid
+{
+  margin: 0px; 
+  padding: 0px;
+  height: 100% !important;
+}
     
-    *{
-        margin: 0;
-        padding: 0;
-        overflow:auto;
-    }
+*{
+  margin: 0;
+  padding: 0;
+}
     

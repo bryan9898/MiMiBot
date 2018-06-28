@@ -23,6 +23,7 @@ import { TopicDetailsComponent } from './analytics/dashboard/modules/topic-detai
 import { TagCloudModule } from 'angular-tag-cloud-module';
 import { UploadsComponent } from './personalize/uploads/uploads.component';
 import { EmotionAnalysisComponent } from './analytics/dashboard/modules/emotion-analysis/emotion-analysis.component';
+import { EmotionDetailsComponent } from './analytics/dashboard/modules/emotion-details/emotion-details.component';
 
 
 const appRoutes: Routes = [
@@ -45,7 +46,8 @@ const appRoutes: Routes = [
     DashboardComponent,
     TopicDetailsComponent,
     UploadsComponent,
-    EmotionAnalysisComponent
+    EmotionAnalysisComponent,
+    EmotionDetailsComponent
   ],
   imports: [
     BrowserModule,

@@ -1,5 +1,6 @@
 .container-fluid {
     background: transparent url(../../resources/hero.jpg) repeat center;
+    
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
