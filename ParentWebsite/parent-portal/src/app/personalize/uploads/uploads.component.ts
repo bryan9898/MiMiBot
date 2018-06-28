@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {MatInputModule} from '@angular/material/input';
-
+import { MatInputModule } from '@angular/material/input';
+import { MatCardModule } from '@angular/material/card';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatFormFieldModule } from '@angular/material/form-field';
 @Component({
   selector: 'app-uploads',
   templateUrl: './uploads.component.html',
@@ -12,5 +14,7 @@ export class UploadsComponent implements OnInit {
 
   ngOnInit() {
   }
+
+  panelOpenState = false;
 
 }
