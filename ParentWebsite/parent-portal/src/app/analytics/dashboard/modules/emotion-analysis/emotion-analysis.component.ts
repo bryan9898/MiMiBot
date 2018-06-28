@@ -20,6 +20,7 @@ export class EmotionAnalysisComponent implements OnInit {
   public wordCloudDataMap:Map<string,number>;
   public currentTopic
   public currentDataset;
+  public keyword;
   constructor() { }
 
   @Input() dataList:Array<Speeches>;
@@ -272,20 +273,25 @@ export class EmotionAnalysisComponent implements OnInit {
  
   CloudData: CloudData[];
 
-
+  public allEmotions:Array<Emotion>  = new Array<Emotion>();; 
   public cloudDetails = false;
+
   cloudClicked(event:CloudData)
   {
+    this.allEmotions = new Array<Emotion>();
     var keyword = event.text;
-    var allEmotions:Array<Emotion> = new Array<Emotion>();
+    this.keyword = event.text;
     this.currentDataset[2].forEach(element => {
-      allEmotions.push(element);
+      this.allEmotions.push(element);
       // allSpeeches.push(speechesCurrent);s
     });
-    console.log(allEmotions);
-
-    
     this.cloudDetails = true;
+    var cloudDetailsID = document.getElementById("test");
+    console.log(cloudDetailsID);
+    if(cloudDetailsID != null)
+    {
+      cloudDetailsID.scrollIntoView({behavior:"smooth"});
+    }
   }
 
 

@@ -14,7 +14,7 @@
 
   <div id="chartDetailsID" style="margin-top: 2%" *ngIf="chartDetails">
     <h1>Keyword Summary</h1>
-    <p style="font-style: italic">"We summarize all the keywords based on the sentences tagged with the emotion <i><b>{{currentTopic}}</b></i>" </p>
+    <p style="font-style: italic">"We summarize all the keywords based on the speeches tagged with the emotion <i><b>{{currentTopic}}</b></i>" </p>
     <div class="row">
       <div class="col-sm-2"></div>
       <div class="col-sm-8">
@@ -28,10 +28,11 @@
     </div>
   </div>
 
-  <div *ngIf="cloudDetails">
-      
-  </div>
 
+  <div id="test" *ngIf="cloudDetails">
+      <p style="font-style: italic">"All the speeches that contains the keyword <b>{{keyword}}</b>" </p>
+      <app-emotion-details *ngFor="let emotion of allEmotions" [currentEmotion]="emotion"  style="display: inline-block"></app-emotion-details>
+  </div>
   
 
 </div>
