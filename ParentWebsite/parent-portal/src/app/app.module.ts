@@ -23,12 +23,9 @@ import { TopicDetailsComponent } from './analytics/dashboard/modules/topic-detai
 import { TagCloudModule } from 'angular-tag-cloud-module';
 import { UploadsComponent } from './personalize/uploads/uploads.component';
 import { EmotionAnalysisComponent } from './analytics/dashboard/modules/emotion-analysis/emotion-analysis.component';
-<<<<<<< HEAD
 import { EmotionDetailsComponent } from './analytics/dashboard/modules/emotion-details/emotion-details.component';
 
-=======
 import { MatExpansionModule } from '@angular/material/expansion';
->>>>>>> origin/master
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/login' ,  pathMatch:'full' },
