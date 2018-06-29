@@ -60,44 +60,38 @@
     
   </mat-accordion>
   
-  <mat-form-field>
-  <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
-</mat-form-field>
-
-<div class="mat-elevation-z8">
-  <table mat-table [dataSource]="dataSource" matSort>
-
-    <!-- ID Column -->
-    <ng-container matColumnDef="id">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
-      <td mat-cell *matCellDef="let row"> {{row.id}} </td>
-    </ng-container>
-
-    <!-- Progress Column -->
-    <ng-container matColumnDef="progress">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Progress </th>
-      <td mat-cell *matCellDef="let row"> {{row.progress}}% </td>
-    </ng-container>
-
-    <!-- Name Column -->
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
-      <td mat-cell *matCellDef="let row"> {{row.name}} </td>
-    </ng-container>
-
-    <!-- Color Column -->
-    <ng-container matColumnDef="color">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Color </th>
-      <td mat-cell *matCellDef="let row" [style.color]="row.color"> {{row.color}} </td>
-    </ng-container>
-
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;">
-    </tr>
-  </table>
-
+  
+    
+            <mat-form-field>
+              <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+            </mat-form-field>
+          
+          <mat-table #table [dataSource]="dataSource" attr.id="{{x}}" matsort>
+  
+        
+            <ng-container matColumnDef="songName" attr.id="{{x}}">
+              <mat-header-cell *matHeaderCellDef attr.id="{{x}}"> Song Name </mat-header-cell>
+              <mat-cell *matCellDef="let element" attr.id="{{x}}"> {{element.songName}} </mat-cell>
+            </ng-container>
+  
+          
+            <ng-container matColumnDef="songLink" attr.id="{{x}}">
+              <mat-header-cell *matHeaderCellDef attr.id="{{x}}"> Song Link </mat-header-cell>
+              <mat-cell *matCellDef="let element" attr.id="{{x}}"> {{element.songLink}} </mat-cell>
+            </ng-container>
+  
+          
+         
+  
+  
+            <mat-header-row *matHeaderRowDef="displayedColumns" attr.id="{{x}}"></mat-header-row> 
+            <mat-row *matRowDef="let row; columns: displayedColumns;let x = index;"   (click)="tableClick(row)" attr.id="{{x}}" ></mat-row>
+          
+          </mat-table>
+  
+      
   <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
-</div>
+
 
   
 

@@ -24,8 +24,10 @@ import { TagCloudModule } from 'angular-tag-cloud-module';
 import { UploadsComponent } from './personalize/uploads/uploads.component';
 import { EmotionAnalysisComponent } from './analytics/dashboard/modules/emotion-analysis/emotion-analysis.component';
 import { EmotionDetailsComponent } from './analytics/dashboard/modules/emotion-details/emotion-details.component';
-
+import { MatTableModule } from '@angular/material/table';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MatSortModule } from '@angular/material/sort'
+import {MatPaginatorModule} from '@angular/material/paginator'
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/login' ,  pathMatch:'full' },
@@ -48,7 +50,8 @@ const appRoutes: Routes = [
     TopicDetailsComponent,
     UploadsComponent,
     EmotionAnalysisComponent,
-    EmotionDetailsComponent
+    EmotionDetailsComponent,
+    
   ],
   imports: [
     BrowserModule,
@@ -69,7 +72,11 @@ const appRoutes: Routes = [
     ChartsModule,
     MatCardModule, 
     TagCloudModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatTableModule,
+    MatSortModule,
+    
+    MatPaginatorModule
 
   ],
   providers: [TokenService],
