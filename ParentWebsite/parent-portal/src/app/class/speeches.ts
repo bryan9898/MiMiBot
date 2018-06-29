@@ -1,3 +1,4 @@
+
 export class Speeches {
 
     private speechId : string;
@@ -6,15 +7,16 @@ export class Speeches {
     private topics : Array<string>;
     private sentiment: Map<string, string>;
     private keywords: Map<string, string>;
+    private dateTime: string;
 
-
-	constructor(speechId, speechDetails, userId, topics, sentiment , keywords) {
+	constructor(speechId, speechDetails, userId, topics, sentiment , keywords , dateTime) {
         this.speechId = speechId; 
         this.speechDetails = speechDetails; 
         this.userId = userId ; 
         this.topics = topics;
         this.sentiment = sentiment;
         this.keywords = keywords; 
+        this.dateTime = dateTime;
 	}
     
 
@@ -114,6 +116,23 @@ export class Speeches {
      */
 	public set $keywords(value: Map<string, string>) {
 		this.keywords = value;
+	}
+    
+
+    /**
+     * Getter $dateTime
+     * @return {string}
+     */
+	public get $dateTime(): string {
+		return this.dateTime;
+	}
+
+    /**
+     * Setter $dateTime
+     * @param {string} value
+     */
+	public set $dateTime(value: string) {
+		this.dateTime = value;
 	}
     
     

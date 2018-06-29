@@ -1,0 +1,79 @@
+.container-fluid {
+    /* background: transparent url(../../resources/hero.jpg) repeat center; */
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    padding: 0px; 
+    width: auto;
+
+}
+
+
+
+.analyticsCard {
+    display: inline-block;
+    width: 90vw;
+    min-height: 50vh;
+    z-index: inherit;
+  }
+  
+  .analyticsHeader {
+    display: inline-block;
+  }
+  
+  .cardHeader {
+    margin: 2% 0% 0% 2%;
+    display: inline-block;
+  }
+
+  .cardsubtitle {
+    font-size: 15px;
+  }
+  
+  
+  .cardTitle {
+    font-size: 20px !important;
+  }
+  
+  .cardButtonDiv {
+    margin: 0px 2% 0% 0%;
+    text-align: right;
+  }
+  
+  .cardIcon {
+    word-wrap: break-word;
+  }
+  
+  .cardButton {
+    outline: none;
+    width: 100%;
+  }
+  
+  h3 {
+    margin: 2% 0% 0% 2%;
+  }
+  
+  #analyticsSlideCard {
+    display: inline-block;
+    width: 100%;
+  }
+
+  .squarebuttonstyle {
+    color:  #fafafa !important;
+    width: 100%;
+    font-size: 14px;
+    height: 40px;
+    text-align: center;
+  }
+
+ 
+  
+  @media only screen and (max-width : 768px) {
+    .analyticsCard {
+      width: 400px;
+      display: inline-block;
+      margin: 2%;
+    }
+  }
+  

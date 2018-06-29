@@ -7,6 +7,7 @@ import { HttpClient, HttpParams , HttpHeaders  , HttpRequest } from '@angular/co
 import {URLSearchParams, QueryEncoder} from '@angular/http';
 import { element } from 'protractor';
 import { Emotion } from 'src/app/class/emotion';
+import { AnalyticsService } from 'src/app/analytics/service/analytics.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -32,6 +33,14 @@ export class DashboardComponent implements OnInit {
   public biasData;
   public pieChartType:string = 'doughnut';
   public dataList:Array<Speeches> = null;
+  private analyticsService:AnalyticsService;
+  private http;
+  constructor(tks: TokenService , http: HttpClient , as:AnalyticsService) { 
+    this.tks = tks;
+    this.http = http;
+    this.analyticsService = as;
+  }
+
    async ngOnInit() {
   
 
@@ -54,7 +63,7 @@ export class DashboardComponent implements OnInit {
         {data: dataArray, label: 'Series A'}
       ];
 
-
+     
      
 
 
@@ -221,23 +230,18 @@ export class DashboardComponent implements OnInit {
       {
         var valuePair = element.split(":");
         keywordMap.set(valuePair[0], valuePair[1]);
-      
       }
       
       integer++; 
     });
-    console.log(keyword);
-    var class1 = new Speeches(speechId , speechDetails , userId , tagsArray, map , keywordMap);
+    var dateTime = data['dateTime'];
+    
+    var class1 = new Speeches(speechId , speechDetails , userId , tagsArray, map , keywordMap , dateTime);
     return class1;
   }
  
 
-  private http;
-  constructor(tks: TokenService , http: HttpClient) { 
-    this.tks = tks;
-    this.http = http;
-  }
-
+ 
 
 
   public barChartOptions:any = {

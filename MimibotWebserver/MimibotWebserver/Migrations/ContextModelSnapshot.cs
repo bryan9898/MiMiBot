@@ -23,6 +23,8 @@ namespace MimibotWebserver.Migrations
                     b.Property<string>("SpeechId")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("DateTime");
+
                     b.Property<string>("Keyword");
 
                     b.Property<string>("Sentiment");

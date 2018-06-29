@@ -1,6 +1,6 @@
 <div class="container-fluid">
   <h1>Emotion Analysis</h1>
-  <p style="font-style: italic">"Ever wanted a summary of what your child is feeling? wondered what your child is feeling and what words he is saying?"</p>
+  <p style="font-style: italic">"Ever wanted a <i><b>summary</b></i> of what your child is <i><b>feeling?</b></i> "</p>
   <div style="display: block">
       <canvas baseChart
               [data]="pieChartData"
@@ -14,8 +14,8 @@
   
 
   <div id="chartDetailsID" style="margin-top: 2%" *ngIf="chartDetails">
-    <h1>Keyword Summary</h1>
-    <p style="font-style: italic">"We summarize all the keywords based on the speeches tagged with the emotion <i><b>{{currentTopic}}</b></i>" </p>
+    <h1>Speech Summary</h1>
+    <p style="font-style: italic">"We summarize each speech under the <i><b>{{currentTopic}} category </b></i> into a cloud of <i><b>keywords</b></i>" </p>
     <div class="row">
       <div class="col-sm-12" style="height: auto;">
           <angular-tag-cloud style="margin: auto; width: 100%; height: auto; font-size: 10px; font-weight:bold"
@@ -29,8 +29,16 @@
 
 
   <div id="test" *ngIf="cloudDetails">
-      <p style="font-style: italic">"All the speeches that contains the keyword <b>{{keyword}}</b>" </p>
+      <h1>List of speeches </h1>
+      <p style="font-style: italic">"We show you a list of speeches that contains the <b><i>keyword: {{keyword}}</i></b>" </p>
       <app-emotion-details *ngFor="let emotion of allEmotions" [currentEmotion]="emotion"  style="display: inline-block ; position: relative; z-index: 0;"></app-emotion-details>
+  </div>
+
+
+  <div style="margin-top:6%" id="emotionIndividual" *ngIf="emotionIndividual">
+    <h1>Details of selected speech</h1>
+    <p style="font-style: italic">" <b><i>Detailed</i></b> information regarding the selected <b><i>speech</i></b>"</p>
+    <app-individual-details [emotionClass]="currentEmotionSet"></app-individual-details>
   </div>
   
 

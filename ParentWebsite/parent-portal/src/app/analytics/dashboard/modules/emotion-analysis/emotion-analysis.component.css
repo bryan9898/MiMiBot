@@ -11,4 +11,5 @@
     margin-right: 3%;
     margin-top: 5%;
     margin-bottom: 3%;
+    z-index: inherit;
 }

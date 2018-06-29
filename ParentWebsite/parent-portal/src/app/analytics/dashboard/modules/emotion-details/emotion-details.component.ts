@@ -1,6 +1,7 @@
 import { Component, OnInit , Input } from '@angular/core';
 import { Emotion } from 'src/app/class/emotion';
 import { Speeches } from 'src/app/class/speeches';
+import { AnalyticsService } from 'src/app/analytics/service/analytics.service';
 
 @Component({
   selector: 'app-emotion-details',
@@ -18,7 +19,10 @@ export class EmotionDetailsComponent implements OnInit {
   public fourTrue; 
   public fiveTrue; 
   public sixTrue;
-  constructor() { }
+  private analyticsService:AnalyticsService;
+  constructor(private as:AnalyticsService) { 
+    this.analyticsService = as;
+  }
 
   ngOnInit() {
     var dataSet:Speeches = this.currentEmotion[0].$dataSet;
@@ -65,5 +69,7 @@ export class EmotionDetailsComponent implements OnInit {
 
 
   showDetails(){
+    this.analyticsService.setCurrentEmotionIndStatus(true);
+    this.analyticsService.setCurrentEmotionIndDataset(this.currentEmotion[0]);
   }
 }

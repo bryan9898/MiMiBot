@@ -15,5 +15,6 @@ namespace MimibotWebserver.Models
         public string Tags { get; set; }
         public string Sentiment { get; set; }
         public string Keyword { get; set; }
+        public string DateTime { get; set; }
     }
 }

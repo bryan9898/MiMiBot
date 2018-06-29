@@ -4,6 +4,7 @@ import { Speeches } from 'src/app/class/speeches';
 import { CloudOptions, CloudData, ZoomOnHoverOptions } from 'angular-tag-cloud-module/src/app/tag-cloud-module/tag-cloud.interfaces';
 import { KeyedWrite } from '@angular/compiler';
 import 'chart.piecelabel.js';
+import { AnalyticsService } from 'src/app/analytics/service/analytics.service';
 
 @Component({
   selector: 'app-emotion-analysis',
@@ -24,7 +25,12 @@ export class EmotionAnalysisComponent implements OnInit {
   public currentDataset;
   public keyword;
   public currentColor;
-  constructor() { }
+  private analyticsService:AnalyticsService;
+  public emotionIndividual:Boolean = false;
+  public currentEmotionSet:Emotion;
+  constructor(as:AnalyticsService) { 
+    this.analyticsService = as;
+  }
 
   @Input() dataList:Array<Speeches>;
 
@@ -36,6 +42,21 @@ export class EmotionAnalysisComponent implements OnInit {
      this.biasData = this.sortBiasData(this.pieChartDataset);
      this.pieChartLabels = this.biasData[0];
      this.pieChartData = this.biasData[1];
+     this.analyticsService.currentEmotionInd.subscribe(data => {
+      this.emotionIndividual = data;
+    })
+
+    this.analyticsService.currentEmotionSet.subscribe(data => {
+      this.currentEmotionSet = data;
+      if(this.currentEmotionSet != null)
+      {
+        var individualData = document.getElementById("emotionIndividual");
+        if(individualData != null)
+        {
+          individualData.scrollIntoView({behavior:"smooth"});
+        }
+      }
+    })
     //  this.showChart = true;
      
 

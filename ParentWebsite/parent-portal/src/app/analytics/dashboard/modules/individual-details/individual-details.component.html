@@ -1,3 +1,23 @@
-<p>
-  individual-details works!
-</p>
+<div class="container-fluid">
+  <mat-card class="analyticsCard">
+    <mat-card-header>
+        <mat-card-title class="cardTitle"><b>Speech</b> {{speechDetails}}</mat-card-title>
+        <!-- <b>Speech:</b> {{speechDetails}}</mat-card-title> -->
+      <mat-card-subtitle class="cardsubtitle"><b>username:</b> {{speechID}}</mat-card-subtitle>	
+      <mat-card-subtitle class="cardsubtitle"><b>created on:</b> {{dateTime}}</mat-card-subtitle>	
+    </mat-card-header>
+    <mat-card-content>
+        <canvas baseChart
+        [data]="pieChartData"
+        [labels]="pieChartLabels"
+        [chartType]="pieChartType"
+        [colors]="pieChartColor"
+        [options]="pieChartOptions">
+        </canvas>
+    </mat-card-content>
+    <mat-card-actions class="cardButtonDiv">
+      <!-- <button mat-button class="squarebuttonstyle cardButton" [ngClass]="{'one':oneTrue , 'two':twoTrue , 'three':threeTrue , 'four':fourTrue , 'five':fiveTrue, 'six':sixTrue}"
+        (click)="showDetails()">Details</button> -->
+    </mat-card-actions>
+  </mat-card>
+</div>

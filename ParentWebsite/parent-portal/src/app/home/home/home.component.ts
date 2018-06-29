@@ -2,11 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { TokenService } from 'src/app/login/token.service';
 import {Users } from 'src/app/class/users';
 import { Router } from '@angular/router';
+import { AnalyticsService } from 'src/app/analytics/service/analytics.service';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
+  providers:[AnalyticsService]
 })
 export class HomeComponent implements OnInit {
 
