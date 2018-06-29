@@ -517,7 +517,7 @@ public class MainActivity extends AppCompatActivity {
                 if (responseCode == HttpsURLConnection.HTTP_OK) {
                     String line;
                     BufferedReader br = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
-                    while ((line d= br.readLine()) != null) {
+                    while ((line = br.readLine()) != null) {
                         response += line;
                     }
                 }

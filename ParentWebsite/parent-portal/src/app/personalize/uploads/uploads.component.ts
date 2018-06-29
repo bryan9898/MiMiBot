@@ -3,22 +3,9 @@ import { MatCardModule } from '@angular/material/card';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import {Component, OnInit, ViewChild} from '@angular/core';
-
+import { HttpClient, HttpParams , HttpHeaders  , HttpRequest } from '@angular/common/http';
 import { MatPaginator, MatTableDataSource, MatSort, MatPaginatorModule } from '@angular/material';
-
-export interface UserData {
-  id: string;
-  name: string;
-  progress: string;
-  color: string;
-}
-
-const COLORS: string[] = ['maroon', 'red', 'orange', 'yellow', 'olive', 'green', 'purple',
-  'fuchsia', 'lime', 'teal', 'aqua', 'blue', 'navy', 'black', 'gray'];
-const NAMES: string[] = ['Maia', 'Asher', 'Olivia', 'Atticus', 'Amelia', 'Jack',
-  'Charlotte', 'Theodore', 'Isla', 'Oliver', 'Isabella', 'Jasper',
-  'Cora', 'Levi', 'Violet', 'Arthur', 'Mia', 'Thomas', 'Elizabeth'];
-
+import {URLSearchParams, QueryEncoder} from '@angular/http';
 @Component({
   selector: 'app-uploads',
   templateUrl: './uploads.component.html',
@@ -34,7 +21,7 @@ export class UploadsComponent implements OnInit {
 
   private ModuleID: string;
   page: number = 1;
-
+  private http;
   private length = this.ELEMENT_DATA.length;
   private pageSize = 4;
   private pageSizeOptions = [4];
@@ -99,6 +86,33 @@ export class UploadsComponent implements OnInit {
   //  this._sharedService2.emitChange(event.ModuleID + ";" + event.ModuleName + ";" + event.ModuleClass);
   }
 
+
+  async submitSong(){
+    var bearer = {
+      'Content-Type' : 'application/json',
+      'Authorization': 'Bearer ' + sessionStorage.getItem("token")
+    }
+
+    var sentData = await this.http.post("https://mimiwebserver.azurewebsites.net/api/Uploads",{bearer}).toPromise();
+ 
+    
+  }
+
+
+  async testing() {
+    var bearer = {
+      'Content-Type' : 'application/json',
+      'Authorization': 'Bearer ' + sessionStorage.getItem("token")
+    }
+  
+    var results = await this.http.get("" , {bearer}).toPromise();
+   
+    results.forEach(e => {
+      
+    })
+
+    return null;
+  }
 
 }
 
