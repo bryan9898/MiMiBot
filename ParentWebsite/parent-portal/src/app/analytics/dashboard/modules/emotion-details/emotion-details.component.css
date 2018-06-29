@@ -21,7 +21,6 @@
   
   .cardTitle {
     font-size: 20px !important;
-    font-weight: bold;
   }
   
   .cardButtonDiv {
@@ -48,13 +47,39 @@
   }
 
   .squarebuttonstyle {
-    background-color: black; 
     color:  #fafafa !important;
     width: 100%;
     font-size: 14px;
     height: 40px;
     text-align: center;
   }
+
+  .one {
+    background-color: #ED5565;
+  }
+
+  .two {
+    background: #FC6E51;
+  }
+
+  .three {
+    background: #ffce54;
+  }
+
+  .four {
+    background-color: #48cfad;
+  }
+
+  .five {
+    background-color: #4FC1E9;
+  }
+
+  .six {
+    background-color: #AC92ec;
+  }
+
+
+
   
   
   @media only screen and (max-width : 768px) {

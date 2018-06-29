@@ -19,9 +19,12 @@
     <div *ngIf="showTopicDetails">
         <app-topic-details *ngFor="let speech of activeSpeech" [speech]="speech" style="display: inline-block" ></app-topic-details>
     </div>
+
+    <app-emotion-analysis *ngIf="showChart" [dataList]="dataList"></app-emotion-analysis>
+
 </div>
 
-<app-emotion-analysis *ngIf="showChart" [dataList]="dataList"></app-emotion-analysis>
+
 <!-- <div class="container-fluid">
     <h1>Sentiment Analysis</h1>
     <p style="font-style: italic">"Ever wondered whether your child is upset or happy"</p>

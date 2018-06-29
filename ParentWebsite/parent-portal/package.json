@@ -26,6 +26,7 @@
     "angular-tag-cloud-module": "^3.0.0",
     "bootstrap": "^3.3.7",
     "chart.js": "^2.7.2",
+    "chart.piecelabel.js": "^0.11.0",
     "core-js": "^2.5.4",
     "font-awesome": "^4.7.0",
     "ng2-charts": "^1.6.0",

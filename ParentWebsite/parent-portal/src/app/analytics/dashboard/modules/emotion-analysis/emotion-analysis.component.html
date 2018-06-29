@@ -7,6 +7,7 @@
               [labels]="pieChartLabels"
               [chartType]="pieChartType"
               [colors]="pieChartColor"
+              [options]="pieChartOptions"
               (chartHover)="pieHovered($event)"
               (chartClick)="pieClicked($event)"></canvas>
   </div>
@@ -16,22 +17,20 @@
     <h1>Keyword Summary</h1>
     <p style="font-style: italic">"We summarize all the keywords based on the speeches tagged with the emotion <i><b>{{currentTopic}}</b></i>" </p>
     <div class="row">
-      <div class="col-sm-2"></div>
-      <div class="col-sm-8">
-          <angular-tag-cloud style="margin: auto; width: 100%; font-size: 15px; font-weight:bold"
+      <div class="col-sm-12" style="height: auto;">
+          <angular-tag-cloud style="margin: auto; width: 100%; height: auto; font-size: 10px; font-weight:bold"
           [data]="CloudData"
           [overflow]="options.overflow"
           [zoomOnHover]="zoomOnHoverOptions"
           (clicked)="cloudClicked($event)"></angular-tag-cloud>
       </div>
-      <div class="col-sm-2"></div>
     </div>
   </div>
 
 
   <div id="test" *ngIf="cloudDetails">
       <p style="font-style: italic">"All the speeches that contains the keyword <b>{{keyword}}</b>" </p>
-      <app-emotion-details *ngFor="let emotion of allEmotions" [currentEmotion]="emotion"  style="display: inline-block"></app-emotion-details>
+      <app-emotion-details *ngFor="let emotion of allEmotions" [currentEmotion]="emotion"  style="display: inline-block ; position: relative; z-index: 0;"></app-emotion-details>
   </div>
   
 

@@ -1,10 +1,10 @@
 <div class="container-fluid">
     <mat-card class="analyticsCard">
       <mat-card-header>
-        <mat-card-title class="cardTitle">{{speechDetails}}</mat-card-title>
+        <mat-card-title class="cardTitle"><b>Speech:</b> {{speechDetails}}</mat-card-title>
       </mat-card-header>
       <mat-card-actions class="cardButtonDiv">
-          <button mat-button class="squarebuttonstyle cardButton">Details</button>
+          <button mat-button class="squarebuttonstyle cardButton" [ngClass]="{'one':oneTrue , 'two':twoTrue , 'three':threeTrue , 'four':fourTrue , 'five':fiveTrue, 'six':sixTrue}" (click)="showDetails()">Details</button>
         </mat-card-actions>
     </mat-card>
   </div>

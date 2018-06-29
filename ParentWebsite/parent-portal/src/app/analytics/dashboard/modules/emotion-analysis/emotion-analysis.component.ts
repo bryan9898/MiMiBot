@@ -2,6 +2,8 @@ import { Component, OnInit , Input} from '@angular/core';
 import { Emotion } from 'src/app/class/emotion';
 import { Speeches } from 'src/app/class/speeches';
 import { CloudOptions, CloudData, ZoomOnHoverOptions } from 'angular-tag-cloud-module/src/app/tag-cloud-module/tag-cloud.interfaces';
+import { KeyedWrite } from '@angular/compiler';
+import 'chart.piecelabel.js';
 
 @Component({
   selector: 'app-emotion-analysis',
@@ -21,6 +23,7 @@ export class EmotionAnalysisComponent implements OnInit {
   public currentTopic
   public currentDataset;
   public keyword;
+  public currentColor;
   constructor() { }
 
   @Input() dataList:Array<Speeches>;
@@ -182,7 +185,7 @@ export class EmotionAnalysisComponent implements OnInit {
    })
    try{
     var currentIndex = e['active'][0]._index;
-    var currentColor = this.colorscheme[currentIndex];
+    this.currentColor = this.colorscheme[currentIndex];
     this.currentDataset = mainArray[currentIndex];
     console.log(this.currentDataset);
     this.currentTopic = this.currentDataset[0];
@@ -190,7 +193,7 @@ export class EmotionAnalysisComponent implements OnInit {
     this.wordCloudDataMap = this.createWordCloudData(this.currentDataset);
     var wordCloudArray = new Array();
     this.wordCloudDataMap.forEach((counts, topic) => {
-      var newFormat = {text:topic , weight:counts , color: currentColor , fontWeight: "bold"};
+      var newFormat = {text:topic , weight:counts , color: this.currentColor , fontWeight: "bold"};
       wordCloudArray.push(newFormat);
     })
     this.CloudData = wordCloudArray;
@@ -215,6 +218,16 @@ export class EmotionAnalysisComponent implements OnInit {
   public pieHovered(e:any):void {
     console.log(e);
   }
+
+  public pieChartOptions = 
+    {
+      pieceLabel: {
+        render: 'label',
+        color: 'black',
+        fontWeight: 'bold'
+     },
+    }
+  
 
   createWordCloudData(currentDataset)
   {
@@ -259,9 +272,8 @@ export class EmotionAnalysisComponent implements OnInit {
   
   options: CloudOptions = {
     // if width is between 0 and 1 it will be set to the size of the upper element multiplied by the value 
-    overflow: true,
+    overflow: false,
     realignOnResize: true,
-    width: 500, 
     
   }
 
@@ -273,18 +285,25 @@ export class EmotionAnalysisComponent implements OnInit {
  
   CloudData: CloudData[];
 
-  public allEmotions:Array<Emotion>  = new Array<Emotion>();; 
+  public allEmotions:Array<Array<any>>  = new Array<Array<any>>();; 
   public cloudDetails = false;
 
   cloudClicked(event:CloudData)
   {
-    this.allEmotions = new Array<Emotion>();
+    this.allEmotions = new Array<Array<any>>();
     var keyword = event.text;
     this.keyword = event.text;
     this.currentDataset[2].forEach(element => {
-      this.allEmotions.push(element);
+      var dataSet:Speeches = element.dataSet;
+     if(dataSet.$keywords.has(this.keyword))
+      {
+        this.allEmotions.push([element,this.currentColor]);
+      }
+     
+    console.log(this.allEmotions);
       // allSpeeches.push(speechesCurrent);s
     });
+
     this.cloudDetails = true;
     var cloudDetailsID = document.getElementById("test");
     console.log(cloudDetailsID);

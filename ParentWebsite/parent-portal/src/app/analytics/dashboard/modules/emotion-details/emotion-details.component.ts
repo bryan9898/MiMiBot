@@ -11,12 +11,59 @@ export class EmotionDetailsComponent implements OnInit {
 
   @Input() currentEmotion:Emotion;
   public speechDetails:string;
+  public currentColor:string;
+  public oneTrue;
+  public twoTrue;
+  public threeTrue;
+  public fourTrue; 
+  public fiveTrue; 
+  public sixTrue;
   constructor() { }
 
   ngOnInit() {
-    var dataSet:Speeches = this.currentEmotion.$dataSet;
+    var dataSet:Speeches = this.currentEmotion[0].$dataSet;
     this.speechDetails = dataSet.$speechDetails;
+    this.setColour(this.currentEmotion[1]);
+    
     
   }
 
+  setColour(colour)
+  {
+    this.oneTrue = false; 
+    this.twoTrue = false; 
+    this.threeTrue = false; 
+    this.fourTrue = false; 
+    this.fiveTrue = false; 
+    this.sixTrue = false; 
+
+    if(colour == "#ED5565")
+    {
+      this.oneTrue = true;
+    }
+    else if(colour == "#FC6E51")
+    {
+      this.twoTrue = true;
+    }
+    else if(colour == "#FFCE54")
+    {
+      this.threeTrue = true;
+    }
+    else if(colour == "#48CFAD")
+    {
+      this.fourTrue = true;
+    }
+    else if(colour == "#4FC1E9")
+    {
+      this.fiveTrue = true;
+    }
+    else if(colour == "#AC92EC"){
+      this.sixTrue = true;
+    }
+  }
+
+
+
+  showDetails(){
+  }
 }

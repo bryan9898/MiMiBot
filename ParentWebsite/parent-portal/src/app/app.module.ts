@@ -27,7 +27,8 @@ import { EmotionDetailsComponent } from './analytics/dashboard/modules/emotion-d
 import { MatTableModule } from '@angular/material/table';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatSortModule } from '@angular/material/sort'
-import {MatPaginatorModule} from '@angular/material/paginator'
+import {MatPaginatorModule} from '@angular/material/paginator';
+import { IndividualDetailsComponent } from './analytics/dashboard/modules/individual-details/individual-details.component'
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/login' ,  pathMatch:'full' },
@@ -51,6 +52,7 @@ const appRoutes: Routes = [
     UploadsComponent,
     EmotionAnalysisComponent,
     EmotionDetailsComponent,
+    IndividualDetailsComponent,
     
   ],
   imports: [
