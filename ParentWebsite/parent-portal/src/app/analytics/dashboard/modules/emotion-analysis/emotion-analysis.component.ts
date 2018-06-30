@@ -377,10 +377,10 @@ export class EmotionAnalysisComponent implements OnInit, OnChanges {
     {
       console.log(this.emotionDataset);
       this.emotionDataset.forEach(e => {
-        var date = new Date(); 
-        var dataDate = e.$dataSet.$dateTime;
+        var date = new Date().getDay(); 
+        var dataDate = e.$dataSet.$dateTime.split(",");
         
-        console.log(dataDate);
+        console.log(dataDate[1]);
       })
       //Show only one date
     }
