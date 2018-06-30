@@ -47,6 +47,8 @@ namespace MimibotWebserver.Migrations
 
                     b.Property<string>("Password");
 
+                    b.Property<string>("SongLink");
+
                     b.Property<string>("UserId");
 
                     b.HasKey("UploadId");

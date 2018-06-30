@@ -1,15 +1,15 @@
 .container-fluid {
-    /* background: transparent url(../../resources/hero.jpg) repeat center; */
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
-    padding: 0px; 
-    width: auto;
-
+  /* background: transparent url(../../resources/hero.jpg) repeat center; */
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  padding: 0px; 
+  width: auto;
+  margin-top: 2%;
+  margin-bottom: 3%;
+  z-index: inherit;
 }
-
-
 
 .analyticsCard {
     display: inline-block;

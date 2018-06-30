@@ -29,6 +29,8 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatSortModule } from '@angular/material/sort'
 import {MatPaginatorModule} from '@angular/material/paginator';
 import { IndividualDetailsComponent } from './analytics/dashboard/modules/individual-details/individual-details.component'
+import {MatDividerModule} from '@angular/material/divider';
+import { KeywordsDetailsComponent } from './analytics/dashboard/modules/keywords-details/keywords-details.component';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/login' ,  pathMatch:'full' },
@@ -53,6 +55,7 @@ const appRoutes: Routes = [
     EmotionAnalysisComponent,
     EmotionDetailsComponent,
     IndividualDetailsComponent,
+    KeywordsDetailsComponent,
     
   ],
   imports: [
@@ -77,7 +80,7 @@ const appRoutes: Routes = [
     MatExpansionModule,
     MatTableModule,
     MatSortModule,
-    
+    MatDividerModule,
     MatPaginatorModule
 
   ],

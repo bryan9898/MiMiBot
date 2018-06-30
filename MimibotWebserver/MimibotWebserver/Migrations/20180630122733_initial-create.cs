@@ -29,7 +29,8 @@ namespace MimibotWebserver.Migrations
                 {
                     UploadId = table.Column<string>(nullable: false),
                     Password = table.Column<string>(nullable: true),
-                    UserId = table.Column<string>(nullable: true)
+                    UserId = table.Column<string>(nullable: true),
+                    SongLink = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {

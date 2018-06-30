@@ -12,6 +12,8 @@ export class AnalyticsService {
   private emotionSet = new BehaviorSubject<Emotion>(null);
   public currentEmotionSet = this.emotionSet.asObservable();
 
+  private emotionDataset = new BehaviorSubject<Array<Emotion>>(null);
+  public allEmotionSet = this.emotionDataset.asObservable();
   constructor() { }
 
   setCurrentEmotionIndStatus(value:boolean)
@@ -22,5 +24,10 @@ export class AnalyticsService {
   setCurrentEmotionIndDataset(currentEmotion:Emotion)
   {
     this.emotionSet.next(currentEmotion);
+  }
+
+  setAllEmotionDataset(emotionDataset:Array<Emotion>)
+  {
+    this.emotionDataset.next(emotionDataset);
   }
 }

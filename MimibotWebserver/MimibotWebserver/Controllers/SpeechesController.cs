@@ -131,7 +131,7 @@ namespace MimibotWebserver.Controllers
                 integer++;
 
             }
-            DateTime dateTime = DateTime.Now;
+            DateTime dateTime = DateTime.Now.AddHours(8);
             speech.DateTime = String.Format("{0:f}", dateTime);  // "Sunday, March 09, 2008 4:05 PM"    LongDate+ShortTime; 
             speech.Sentiment = finalArray;
             _context.Speechs.Add(speech);

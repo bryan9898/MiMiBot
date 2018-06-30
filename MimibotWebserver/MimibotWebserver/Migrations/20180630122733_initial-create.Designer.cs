@@ -9,7 +9,7 @@ using MimibotWebserver.Models;
 namespace MimibotWebserver.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20180629190853_initial-create")]
+    [Migration("20180630122733_initial-create")]
     partial class initialcreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -48,6 +48,8 @@ namespace MimibotWebserver.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Password");
+
+                    b.Property<string>("SongLink");
 
                     b.Property<string>("UserId");
 

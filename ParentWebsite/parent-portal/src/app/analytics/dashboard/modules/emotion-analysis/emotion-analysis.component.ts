@@ -28,6 +28,7 @@ export class EmotionAnalysisComponent implements OnInit {
   private analyticsService:AnalyticsService;
   public emotionIndividual:Boolean = false;
   public currentEmotionSet:Emotion;
+  
   constructor(as:AnalyticsService) { 
     this.analyticsService = as;
   }
@@ -38,6 +39,7 @@ export class EmotionAnalysisComponent implements OnInit {
 
      //Set up sentiment analysis
      this.emotionDataset = this.processEmotion(this.dataList);
+     this.analyticsService.setAllEmotionDataset(this.emotionDataset);
      this.pieChartDataset = this.getPiechartData(this.emotionDataset);
      this.biasData = this.sortBiasData(this.pieChartDataset);
      this.pieChartLabels = this.biasData[0];
@@ -47,13 +49,17 @@ export class EmotionAnalysisComponent implements OnInit {
     })
 
     this.analyticsService.currentEmotionSet.subscribe(data => {
+      this.currentEmotionSet = null;
       this.currentEmotionSet = data;
       if(this.currentEmotionSet != null)
       {
         var individualData = document.getElementById("emotionIndividual");
+        
         if(individualData != null)
         {
+          
           individualData.scrollIntoView({behavior:"smooth"});
+          
         }
       }
     })
@@ -189,6 +195,7 @@ export class EmotionAnalysisComponent implements OnInit {
   public pieClicked(e:any):void {
     this.cloudDetails = false;
     this.chartDetails = false;
+    this.emotionIndividual = false;
     var integer =0;
     var mainArray:Array<Array<Emotion>> = new Array<Array<Emotion>>();
     var tempArray = new Array();
@@ -208,7 +215,6 @@ export class EmotionAnalysisComponent implements OnInit {
     var currentIndex = e['active'][0]._index;
     this.currentColor = this.colorscheme[currentIndex];
     this.currentDataset = mainArray[currentIndex];
-    console.log(this.currentDataset);
     this.currentTopic = this.currentDataset[0];
     this.chartDetails = true;
     this.wordCloudDataMap = this.createWordCloudData(this.currentDataset);
@@ -311,6 +317,7 @@ export class EmotionAnalysisComponent implements OnInit {
 
   cloudClicked(event:CloudData)
   {
+    this.emotionIndividual = false;
     this.allEmotions = new Array<Array<any>>();
     var keyword = event.text;
     this.keyword = event.text;
@@ -321,13 +328,11 @@ export class EmotionAnalysisComponent implements OnInit {
         this.allEmotions.push([element,this.currentColor]);
       }
      
-    console.log(this.allEmotions);
       // allSpeeches.push(speechesCurrent);s
     });
 
     this.cloudDetails = true;
     var cloudDetailsID = document.getElementById("test");
-    console.log(cloudDetailsID);
     if(cloudDetailsID != null)
     {
       cloudDetailsID.scrollIntoView({behavior:"smooth"});

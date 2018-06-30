@@ -1,20 +1,40 @@
 <div class="container-fluid">
   <mat-card class="analyticsCard">
     <mat-card-header>
-        <mat-card-title class="cardTitle"><b>Speech</b> {{speechDetails}}</mat-card-title>
-        <!-- <b>Speech:</b> {{speechDetails}}</mat-card-title> -->
-      <mat-card-subtitle class="cardsubtitle"><b>username:</b> {{speechID}}</mat-card-subtitle>	
-      <mat-card-subtitle class="cardsubtitle"><b>created on:</b> {{dateTime}}</mat-card-subtitle>	
+      <mat-card-title class="cardTitle"><b>Speech: {{speechDetails}}</b>
+      </mat-card-title>
+      <mat-card-subtitle class="cardsubtitle">speechID: <b>{{speechID}} </b>
+      </mat-card-subtitle>
+      <mat-card-subtitle class="cardsubtitle">username: <b>{{username}}</b>
+      </mat-card-subtitle>	
+      <mat-card-subtitle class="cardsubtitle">created on: <b>{{dateTime}} </b>
+      </mat-card-subtitle>
+      <mat-card-subtitle class="cardsubtitle">Comprises of Emotions regarding: <b>{{biasEmotion}}</b>
+      </mat-card-subtitle>	
     </mat-card-header>
-    <mat-card-content>
-        <canvas baseChart
-        [data]="pieChartData"
-        [labels]="pieChartLabels"
-        [chartType]="pieChartType"
-        [colors]="pieChartColor"
-        [options]="pieChartOptions">
-        </canvas>
-    </mat-card-content>
+    <mat-card-title class="cardsubtitle"><b>Emotion Analysis</b></mat-card-title>
+    <div class="row" style="margin-top: 3%; margin-left: 1%">
+      <div class="col-sm-4">
+        <mat-card-content>
+            <canvas baseChart
+            [data]="pieChartData"
+            [labels]="pieChartLabels"
+            [chartType]="pieChartType"
+            [colors]="pieChartColours"
+            [options]="pieChartOptions">
+            </canvas>
+        </mat-card-content>
+      </div>
+      <div class="col-sm-8">
+         
+      </div>
+    </div>
+    <mat-card-title class="cardsubtitle"><b>Keyword Analysis</b></mat-card-title>
+    <div class="row" style="margin-top:1% ; margin-left: 1%">
+        <app-keywords-details *ngFor="let map of keywordSet" [currentMapping]="map"></app-keywords-details>
+    </div>
+
+  
     <mat-card-actions class="cardButtonDiv">
       <!-- <button mat-button class="squarebuttonstyle cardButton" [ngClass]="{'one':oneTrue , 'two':twoTrue , 'three':threeTrue , 'four':fourTrue , 'five':fiveTrue, 'six':sixTrue}"
         (click)="showDetails()">Details</button> -->
