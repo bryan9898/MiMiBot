@@ -36,7 +36,10 @@ export class EmotionAnalysisComponent implements OnInit, OnChanges {
 
   ngOnInit() {
      //Set up sentiment analysis
-     this.emotionDataset = this.processEmotion(this.dataList);
+     if(this.emotionDataset == null)
+     {
+      this.emotionDataset = this.processEmotion(this.dataList); 
+     }
      this.analyticsService.setAllEmotionDataset(this.emotionDataset);
      this.pieChartDataset = this.getPiechartData(this.emotionDataset);
      this.biasData = this.sortBiasData(this.pieChartDataset);
@@ -66,10 +69,10 @@ export class EmotionAnalysisComponent implements OnInit, OnChanges {
 
   }
 
-  ngOnChanges()
+  ngOnChanges(dataList)
   {
     //Set up sentiment analysis
-    this.emotionDataset = this.processEmotion(this.dataList);
+    this.emotionDataset = this.processEmotion(dataList);
     this.analyticsService.setAllEmotionDataset(this.emotionDataset);
     this.pieChartDataset = this.getPiechartData(this.emotionDataset);
     this.biasData = this.sortBiasData(this.pieChartDataset);
@@ -371,24 +374,49 @@ export class EmotionAnalysisComponent implements OnInit, OnChanges {
 
   filter()
   {
-
-    
+    this.cloudDetails = false;
+    this.chartDetails = false;
+    this.emotionIndividual = false;
     if(this.selected == "1")
     {
-      console.log(this.emotionDataset);
+      var newEmotionDataset:Array<Emotion> = new Array<Emotion>();
       this.emotionDataset.forEach(e => {
-        var date = new Date().getDay(); 
-        var dataDate = e.$dataSet.$dateTime.split(",");
+        var date = new Date().getMonth();
+        var dateDay = new Date().getDate();
+        var dateName = this.convertToDateName(date); 
+        var dateSet = e.$dataSet.$dateTime.split(",");
         
-        console.log(dataDate[1]);
+
+        if(dateSet[1].toString().includes(dateName) && dateSet[1].toString().includes(dateDay.toString()))
+        {
+          newEmotionDataset.push(e);
+        }
+      
+        
       })
+      this.emotionDataset = newEmotionDataset;
+     
+      this.ngOnInit();
+      console.log(this.emotionDataset);
       //Show only one date
     }
     else {
       //show all data
+      this.emotionDataset = this.processEmotion(this.dataList);
+      this.ngOnInit();
+
     }
-    this.ngOnChanges();
+    
   }
+
+convertToDateName(date)
+{
+  var dateArray = ["January" , "February" , "March" , "April" , "May" , "June" , "July" , "August" ,  "September" , "October" , "November" , "December"];
+  return dateArray[date];
+  
+  
+
+}
 
 
 
