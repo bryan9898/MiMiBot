@@ -31,7 +31,11 @@ import {MatPaginatorModule} from '@angular/material/paginator';
 import { IndividualDetailsComponent } from './analytics/dashboard/modules/individual-details/individual-details.component'
 import {MatDividerModule} from '@angular/material/divider';
 import { KeywordsDetailsComponent } from './analytics/dashboard/modules/keywords-details/keywords-details.component';
+<<<<<<< HEAD
 import {MatSelectModule} from '@angular/material/select';
+=======
+import { BlobModule } from 'angular-azure-blob-service';
+>>>>>>> origin/master
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/login' ,  pathMatch:'full' },
@@ -83,8 +87,12 @@ const appRoutes: Routes = [
     MatSortModule,
     MatDividerModule,
     MatPaginatorModule,
+<<<<<<< HEAD
     MatSelectModule,
     
+=======
+    BlobModule.forRoot()
+>>>>>>> origin/master
 
   ],
   providers: [TokenService],

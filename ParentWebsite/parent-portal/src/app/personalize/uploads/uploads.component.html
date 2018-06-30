@@ -10,32 +10,35 @@
   <p style="font-style: italic">"Ever wondered what you can personalise?"</p>
 
   <mat-accordion>
+      <form class="example-full-width" (ngSubmit)="submitSong()" >
     <mat-expansion-panel>
       <mat-expansion-panel-header>
         <mat-panel-title>
           Play Songs on MiMiBot
         </mat-panel-title>
         <mat-panel-description>
-          Type the youtube link to MiMiBot
+         Upload Mp3 to MiMiBot
         </mat-panel-description>
       </mat-expansion-panel-header>
-
+     
       <mat-form-field class="example-full-width">
-          <input matInput placeholder="Song Name" >
+          <input matInput placeholder="Song Name" id="songName" name="songName" [(ngModel)]="upload.songName" >
         </mat-form-field>
-      <mat-form-field class="example-full-width">
-        <input matInput placeholder="Youtube Video Link" >
-      </mat-form-field>
+   
+          <input type="file" id="songLink" name="songLink"  (change)="fileChange($event)" placeholder="Upload file" accept=".mp3">
+     
+      
      
 
 
 
       <mat-action-row>
 
-        <button mat-button color="primary" (click)="submitSong()">Submit</button>
+        <button mat-button color="primary" type="submit" >Submit</button>
+     
       </mat-action-row>
     </mat-expansion-panel>
-    
+    </form>
   </mat-accordion>
   <mat-accordion>
     <mat-expansion-panel>

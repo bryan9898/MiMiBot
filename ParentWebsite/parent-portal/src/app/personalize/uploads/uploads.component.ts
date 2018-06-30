@@ -2,10 +2,12 @@ import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild , Inject, Injectable,Input , EventEmitter } from '@angular/core';
 import { HttpClient, HttpParams , HttpHeaders  , HttpRequest } from '@angular/common/http';
 import { MatPaginator, MatTableDataSource, MatSort, MatPaginatorModule } from '@angular/material';
 import {URLSearchParams, QueryEncoder} from '@angular/http';
+import { BlobService, UploadConfig, UploadParams } from 'angular-azure-blob-service'
+
 @Component({
   selector: 'app-uploads',
   templateUrl: './uploads.component.html',
@@ -19,9 +21,16 @@ export class UploadsComponent implements OnInit {
    
   ];
 
+  
+  /** The upload config */
+  config: UploadConfig
+  /** The selected file */
+  currentFile: File
+  /** The current percent to be displayed */
+  percent: number
   private ModuleID: string;
   page: number = 1;
-  private http;
+  //private http;
   private length = this.ELEMENT_DATA.length;
   private pageSize = 4;
   private pageSizeOptions = [4];
@@ -30,7 +39,16 @@ export class UploadsComponent implements OnInit {
 
 
 
+   upload :any ={} ;
 
+    Config: UploadParams = {
+    sas: 'PyAoWVgBPHSvdVywnaDMhtkQJ+PkCReHx3wTw15VBsw4HfslP9UmgbWKqgjtOgdMDfSNLxePHMA+szOc0/sZaw==',
+    storageAccount: 'mimibotupload',
+    containerName: 'uploads'
+  };
+  
+    @Input('songName') InputId = this.upload.songName;
+    @Input('songLink') InputName = this.upload.songLink ;
 
 
   displayedColumns = ['songName', 'songLink'];
@@ -57,8 +75,8 @@ export class UploadsComponent implements OnInit {
 
   }
 
-  constructor() {
-
+  constructor(private http:HttpClient,private blob: BlobService) {
+    
 
   }
 
@@ -85,7 +103,31 @@ export class UploadsComponent implements OnInit {
 
   //  this._sharedService2.emitChange(event.ModuleID + ";" + event.ModuleName + ";" + event.ModuleClass);
   }
+ 
+  private fileList;
 
+  fileChange(event) {
+    let fileList: FileList = event.target.files;
+    
+    if(fileList.length > 0) {
+        let file: File = fileList[0];
+        this.currentFile = fileList[0];
+        let formData:FormData = new FormData();
+        formData.append('uploadFile', file, file.name);
+       // let headers = new Headers();
+        /** In Angular 5, including the header Content-Type can invalidate your request */
+        //headers.append('Content-Type', 'multipart/form-data');
+      //  headers.append('Accept', 'application/json'); */
+       /* let options = new RequestOptions({ headers: headers });
+        this.http.post(`${this.apiEndPoint}`, formData, options)
+            .map(res => res.json())
+            .catch(error => Observable.throw(error))
+            .subscribe(
+                data => console.log('success'),
+                error => console.log(error)
+            ) */
+    } 
+  } 
 
   async submitSong(){
     var bearer = {
@@ -93,10 +135,30 @@ export class UploadsComponent implements OnInit {
       'Authorization': 'Bearer ' + sessionStorage.getItem("token")
     }
 
-    var sentData = await this.http.post("https://mimiwebserver.azurewebsites.net/api/Uploads",{bearer}).toPromise();
- 
-    
+    var id = Math.floor(Math.random() * 9999999999) + Math.floor(Math.random() * 9999999999);
+    const baseUrl = this.blob.generateBlobUrl(this.Config, this.currentFile.name)
+    this.config = {
+      baseUrl: baseUrl,
+      blockSize: 1024 * 32,
+      sasToken: this.Config.sas,
+      file: this.currentFile,
+      complete: () => {
+        console.log('Transfer completed !')
+      },
+      error: () => {
+        console.log('Error !')
+      },
+      progress: (percent) => {
+        this.percent = percent
+      }
+    }
+    this.blob.upload(this.config)
   }
+    //var sentData = await this.http.post("",{bearer}).toPromise();
+  /*  var sentData = await this.http.post("https://mimiwebserver.azurewebsites.net/api/Uploads", JSON.stringify({uploadId: id.toString()   , password:this.upload.songName,userId:"string"}), { headers: bearer })
+      .map(res => res.json()) */
+    
+  
 
 
   async testing() {
@@ -106,11 +168,11 @@ export class UploadsComponent implements OnInit {
     }
     
 
-    var results = await this.http.get("" , {bearer}).toPromise();
+   /* var results = await this.http.get("" , {bearer}).toPromise();
    
     results.forEach(e => {
       
-    })
+    }) */
 
     return null;
   }
