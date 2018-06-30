@@ -13,3 +13,8 @@
     margin-bottom: 3%;
     z-index: inherit;
 }
+
+.filterButton {
+    float:right;
+    height: 100%;
+}

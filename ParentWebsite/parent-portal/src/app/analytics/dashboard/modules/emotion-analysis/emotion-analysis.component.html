@@ -1,5 +1,13 @@
 <div class="container-fluid">
-  <h1>Emotion Analysis</h1>
+  <div class="row" style="display:inline-block; width:100%;">
+    <h1 style="float:left">Emotion Analysis</h1>
+    <mat-form-field class="filterButton">
+      <mat-select placeholder="View data" [(ngModel)]="selected" (ngModelChange)="filter(selected)" >
+        <mat-option value="1">Today's</mat-option>
+        <mat-option value="2">All data</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
   <p style="font-style: italic">"Ever wanted a <i><b>summary</b></i> of what your child is <i><b>feeling?</b></i> "</p>
   <div style="display: block">
       <canvas baseChart

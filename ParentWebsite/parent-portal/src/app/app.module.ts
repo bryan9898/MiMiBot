@@ -31,6 +31,7 @@ import {MatPaginatorModule} from '@angular/material/paginator';
 import { IndividualDetailsComponent } from './analytics/dashboard/modules/individual-details/individual-details.component'
 import {MatDividerModule} from '@angular/material/divider';
 import { KeywordsDetailsComponent } from './analytics/dashboard/modules/keywords-details/keywords-details.component';
+import {MatSelectModule} from '@angular/material/select';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/login' ,  pathMatch:'full' },
@@ -81,7 +82,9 @@ const appRoutes: Routes = [
     MatTableModule,
     MatSortModule,
     MatDividerModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatSelectModule,
+    
 
   ],
   providers: [TokenService],

@@ -1,4 +1,4 @@
-import { Component, OnInit , Input } from '@angular/core';
+import { Component, OnInit , Input , OnChanges} from '@angular/core';
 import { Emotion } from 'src/app/class/emotion';
 import 'chart.piecelabel.js';
 import { AnalyticsService } from 'src/app/analytics/service/analytics.service';

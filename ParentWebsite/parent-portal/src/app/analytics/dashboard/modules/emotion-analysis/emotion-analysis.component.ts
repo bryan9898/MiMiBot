@@ -1,18 +1,17 @@
-import { Component, OnInit , Input} from '@angular/core';
+import { Component, OnInit , Input , OnChanges} from '@angular/core';
 import { Emotion } from 'src/app/class/emotion';
 import { Speeches } from 'src/app/class/speeches';
 import { CloudOptions, CloudData, ZoomOnHoverOptions } from 'angular-tag-cloud-module/src/app/tag-cloud-module/tag-cloud.interfaces';
 import { KeyedWrite } from '@angular/compiler';
 import 'chart.piecelabel.js';
 import { AnalyticsService } from 'src/app/analytics/service/analytics.service';
-
 @Component({
   selector: 'app-emotion-analysis',
   templateUrl: './emotion-analysis.component.html',
   styleUrls: ['./emotion-analysis.component.css']
 })
-export class EmotionAnalysisComponent implements OnInit {
-
+export class EmotionAnalysisComponent implements OnInit, OnChanges {
+ 
   private emotionDataset:Array<Emotion>;
   public pieChartLabels:string[];
   public pieChartData:number[];
@@ -28,7 +27,7 @@ export class EmotionAnalysisComponent implements OnInit {
   private analyticsService:AnalyticsService;
   public emotionIndividual:Boolean = false;
   public currentEmotionSet:Emotion;
-  
+  public selected:string;
   constructor(as:AnalyticsService) { 
     this.analyticsService = as;
   }
@@ -36,7 +35,6 @@ export class EmotionAnalysisComponent implements OnInit {
   @Input() dataList:Array<Speeches>;
 
   ngOnInit() {
-
      //Set up sentiment analysis
      this.emotionDataset = this.processEmotion(this.dataList);
      this.analyticsService.setAllEmotionDataset(this.emotionDataset);
@@ -67,6 +65,38 @@ export class EmotionAnalysisComponent implements OnInit {
      
 
   }
+
+  ngOnChanges()
+  {
+    //Set up sentiment analysis
+    this.emotionDataset = this.processEmotion(this.dataList);
+    this.analyticsService.setAllEmotionDataset(this.emotionDataset);
+    this.pieChartDataset = this.getPiechartData(this.emotionDataset);
+    this.biasData = this.sortBiasData(this.pieChartDataset);
+    this.pieChartLabels = this.biasData[0];
+    this.pieChartData = this.biasData[1];
+    this.analyticsService.currentEmotionInd.subscribe(data => {
+     this.emotionIndividual = data;
+   })
+
+   this.analyticsService.currentEmotionSet.subscribe(data => {
+     this.currentEmotionSet = null;
+     this.currentEmotionSet = data;
+     if(this.currentEmotionSet != null)
+     {
+       var individualData = document.getElementById("emotionIndividual");
+       
+       if(individualData != null)
+       {
+         
+         individualData.scrollIntoView({behavior:"smooth"});
+         
+       }
+     }
+   })
+  }
+
+  
 
   sortBiasData(dataSet):any
   {
@@ -338,6 +368,30 @@ export class EmotionAnalysisComponent implements OnInit {
       cloudDetailsID.scrollIntoView({behavior:"smooth"});
     }
   }
+
+  filter()
+  {
+
+    
+    if(this.selected == "1")
+    {
+      console.log(this.emotionDataset);
+      this.emotionDataset.forEach(e => {
+        var date = new Date(); 
+        var dataDate = e.$dataSet.$dateTime;
+        
+        console.log(dataDate);
+      })
+      //Show only one date
+    }
+    else {
+      //show all data
+    }
+    this.ngOnChanges();
+  }
+
+
+
 
 
 }
