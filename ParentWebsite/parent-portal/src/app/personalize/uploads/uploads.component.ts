@@ -104,7 +104,8 @@ export class UploadsComponent implements OnInit {
       'Content-Type' : 'application/json',
       'Authorization': 'Bearer ' + sessionStorage.getItem("token")
     }
-  
+    
+
     var results = await this.http.get("" , {bearer}).toPromise();
    
     results.forEach(e => {

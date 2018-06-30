@@ -180,6 +180,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onReadyForSpeech(Bundle params) {
                 // Ignore
+                Log.d("asr","you can start speaking now");
+
             }
 
             @Override
@@ -356,7 +358,7 @@ public class MainActivity extends AppCompatActivity {
 
         // TODO: Set Sensitivity
         snowboyDetect = new SnowboyDetect(common.getAbsolutePath(), model.getAbsolutePath());
-        snowboyDetect.setSensitivity("0.60");
+        snowboyDetect.setSensitivity("0.50");
         snowboyDetect.applyFrontend(true);
     }
 
@@ -504,7 +506,7 @@ public class MainActivity extends AppCompatActivity {
                 jsonObject.put("speechId", String.valueOf(r.nextInt(999999999) + r.nextInt(99999995)));
                 jsonObject.put("speechDetails", text[0]);
                 Log.e("log", text[0] + "hello testing");
-                jsonObject.put("userId", "demo");
+                jsonObject.put("userId", "string");
                 jsonObject.put("tags", "string");
 
                 DataOutputStream wr = new DataOutputStream(httpURLConnection.getOutputStream());
