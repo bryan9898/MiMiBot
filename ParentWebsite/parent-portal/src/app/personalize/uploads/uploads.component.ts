@@ -42,7 +42,7 @@ export class UploadsComponent implements OnInit {
    upload :any ={} ;
 
     Config: UploadParams = {
-    sas: 'PyAoWVgBPHSvdVywnaDMhtkQJ+PkCReHx3wTw15VBsw4HfslP9UmgbWKqgjtOgdMDfSNLxePHMA+szOc0/sZaw==',
+    sas: '?sv=2017-11-09&ss=b&srt=sco&sp=rwdlac&se=2018-07-31T05:04:11Z&st=2018-06-30T21:04:11Z&spr=https,http&sig=Fn8J7MZV%2Baf8E5nbldAPW0DckfRPwglPPc96VQ4HTHs%3D',
     storageAccount: 'mimibotupload',
     containerName: 'uploads'
   };
@@ -136,7 +136,7 @@ export class UploadsComponent implements OnInit {
     }
 
     var id = Math.floor(Math.random() * 9999999999) + Math.floor(Math.random() * 9999999999);
-    const baseUrl = this.blob.generateBlobUrl(this.Config, this.currentFile.name)
+    const baseUrl = this.blob.generateBlobUrl(this.Config, this.upload.songName)
     this.config = {
       baseUrl: baseUrl,
       blockSize: 1024 * 32,
