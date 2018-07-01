@@ -22,6 +22,7 @@ export class UploadsComponent implements OnInit {
    
   ];
 
+  private GameData : game[] = [];
   
   /** The upload config */
   config: UploadConfig
@@ -50,11 +51,13 @@ export class UploadsComponent implements OnInit {
   
     @Input('songName') InputId = this.upload.songName;
     @Input('songLink') InputName = this.upload.songLink ;
-
+    
 
   displayedColumns = ['songName', 'songLink'];
   dataSource = new MatTableDataSource(this.ELEMENT_DATA);
 
+  displayedColumns2 = ['questions', 'answers'];
+  dataSource2 = new MatTableDataSource(this.GameData);
   //current Teacher and class MoDULE info
  
 
@@ -66,6 +69,12 @@ export class UploadsComponent implements OnInit {
     filterValue = filterValue.trim(); // Remove whitespace
     filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches
     this.dataSource.filter = filterValue;
+  }
+
+  applyFilter2(filterValue: string) {
+    filterValue = filterValue.trim(); // Remove whitespace
+    filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches
+    this.dataSource2.filter = filterValue;
   }
 
   setPageSizeOptions(setPageSizeOptionsInput: string) {
@@ -93,9 +102,10 @@ export class UploadsComponent implements OnInit {
             //this.ELEMENT_DATA.push({songName:"abc",songLink:"cde"})
 
            // this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
-
+          
            this.testing();
-
+           this.dataSource.paginator = this.paginator;
+           this.dataSource.sort = this.sort;
 
             }
   
@@ -222,5 +232,11 @@ export interface Element {
  songLink:any
 
 }
+
+export interface game {
+  questions:any
+  answers:any
+ 
+ }
 
 

@@ -289,7 +289,7 @@ public class MainActivity extends AppCompatActivity {
             mp.start();
         } else if(song.equalsIgnoreCase("Sing")){
             String songName = song.substring(5);
-            mp = MediaPlayer.create(this, Uri.parse("https://mimibotupload.blob.core.windows.net/uploads/"+songName+".mp3"));
+            mp = MediaPlayer.create(this, Uri.parse("https://mimibotupload.blob.core.windows.net/uploads/"+songName));
             mp.start();
         }
         else {
@@ -301,7 +301,7 @@ public class MainActivity extends AppCompatActivity {
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                while (textToSpeech.isSpeaking()) {
+                while (textToSpeech.isSpeaking() || mp.isPlaying()) {
                     try {
                         Thread.sleep(100);
                     } catch (InterruptedException e) {
