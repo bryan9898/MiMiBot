@@ -53,16 +53,16 @@
   
       <mat-form-field class="example-full-width" style="width:50%">
           
-        <input matInput placeholder="Question" >
+        <input matInput placeholder="Question" id="questions" name="questions" [(ngModel)]="game.questions" [value]="questionsValue">
       </mat-form-field>
 
       <mat-form-field class="example-full-width" style="width:50%">
         
-      <input matInput placeholder="Answer" >
+      <input matInput placeholder="Answer" id="answers" name="answers" [(ngModel)]="game.answers" [value]="answersValue">
     </mat-form-field>
       <mat-action-row>
 
-        <button mat-button color="primary" (click)="submitSong()">Submit</button>
+        <button mat-button color="primary" (click)="submitGame()">Submit</button>
       </mat-action-row>
     </mat-expansion-panel>
     
@@ -70,38 +70,70 @@
   
   
     
-            <mat-form-field style="width:50%">
+            <mat-form-field style="width:50%;">
               <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
             </mat-form-field>
           
-          <mat-table #table [dataSource]="dataSource" attr.id="{{x}}" style="width:50%" matsort>
+            <mat-form-field style="width:50%;">
+                <input matInput (keyup)="applyFilter2($event.target.value)" placeholder="Filter">
+              </mat-form-field>
+
+  <mat-grid-list cols="2" >
+    <mat-grid-tile>       <mat-table #table [dataSource]="dataSource" attr.id="{{x}}" style="width:100%;position:absolute;top:0" matsort>
   
         
-            <ng-container matColumnDef="songName" attr.id="{{x}}">
-              <mat-header-cell *matHeaderCellDef attr.id="{{x}}"> Song Name </mat-header-cell>
-              <mat-cell *matCellDef="let element" attr.id="{{x}}"> {{element.songName}} </mat-cell>
-            </ng-container>
+      <ng-container matColumnDef="songName" attr.id="{{x}}">
+        <mat-header-cell *matHeaderCellDef attr.id="{{x}}"> Song Name </mat-header-cell>
+        <mat-cell *matCellDef="let element" attr.id="{{x}}"> {{element.songName}} </mat-cell>
+      </ng-container>
+
+    
+      <ng-container matColumnDef="songLink" attr.id="{{x}}">
+        <mat-header-cell *matHeaderCellDef attr.id="{{x}}"  style=" border-right: double;"> Added Date </mat-header-cell>
+        <mat-cell *matCellDef="let element" attr.id="{{x}}"  style=" border-right: double;">{{element.songLink | date: format}}</mat-cell>
+      </ng-container>
+
+    
+   
+
+
+      <mat-header-row *matHeaderRowDef="displayedColumns" attr.id="{{x}}"></mat-header-row> 
+      <mat-row *matRowDef="let row; columns: displayedColumns;let x = index;"   (click)="tableClick(row)" attr.id="{{x}}" ></mat-row>
+    
+    </mat-table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" style="position:absolute;float:left;bottom:0;width:100%"></mat-paginator>
+
+</mat-grid-tile>
+    <mat-grid-tile>
+        <mat-table #table [dataSource]="dataSource2" attr.id="{{x}}" style="width:100%;position:absolute;top:0" matsort>
   
+        
+            <ng-container matColumnDef="questions" attr.id="{{x}}">
+              <mat-header-cell *matHeaderCellDef attr.id="{{x}}"> Questions </mat-header-cell>
+              <mat-cell *matCellDef="let game" attr.id="{{x}}"> {{game.questions}} </mat-cell>
+            </ng-container>
+      
           
-            <ng-container matColumnDef="songLink" attr.id="{{x}}">
-              <mat-header-cell *matHeaderCellDef attr.id="{{x}}"> Added Date </mat-header-cell>
-              <mat-cell *matCellDef="let element" attr.id="{{x}}">{{element.songLink | date: format}}</mat-cell>
+            <ng-container matColumnDef="answers" attr.id="{{x}}">
+              <mat-header-cell *matHeaderCellDef attr.id="{{x}}"> Answers </mat-header-cell>
+              <mat-cell *matCellDef="let game" attr.id="{{x}}" >{{game.answers}}</mat-cell>
             </ng-container>
-  
+      
           
          
-  
-  
-            <mat-header-row *matHeaderRowDef="displayedColumns" attr.id="{{x}}"></mat-header-row> 
-            <mat-row *matRowDef="let row; columns: displayedColumns;let x = index;"   (click)="tableClick(row)" attr.id="{{x}}" ></mat-row>
+      
+      
+            <mat-header-row *matHeaderRowDef="displayedColumns2" attr.id="{{x}}"></mat-header-row> 
+            <mat-row *matRowDef="let row; columns: displayedColumns2;let x = index;"   (click)="tableClick(row)" attr.id="{{x}}" ></mat-row>
           
           </mat-table>
-  
-      
-  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" style="float:left;"></mat-paginator>
+          <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" style="position:absolute;float:left;bottom:0;width:100%"></mat-paginator>
+    </mat-grid-tile>
 
-
+  </mat-grid-list>        
   
+        
+
 
 </div>
 
