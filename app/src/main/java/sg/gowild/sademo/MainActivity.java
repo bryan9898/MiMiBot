@@ -36,8 +36,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.ProtocolException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -233,8 +235,11 @@ public class MainActivity extends AppCompatActivity {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-
-                    startNlu(text);
+                    if(text.equalsIgnoreCase("Game Time")){
+                        new GetUrlContentTask().execute("");
+                    } else {
+                        startNlu(text);
+                    }
                 }
             }
 
@@ -461,7 +466,7 @@ public class MainActivity extends AppCompatActivity {
     // HTTP GET request
     private void sendGet() throws Exception {
 
-        String url = "http://www.google.com/search?q=mkyong";
+        String url = "https://mimiwebserver.azurewebsites.net/api/Games";
 
         URL obj = new URL(url);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -490,8 +495,52 @@ public class MainActivity extends AppCompatActivity {
         System.out.println(response.toString());
 
     }
+    ArrayList<game> gameData= new ArrayList<>();
+
+    private class GetUrlContentTask extends AsyncTask<String, Integer, String> {
+        protected String doInBackground(String... urls) {
+            URL url = null;
+            String content = "";
+            String line = "";
+
+            try {
+                url = new URL("https://mimiwebserver.azurewebsites.net/api/Games");
+
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("GET");
+                connection.setDoOutput(true);
+                connection.setConnectTimeout(5000);
+                connection.setReadTimeout(5000);
+                connection.connect();
+
+                BufferedReader rd = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+
+                while ((line = rd.readLine()) != null) {
+                    content += line + "\n";
+                    Log.d("get info", content);
+                   // gameData.add();
+                }
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (ProtocolException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
 
+            return content;
+        }
+
+        protected void onProgressUpdate(Integer... progress) {
+        }
+
+        protected void onPostExecute(String result) {
+            // this is executed on the main thread after the process is over
+            // update your UI here
+            //displayMessage(result);
+        }
+    }
 
     // HTTP POST request
     class AsyncT extends AsyncTask<String,Void,Void>{
