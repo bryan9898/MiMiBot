@@ -8,6 +8,7 @@ import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.speech.RecognitionListener;
@@ -70,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
     // View Variables
     private Button button;
     private TextView textView;
-
+    private TextView textView2;
     // ASR Variables
     private SpeechRecognizer speechRecognizer;
 
@@ -143,11 +144,13 @@ public class MainActivity extends AppCompatActivity {
         } */
 
         // TODO: Start Hotword
+        textView2.setText("Listening to Hotword");
         startHotword();
     }
 
     private void setupViews() {
         textView = findViewById(R.id.textview);
+        textView2 = findViewById(R.id.textview2);
         /* button = findViewById(R.id.button);*/
 
       /*  button.setOnClickListener(new View.OnClickListener() {
@@ -181,7 +184,7 @@ public class MainActivity extends AppCompatActivity {
             public void onReadyForSpeech(Bundle params) {
                 // Ignore
                 Log.d("asr","you can start speaking now");
-
+                textView2.setText("You can start speaking now");
             }
 
             @Override
@@ -207,6 +210,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onError(int error) {
                 Log.e("asr", "Error: " + Integer.toString(error));
+                textView2.setText("Listening to Hotword");
                 startHotword();
             }
 
@@ -275,11 +279,17 @@ public class MainActivity extends AppCompatActivity {
 
     private void startTts(final String text) {
         // TODO: Start TTS
+        String song = text.substring(0,4);
+
         if (text.equalsIgnoreCase("song1")) {
             mp = MediaPlayer.create(MainActivity.this, R.raw.shark);
             mp.start();
         } else if(text.equalsIgnoreCase("song2")){
             mp = MediaPlayer.create(MainActivity.this, R.raw.mary);
+            mp.start();
+        } else if(song.equalsIgnoreCase("Sing")){
+            String songName = song.substring(5);
+            mp = MediaPlayer.create(this, Uri.parse("https://mimibotupload.blob.core.windows.net/uploads/"+songName+".mp3"));
             mp.start();
         }
         else {
@@ -299,6 +309,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
                 if(text.equalsIgnoreCase("stop")){
+                    textView2.setText("Listening to Hotword");
                     startHotword();
                 } else {
                     startAsr();
@@ -340,7 +351,9 @@ public class MainActivity extends AppCompatActivity {
                     }
                 } catch (AIServiceException e) {
                     Log.e("nlu", e.getMessage(), e);
+                    textView2.setText("Listening to Hotword");
                     startHotword();
+
                 }
             }
         };

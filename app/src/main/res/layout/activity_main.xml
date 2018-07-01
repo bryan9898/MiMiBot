@@ -21,12 +21,33 @@
         android:layout_height="wrap_content"
         android:text="MiMiBot"
         android:textSize="36sp" />
-<!--
-    <Button
-        android:id="@+id/button"
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Press Me"/>  -->
+        android:layout_height="68dp">
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="59dp">
+
+        <TextView
+            android:id="@+id/textview2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:text="Listening to Hotword"
+            android:textSize="30sp" />
+    </RelativeLayout>
+
+    <!--
+        <Button
+            android:id="@+id/button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Press Me"/>  -->
 
 
 
