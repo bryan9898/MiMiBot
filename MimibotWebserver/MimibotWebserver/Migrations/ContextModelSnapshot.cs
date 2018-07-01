@@ -18,6 +18,20 @@ namespace MimibotWebserver.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("MimibotWebserver.Models.Game", b =>
+                {
+                    b.Property<string>("GameId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Answers");
+
+                    b.Property<string>("Questions");
+
+                    b.HasKey("GameId");
+
+                    b.ToTable("Games");
+                });
+
             modelBuilder.Entity("MimibotWebserver.Models.Speech", b =>
                 {
                     b.Property<string>("SpeechId")

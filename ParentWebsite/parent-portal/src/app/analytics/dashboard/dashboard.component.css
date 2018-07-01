@@ -9,6 +9,10 @@
     width: auto;
     margin-left: 4%;
     margin-right: 3%;
-    margin-top: 5%;
+    
     margin-bottom: 3%;
+}
+
+.dashboard-overview {
+    margin-top: 3%;
 }

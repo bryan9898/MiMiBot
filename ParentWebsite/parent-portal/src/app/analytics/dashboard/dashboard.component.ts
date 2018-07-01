@@ -43,8 +43,13 @@ export class DashboardComponent implements OnInit {
 
    async ngOnInit() {
   
-
-    this.dataList = await this.testing();
+    try{
+      this.dataList = await this.testing();
+    }
+    catch(error)
+    {
+      console.log("error");
+    }
     var labelArray = new Array<string>();
     var dataArray = new Array<number>();
     this.currentUser = this.tks.cu;
@@ -134,47 +139,48 @@ export class DashboardComponent implements OnInit {
     return ([biasSet , neutralSet]);
   }
 
-  processEmotion(dataList:Array<Speeches>)
-  {
-    var setOfUnfilteredEmotion:Array<Map<string,string>> = new Array<Map<string,string>>();
-    dataList.forEach(element => {
-      setOfUnfilteredEmotion.push(element.$sentiment)
-    });
+  // processEmotion(dataList:Array<Speeches>)
+  // {
+  //   var setOfUnfilteredEmotion:Array<Map<string,string>> = new Array<Map<string,string>>();
+  //   dataList.forEach(element => {
+  //     console.log("testing");
+  //     setOfUnfilteredEmotion.push(element.$sentiment)
+  //   });
 
-    var integer = 0; 
-    var emotionFilteredList:Array<any> = new Array<any>();
-    setOfUnfilteredEmotion.forEach(emotion => {
-      var biasEmotion:Array<Map<string,string>> = new Array<Map<string,string>>();
-      var neturalEmotion:Array<Map<string,string>> = new Array<Map<string,string>>();
-      emotion.forEach((value: string, key: string) => {
-        var valid = false;
-        valid = this.checkIfSentimentIsAbove20(value);
-        if(valid == true)
-        {
-          var newMap = new Map();
-          newMap.set(key, value);
-          biasEmotion.push(newMap);
+  //   var integer = 0; 
+  //   var emotionFilteredList:Array<any> = new Array<any>();
+  //   setOfUnfilteredEmotion.forEach(emotion => {
+  //     var biasEmotion:Array<Map<string,string>> = new Array<Map<string,string>>();
+  //     var neturalEmotion:Array<Map<string,string>> = new Array<Map<string,string>>();
+  //     emotion.forEach((value: string, key: string) => {
+  //       var valid = false;
+  //       valid = this.checkIfSentimentIsAbove20(value);
+  //       if(valid == true)
+  //       {
+  //         var newMap = new Map();
+  //         newMap.set(key, value);
+  //         biasEmotion.push(newMap);
           
-        }
-        else {
-          var newMap = new Map();
-          newMap.set(key, value);
-          neturalEmotion.push(newMap);
-        }
-      })
+  //       }
+  //       else {
+  //         var newMap = new Map();
+  //         newMap.set(key, value);
+  //         neturalEmotion.push(newMap);
+  //       }
+  //     })
 
-      var newEmotionClass = new Emotion(biasEmotion , neturalEmotion , dataList[integer]);
-      emotionFilteredList.push(newEmotionClass);
-      integer++;
+  //     var newEmotionClass = new Emotion(biasEmotion , neturalEmotion , dataList[integer]);
+  //     emotionFilteredList.push(newEmotionClass);
+  //     integer++;
 
-    })
-
-
+  //   })
 
 
-    return emotionFilteredList; 
+
+
+  //   return emotionFilteredList; 
     
-  }
+  // }
 
   checkIfSentimentIsAbove20(data)
   {

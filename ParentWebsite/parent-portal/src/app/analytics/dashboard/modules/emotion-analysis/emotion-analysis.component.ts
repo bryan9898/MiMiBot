@@ -5,12 +5,13 @@ import { CloudOptions, CloudData, ZoomOnHoverOptions } from 'angular-tag-cloud-m
 import { KeyedWrite } from '@angular/compiler';
 import 'chart.piecelabel.js';
 import { AnalyticsService } from 'src/app/analytics/service/analytics.service';
+import * as Chart from 'chart.js';
 @Component({
   selector: 'app-emotion-analysis',
   templateUrl: './emotion-analysis.component.html',
   styleUrls: ['./emotion-analysis.component.css']
 })
-export class EmotionAnalysisComponent implements OnInit, OnChanges {
+export class EmotionAnalysisComponent implements OnInit {
  
   private emotionDataset:Array<Emotion>;
   public pieChartLabels:string[];
@@ -27,7 +28,8 @@ export class EmotionAnalysisComponent implements OnInit, OnChanges {
   private analyticsService:AnalyticsService;
   public emotionIndividual:Boolean = false;
   public currentEmotionSet:Emotion;
-  public selected:string;
+  public selected:string = "2";
+  public chart:any;
   constructor(as:AnalyticsService) { 
     this.analyticsService = as;
   }
@@ -49,6 +51,10 @@ export class EmotionAnalysisComponent implements OnInit, OnChanges {
       this.emotionIndividual = data;
     })
 
+
+     
+
+
     this.analyticsService.currentEmotionSet.subscribe(data => {
       this.currentEmotionSet = null;
       this.currentEmotionSet = data;
@@ -64,40 +70,74 @@ export class EmotionAnalysisComponent implements OnInit, OnChanges {
         }
       }
     })
+
+    this.chart = new Chart("canvas" , {
+      type: "doughnut",
+      data: {
+        datasets: [{
+          data: this.pieChartData ,
+          backgroundColor:this.colorscheme,
+          borderColor:this.colorscheme,
+          pointBackgroundColor: this.colorscheme,
+          pointBorderColor:this.colorscheme,
+          pointHoverBackgroundColor: this.colorscheme,
+          pointHoverBorderColor: this.colorscheme
+        }],
+        labels: this.pieChartLabels,
+        
+        
+      },
+      options: this.changeChartOptions(this.pieChartLabels)
+    
+    }
+    
+  )
+  
+   
     //  this.showChart = true;
      
 
   }
-
-  ngOnChanges(dataList)
+  changeChartOptions(labels)
   {
-    //Set up sentiment analysis
-    this.emotionDataset = this.processEmotion(dataList);
-    this.analyticsService.setAllEmotionDataset(this.emotionDataset);
-    this.pieChartDataset = this.getPiechartData(this.emotionDataset);
-    this.biasData = this.sortBiasData(this.pieChartDataset);
-    this.pieChartLabels = this.biasData[0];
-    this.pieChartData = this.biasData[1];
-    this.analyticsService.currentEmotionInd.subscribe(data => {
-     this.emotionIndividual = data;
-   })
-
-   this.analyticsService.currentEmotionSet.subscribe(data => {
-     this.currentEmotionSet = null;
-     this.currentEmotionSet = data;
-     if(this.currentEmotionSet != null)
-     {
-       var individualData = document.getElementById("emotionIndividual");
-       
-       if(individualData != null)
-       {
-         
-         individualData.scrollIntoView({behavior:"smooth"});
-         
-       }
-     }
-   })
+    var options = {
+      pieceLabel: {
+        render: 'label',
+        color: 'black',
+        fontWeight: 'bold'
+      },
+    }
+    return options;
   }
+  // ngOnChanges(dataList)
+  // {
+  //   //Set up sentiment analysis
+  //   this.emotionDataset = this.processEmotion(dataList);
+  //   this.analyticsService.setAllEmotionDataset(this.emotionDataset);
+  //   this.pieChartDataset = this.getPiechartData(this.emotionDataset);
+  //   this.biasData = this.sortBiasData(this.pieChartDataset);
+  //   this.pieChartLabels = this.biasData[0];
+  //   this.pieChartData = this.biasData[1];
+  //   this.analyticsService.currentEmotionInd.subscribe(data => {
+  //    this.emotionIndividual = data;
+  //  })
+
+  //  this.analyticsService.currentEmotionSet.subscribe(data => {
+  //    this.currentEmotionSet = null;
+  //    this.currentEmotionSet = data;
+  //    if(this.currentEmotionSet != null)
+  //    {
+  //      var individualData = document.getElementById("emotionIndividual");
+       
+  //      if(individualData != null)
+  //      {
+         
+  //        individualData.scrollIntoView({behavior:"smooth"});
+         
+  //      }
+  //    }
+  //  })
+  // }
 
   
 
@@ -159,7 +199,9 @@ export class EmotionAnalysisComponent implements OnInit, OnChanges {
 
   processEmotion(dataList:Array<Speeches>)
   {
+
     var setOfUnfilteredEmotion:Array<Map<string,string>> = new Array<Map<string,string>>();
+    
     dataList.forEach(element => {
       setOfUnfilteredEmotion.push(element.$sentiment)
     });
@@ -245,7 +287,7 @@ export class EmotionAnalysisComponent implements OnInit, OnChanges {
      }
    })
    try{
-    var currentIndex = e['active'][0]._index;
+    var currentIndex = this.chart.getElementAtEvent(e)[0]._index;
     this.currentColor = this.colorscheme[currentIndex];
     this.currentDataset = mainArray[currentIndex];
     this.currentTopic = this.currentDataset[0];
@@ -372,7 +414,7 @@ export class EmotionAnalysisComponent implements OnInit, OnChanges {
     }
   }
 
-  filter()
+  public filter()
   {
     this.cloudDetails = false;
     this.chartDetails = false;
@@ -395,9 +437,11 @@ export class EmotionAnalysisComponent implements OnInit, OnChanges {
         
       })
       this.emotionDataset = newEmotionDataset;
-     
+      this.pieChartDataset = this.getPiechartData(this.emotionDataset);
+      this.biasData = this.sortBiasData(this.pieChartDataset);
+      this.pieChartLabels = this.biasData[0];
+      this.pieChartData = this.biasData[1]; 
       this.ngOnInit();
-      console.log(this.emotionDataset);
       //Show only one date
     }
     else {

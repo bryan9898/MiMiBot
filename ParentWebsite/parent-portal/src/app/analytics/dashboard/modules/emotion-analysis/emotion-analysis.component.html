@@ -10,14 +10,15 @@
   </div>
   <p style="font-style: italic">"Ever wanted a <i><b>summary</b></i> of what your child is <i><b>feeling?</b></i> "</p>
   <div style="display: block">
-      <canvas baseChart
+      <canvas  id="canvas" (click)="pieClicked($event)"></canvas>
+      <!-- <canvas  baseChart
               [data]="pieChartData"
               [labels]="pieChartLabels"
               [chartType]="pieChartType"
               [colors]="pieChartColor"
               [options]="pieChartOptions"
               (chartHover)="pieHovered($event)"
-              (chartClick)="pieClicked($event)"></canvas>
+              (chartClick)="pieClicked($event)"></canvas> -->
   </div>
   
 

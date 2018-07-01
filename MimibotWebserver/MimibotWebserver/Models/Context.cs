@@ -17,6 +17,8 @@ namespace MimibotWebserver.Models
         public DbSet<Speech> Speechs { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Upload> Uploads { get; set; }
+        public DbSet<Game> Games { get; set; }
+
 
     }
 }

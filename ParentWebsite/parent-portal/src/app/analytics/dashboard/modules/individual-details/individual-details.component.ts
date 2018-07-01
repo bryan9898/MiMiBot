@@ -96,10 +96,10 @@ export class IndividualDetailsComponent implements OnInit,OnChanges {
     var integer = 0;
     data.forEach(element => {
       element.forEach((value:string , key: string) => {
-        if(integer < element.size-1)
+        if(integer < element.size )
         {
       
-          feelings = feelings + key + "and";
+          feelings = feelings + key + " , ";
           integer++; 
         }
         else {

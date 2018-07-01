@@ -9,7 +9,7 @@ using MimibotWebserver.Models;
 namespace MimibotWebserver.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20180630122733_initial-create")]
+    [Migration("20180701163256_initial-create")]
     partial class initialcreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -19,6 +19,20 @@ namespace MimibotWebserver.Migrations
                 .HasAnnotation("ProductVersion", "2.1.0-rtm-30799")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("MimibotWebserver.Models.Game", b =>
+                {
+                    b.Property<string>("GameId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Answers");
+
+                    b.Property<string>("Questions");
+
+                    b.HasKey("GameId");
+
+                    b.ToTable("Games");
+                });
 
             modelBuilder.Entity("MimibotWebserver.Models.Speech", b =>
                 {
