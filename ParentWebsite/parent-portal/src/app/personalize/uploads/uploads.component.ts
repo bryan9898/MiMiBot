@@ -7,6 +7,7 @@ import { HttpClient, HttpParams , HttpHeaders  , HttpRequest } from '@angular/co
 import { MatPaginator, MatTableDataSource, MatSort, MatPaginatorModule } from '@angular/material';
 import {URLSearchParams, QueryEncoder} from '@angular/http';
 import { BlobService, UploadConfig, UploadParams } from 'angular-azure-blob-service'
+import { DatePipe } from '@angular/common'
 
 @Component({
   selector: 'app-uploads',
@@ -87,9 +88,15 @@ export class UploadsComponent implements OnInit {
   
       
             //this.ELEMENT_DATA.push({ModuleID: this.ModuleSet[this.x].ModuleId , ModuleName: this.currentModuleName['ModuleName'] , ModuleClass: this.ModuleSet[this.x].ClassDefaultId});
-           this.ELEMENT_DATA.push({songName:"abc",songLink:"cde"})
-            this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
-        
+          
+          
+            //this.ELEMENT_DATA.push({songName:"abc",songLink:"cde"})
+
+           // this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
+
+           this.testing();
+
+
             }
   
 
@@ -129,13 +136,20 @@ export class UploadsComponent implements OnInit {
     } 
   } 
 
+  songValue:string = '';
+  uploadValue:string = '';
+
   async submitSong(){
     var bearer = {
       'Content-Type' : 'application/json',
       'Authorization': 'Bearer ' + sessionStorage.getItem("token")
     }
 
-    var id = Math.floor(Math.random() * 9999999999) + Math.floor(Math.random() * 9999999999);
+    var date = Date.now();
+    var id = Math.floor(Math.random() * 9999999999) + Math.floor(Math.random() * 9999999999) + date;
+    
+    var sentData = await this.http.post("https://mimiwebserver.azurewebsites.net/api/Uploads", JSON.stringify({uploadId: id.toString()   , password:this.upload.songName,userId:"string",songLink:date}), { headers: bearer }).toPromise(); 
+    
     const baseUrl = this.blob.generateBlobUrl(this.Config, this.upload.songName)
     this.config = {
       baseUrl: baseUrl,
@@ -143,7 +157,11 @@ export class UploadsComponent implements OnInit {
       sasToken: this.Config.sas,
       file: this.currentFile,
       complete: () => {
-        console.log('Transfer completed !')
+        console.log('Transfer completed !');
+        this.ELEMENT_DATA.push({songName:this.upload.songName,songLink:date})
+        this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
+        this.songValue = null;
+        this.uploadValue = null;
       },
       error: () => {
         console.log('Error !')
@@ -153,34 +171,44 @@ export class UploadsComponent implements OnInit {
       }
     }
     this.blob.upload(this.config)
+
   }
+
+
+  private uploadSets: any;
+  private y : number = 0;
     //var sentData = await this.http.post("",{bearer}).toPromise();
   /*  var sentData = await this.http.post("https://mimiwebserver.azurewebsites.net/api/Uploads", JSON.stringify({uploadId: id.toString()   , password:this.upload.songName,userId:"string"}), { headers: bearer })
       .map(res => res.json()) */
     
   
 
-
-  async testing() {
-    var bearer = {
-      'Content-Type' : 'application/json',
-      'Authorization': 'Bearer ' + sessionStorage.getItem("token")
-    }
-    
-
-   /* var results = await this.http.get("" , {bearer}).toPromise();
-   
-    results.forEach(e => {
+      async testing() {
+        var bearer = {
+          'Content-Type' : 'application/json',
+          'Authorization': 'Bearer ' + sessionStorage.getItem("token")
+        }
       
-    }) */
-
-    return null;
-  }
+        this.uploadSets = await this.http.get("https://mimiwebserver.azurewebsites.net/api/Uploads" , {headers:bearer}).toPromise();
+        for (this.y; this.y < this.uploadSets.length; this.y++) {
+          
+                this.ELEMENT_DATA.push({songName:this.uploadSets[this.y].password,songLink:this.uploadSets[this.y].songLink})
+                this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
+          
+              }
+        
+    
+      }
 
 }
 
 
-
+export interface uploads{
+  uploadId : any;
+  password : any;
+  userId : any;
+  songLink : any;
+}
 
 
 export interface ModulesModel{

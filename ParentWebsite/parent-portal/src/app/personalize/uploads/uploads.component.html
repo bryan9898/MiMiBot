@@ -22,10 +22,10 @@
       </mat-expansion-panel-header>
      
       <mat-form-field class="example-full-width">
-          <input matInput placeholder="Song Name" id="songName" name="songName" [(ngModel)]="upload.songName" >
+          <input matInput placeholder="Song Name" id="songName" name="songName" [(ngModel)]="upload.songName" [value]="songValue">
         </mat-form-field>
    
-          <input type="file" id="songLink" name="songLink"  (change)="fileChange($event)" placeholder="Upload file" accept=".mp3">
+          <input type="file" id="songLink" name="songLink"  (change)="fileChange($event)" placeholder="Upload file" accept=".mp3" [value]="uploadValue"> 
      
       
      
@@ -51,10 +51,15 @@
         </mat-panel-description>
       </mat-expansion-panel-header>
   
-      <mat-form-field class="example-full-width">
+      <mat-form-field class="example-full-width" style="width:50%">
           
-        <input matInput placeholder="Youtube Video Link" >
+        <input matInput placeholder="Question" >
       </mat-form-field>
+
+      <mat-form-field class="example-full-width" style="width:50%">
+        
+      <input matInput placeholder="Answer" >
+    </mat-form-field>
       <mat-action-row>
 
         <button mat-button color="primary" (click)="submitSong()">Submit</button>
@@ -65,11 +70,11 @@
   
   
     
-            <mat-form-field>
+            <mat-form-field style="width:50%">
               <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
             </mat-form-field>
           
-          <mat-table #table [dataSource]="dataSource" attr.id="{{x}}" matsort>
+          <mat-table #table [dataSource]="dataSource" attr.id="{{x}}" style="width:50%" matsort>
   
         
             <ng-container matColumnDef="songName" attr.id="{{x}}">
@@ -79,8 +84,8 @@
   
           
             <ng-container matColumnDef="songLink" attr.id="{{x}}">
-              <mat-header-cell *matHeaderCellDef attr.id="{{x}}"> Song Link </mat-header-cell>
-              <mat-cell *matCellDef="let element" attr.id="{{x}}"> {{element.songLink}} </mat-cell>
+              <mat-header-cell *matHeaderCellDef attr.id="{{x}}"> Added Date </mat-header-cell>
+              <mat-cell *matCellDef="let element" attr.id="{{x}}">{{element.songLink | date: format}}</mat-cell>
             </ng-container>
   
           
@@ -93,7 +98,7 @@
           </mat-table>
   
       
-  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" style="float:left;"></mat-paginator>
 
 
   
