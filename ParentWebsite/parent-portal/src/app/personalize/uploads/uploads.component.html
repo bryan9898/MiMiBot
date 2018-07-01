@@ -53,16 +53,16 @@
   
       <mat-form-field class="example-full-width" style="width:50%">
           
-        <input matInput placeholder="Question" >
+        <input matInput placeholder="Question" id="questions" name="questions" [(ngModel)]="game.questions" [value]="questionsValue">
       </mat-form-field>
 
       <mat-form-field class="example-full-width" style="width:50%">
         
-      <input matInput placeholder="Answer" >
+      <input matInput placeholder="Answer" id="answers" name="answers" [(ngModel)]="game.answers" [value]="answersValue">
     </mat-form-field>
       <mat-action-row>
 
-        <button mat-button color="primary" (click)="submitSong()">Submit</button>
+        <button mat-button color="primary" (click)="submitGame()">Submit</button>
       </mat-action-row>
     </mat-expansion-panel>
     

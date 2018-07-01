@@ -42,7 +42,7 @@ export class UploadsComponent implements OnInit {
 
 
    upload :any ={} ;
-
+    game : any = {};
     Config: UploadParams = {
     sas: '?sv=2017-11-09&ss=b&srt=sco&sp=rwdlac&se=2018-07-31T05:04:11Z&st=2018-06-30T21:04:11Z&spr=https,http&sig=Fn8J7MZV%2Baf8E5nbldAPW0DckfRPwglPPc96VQ4HTHs%3D',
     storageAccount: 'mimibotupload',
@@ -52,6 +52,8 @@ export class UploadsComponent implements OnInit {
     @Input('songName') InputId = this.upload.songName;
     @Input('songLink') InputName = this.upload.songLink ;
     
+    @Input('questions') InputQuestions = this.game.questions;
+    @Input('answers') InputGames = this.game.answers;
 
   displayedColumns = ['songName', 'songLink'];
   dataSource = new MatTableDataSource(this.ELEMENT_DATA);
@@ -104,8 +106,11 @@ export class UploadsComponent implements OnInit {
            // this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
           
            this.testing();
+           this.testing2();
            this.dataSource.paginator = this.paginator;
            this.dataSource.sort = this.sort;
+           this.dataSource2.paginator = this.paginator;
+           this.dataSource2.sort = this.sort;
 
             }
   
@@ -148,6 +153,8 @@ export class UploadsComponent implements OnInit {
 
   songValue:string = '';
   uploadValue:string = '';
+  answersValue:string = '';
+  questionsValue:string = '';
 
   async submitSong(){
     var bearer = {
@@ -184,9 +191,29 @@ export class UploadsComponent implements OnInit {
 
   }
 
+  async submitGame(){
+    var bearer = {
+      'Content-Type' : 'application/json',
+      'Authorization': 'Bearer ' + sessionStorage.getItem("token")
+    }
+
+    var date = Date.now();
+    var id = Math.floor(Math.random() * 9999999999) + Math.floor(Math.random() * 9999999999) + date;
+    
+    var sentData = await this.http.post("https://mimiwebserver.azurewebsites.net/api/Games", JSON.stringify({gameId: id.toString()   , questions:this.game.questions,answers:this.game.answers}), { headers: bearer }).toPromise(); 
+    
+    this.GameData.push({questions:this.game.questions,answers:this.game.answers})
+    this.dataSource2 = new MatTableDataSource(this.GameData);
+    this.questionsValue = null;
+    this.answersValue = null;
+    
+  }
+
 
   private uploadSets: any;
   private y : number = 0;
+  private GameSets: any;
+  private z : number = 0;
     //var sentData = await this.http.post("",{bearer}).toPromise();
   /*  var sentData = await this.http.post("https://mimiwebserver.azurewebsites.net/api/Uploads", JSON.stringify({uploadId: id.toString()   , password:this.upload.songName,userId:"string"}), { headers: bearer })
       .map(res => res.json()) */
@@ -204,6 +231,24 @@ export class UploadsComponent implements OnInit {
           
                 this.ELEMENT_DATA.push({songName:this.uploadSets[this.y].password,songLink:this.uploadSets[this.y].songLink})
                 this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
+          
+              }
+        
+    
+      }
+
+
+      async testing2() {
+        var bearer = {
+          'Content-Type' : 'application/json',
+          'Authorization': 'Bearer ' + sessionStorage.getItem("token")
+        }
+      
+        this.GameSets = await this.http.get("https://mimiwebserver.azurewebsites.net/api/Games" , {headers:bearer}).toPromise();
+        for (this.z; this.z < this.GameSets.length; this.z++) {
+          
+                this.GameData.push({questions:this.GameSets[this.z].questions,answers:this.GameSets[this.z].answers})
+                this.dataSource2 = new MatTableDataSource(this.GameData);
           
               }
         
