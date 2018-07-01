@@ -33,12 +33,8 @@ import {MatDividerModule} from '@angular/material/divider';
 import { KeywordsDetailsComponent } from './analytics/dashboard/modules/keywords-details/keywords-details.component';
 import {MatSelectModule} from '@angular/material/select';
 import { BlobModule } from 'angular-azure-blob-service';
-<<<<<<< HEAD
 import { DashboardOverviewComponent } from './analytics/dashboard/modules/dashboard-overview/dashboard-overview.component';
-
-=======
 import {MatGridListModule} from '@angular/material/grid-list';
->>>>>>> origin/master
 const appRoutes: Routes = [
   { path: '', redirectTo: '/login' ,  pathMatch:'full' },
   { path:'login' , component: LoginComponent },
