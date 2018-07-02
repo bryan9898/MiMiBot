@@ -36,7 +36,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.ProtocolException;
+//import java.net.ProtocolException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.ArrayList;
@@ -226,17 +226,24 @@ public class MainActivity extends AppCompatActivity {
 
                     textView.setText(text);
 
-                    try {
-                        //sendPost(text);
+                    if(text.equalsIgnoreCase("Hello")){
 
-                        new AsyncT().execute(text);
+                    } else {
+                        try {
+                            //sendPost(text);
+
+                            new AsyncT().execute(text);
 
 
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
+
                     if(text.equalsIgnoreCase("Game Time")){
-                        new GetUrlContentTask().execute("");
+                       new GetUrlContentTask().execute("");
+
+                       startAsr();
                     } else {
                         startNlu(text);
                     }
@@ -287,17 +294,22 @@ public class MainActivity extends AppCompatActivity {
         String song = text.substring(0,4);
 
         if (text.equalsIgnoreCase("song1")) {
+            mp.stop();
             mp = MediaPlayer.create(MainActivity.this, R.raw.shark);
             mp.start();
         } else if(text.equalsIgnoreCase("song2")){
+           // mp.stop();
             mp = MediaPlayer.create(MainActivity.this, R.raw.mary);
             mp.start();
         } else if(song.equalsIgnoreCase("Sing")){
-            String songName = song.substring(5);
+            String songName = text.substring(5);
+           // mp.stop();
             mp = MediaPlayer.create(this, Uri.parse("https://mimibotupload.blob.core.windows.net/uploads/"+songName));
+
             mp.start();
         }
         else {
+            Log.e("tts", "startTts: " );
             textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null);
         }
 
@@ -306,7 +318,7 @@ public class MainActivity extends AppCompatActivity {
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                while (textToSpeech.isSpeaking() || mp.isPlaying()) {
+                while (textToSpeech.isSpeaking()) {
                     try {
                         Thread.sleep(100);
                     } catch (InterruptedException e) {
@@ -315,8 +327,11 @@ public class MainActivity extends AppCompatActivity {
                 }
                 if(text.equalsIgnoreCase("stop")){
                     textView2.setText("Listening to Hotword");
+                    //mp.stop();
                     startHotword();
                 } else {
+                    //mp.stop();
+                    textToSpeech.stop();
                     startAsr();
                 }
 
@@ -497,6 +512,8 @@ public class MainActivity extends AppCompatActivity {
     }
     ArrayList<game> gameData= new ArrayList<>();
 
+    StringBuilder sb = new StringBuilder();
+
     private class GetUrlContentTask extends AsyncTask<String, Integer, String> {
         protected String doInBackground(String... urls) {
             URL url = null;
@@ -513,18 +530,39 @@ public class MainActivity extends AppCompatActivity {
                 connection.setReadTimeout(5000);
                 connection.connect();
 
-                BufferedReader rd = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-
+                BufferedReader rd = new BufferedReader(new InputStreamReader(url.openStream()));
                 while ((line = rd.readLine()) != null) {
+                    Log.d("line", line);
+                    sb.append(line);
                     content += line + "\n";
+
                     Log.d("get info", content);
-                   // gameData.add();
+                   //gameData.add(content[0].gameId);
                 }
+
+                try {
+                    JSONArray jsonArray = new JSONArray(sb.toString());
+
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject json1 = jsonArray.getJSONObject(i);
+
+                        game newGame = new game(json1.getString("questions"),json1.getString("answers"));
+                        gameData.add(newGame);
+                        Log.d("game Data", gameData.get(i).questions.toString());
+                        Log.d("game Data", gameData.get(i).answers);
+                    }
+                    //JSONArray questionsArray = new JSONArray(json.getString("questions"));
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+
             } catch (MalformedURLException e) {
                 e.printStackTrace();
-            } catch (ProtocolException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
+            }  catch (IOException e) {
                 e.printStackTrace();
             }
 
