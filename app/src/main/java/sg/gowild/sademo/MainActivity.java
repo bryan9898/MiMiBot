@@ -40,7 +40,10 @@ import java.io.OutputStream;
 //import java.net.ProtocolException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -258,6 +261,9 @@ public class MainActivity extends AppCompatActivity {
                             mp.start();
                             while(mp.isPlaying());
                             mp.stop();
+
+                            new gameScore().execute("1",gameData.get(gameNum).questions);
+
                             if((maxLength-1) == gameNum ){
                                 startTts("End of game");
                                 //playGame = 0;
@@ -273,6 +279,8 @@ public class MainActivity extends AppCompatActivity {
                             mp.start();
                             while(mp.isPlaying());
                             mp.stop();
+                            new gameScore().execute("0",gameData.get(gameNum).questions);
+
                             if((maxLength-1) == gameNum ){
                                 startTts("End of game");
                                 //playGame = 0;
@@ -549,6 +557,75 @@ public class MainActivity extends AppCompatActivity {
         return "No weather info";
     }
 
+
+    Calendar calendar = Calendar.getInstance();
+    Date date = calendar.getTime();
+    // HTTP POST request
+    class gameScore extends AsyncTask<String,Void,Void> {
+
+        private Exception exception;
+        String response = "";
+
+
+        protected Void doInBackground(String... text) {
+
+            HttpURLConnection httpURLConnection = null;
+
+            try {
+                URL url = new URL("https://mimiwebserver.azurewebsites.net/api/Marks"); //Enter URL here
+                httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.setDoInput(true);
+                httpURLConnection.setRequestMethod("POST"); // here you are telling that it is a POST request, which can be changed into "PUT", "GET", "DELETE" etc.
+                httpURLConnection.setRequestProperty("Content-Type", "application/json"); // here you are setting the `Content-Type` for the data you are sending which is `application/json`
+                httpURLConnection.connect();
+
+                Random r = new Random();
+
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("markId", String.valueOf(r.nextInt(999999999) + r.nextInt(99999995)));
+                jsonObject.put("userId" , "string");
+                jsonObject.put("question",text[1]);
+                jsonObject.put("markValue",text[0]);
+                jsonObject.put("date",new SimpleDateFormat("EEEE", Locale.ENGLISH).format(date.getTime()));
+                //jsonObject.put("speechDetails", text[0]);
+                //Log.e("log", text[0] + "hello testing");
+               // jsonObject.put("userId", "string");
+               // jsonObject.put("tags", "string");
+
+                DataOutputStream wr = new DataOutputStream(httpURLConnection.getOutputStream());
+                wr.writeBytes(jsonObject.toString());
+                wr.flush();
+                wr.close();
+
+                int responseCode = httpURLConnection.getResponseCode();
+
+                if (responseCode == HttpsURLConnection.HTTP_OK) {
+                    String line;
+                    BufferedReader br = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
+                    while ((line = br.readLine()) != null) {
+                        response += line;
+                    }
+                } else {
+                    response = "";
+                }
+                Log.e("log", response);
+                Log.e("log", "sent data");
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                if (httpURLConnection != null) // Make sure the connection is not null.
+                    httpURLConnection.disconnect();
+
+            }
+
+            return null;
+        }
+    }
 
     // HTTP GET request
     private void sendGet() throws Exception {
