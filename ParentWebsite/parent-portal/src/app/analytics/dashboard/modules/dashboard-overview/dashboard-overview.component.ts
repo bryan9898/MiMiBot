@@ -29,20 +29,19 @@ export class DashboardOverviewComponent implements OnInit {
         this.filter(this.allEmotionalData);
         var topEmotion = this.calculateTopEmotion(this.allEmotionalData);
         var phrase = "";
-        console.log(topEmotion);
         for (var i = 0; i < topEmotion.length; i++) {
           if (i == 0) {
             this.emotionName = topEmotion[i][0];
-            var value = Number(topEmotion[i][1]) / this.allEmotionalData.length;
+            var value = (Number(topEmotion[i][1]) / this.allEmotionalData.length) * 100;
             this.emotionValue = value.toPrecision(2).toString();;
           }
           else if (i < topEmotion.length - 1) {
-            var value = Number(topEmotion[i][1]) / this.allEmotionalData.length;
+            var value = (Number(topEmotion[i][1]) / this.allEmotionalData.length) * 100;
             var valuestr = value.toPrecision(2).toString();
             phrase = phrase + " " + topEmotion[i][0] + " at " + valuestr + "%" + " , ";
           }
           else {
-            var value = Number(topEmotion[i][1]) / this.allEmotionalData.length;
+            var value = (Number(topEmotion[i][1]) / this.allEmotionalData.length ) * 100;
             var valuestr = value.toPrecision(2).toString();
             phrase = phrase + " " + topEmotion[i][0] + " at " + valuestr + "%";
           }
@@ -70,15 +69,15 @@ export class DashboardOverviewComponent implements OnInit {
             {
               this.keywordName = topKeyword[0][i][0];
               this.keywordValue = String(topKeywordMapping.get(topKeyword[0][1][0]));
-              this.keywordTotal = String(integer);
+              this.keywordTotal = String(this.allEmotionalData.length);
 
             }
             else if( i < topKeyword[0].length -1)
             {
-              keywordSentenceBase = keywordSentenceBase + " [" + topKeyword[0][i][0] + ":" + String(topKeywordMapping.get(topKeyword[0][i][0])) +   "/" + integer + "]" + " , ";
+              keywordSentenceBase = keywordSentenceBase + " [" + topKeyword[0][i][0] + ":" + String(topKeywordMapping.get(topKeyword[0][i][0])) +   "/" + String(this.allEmotionalData.length) + "]" + " , ";
             }
             else {
-              keywordSentenceBase = keywordSentenceBase + " [" + topKeyword[0][i][0] + ":" + String(topKeywordMapping.get(topKeyword[0][i][0])) + "/" + integer + "]";
+              keywordSentenceBase = keywordSentenceBase + " [" + topKeyword[0][i][0] + ":" + String(topKeywordMapping.get(topKeyword[0][i][0])) + "/" + String(this.allEmotionalData.length) + "]";
               
             }
           }
@@ -112,7 +111,6 @@ export class DashboardOverviewComponent implements OnInit {
       keywordTransform.push([k, v]);
     });
 
-    console.log(keywordTransform);
     var max = keywordTransform[0][1];
     for (var counter = 1; counter < keywordTransform.length; counter++) {
       if (keywordTransform[counter][1] > max) {

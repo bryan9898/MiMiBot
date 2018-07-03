@@ -11,7 +11,7 @@ import * as Chart from 'chart.js';
   templateUrl: './emotion-analysis.component.html',
   styleUrls: ['./emotion-analysis.component.css']
 })
-export class EmotionAnalysisComponent implements OnInit {
+export class EmotionAnalysisComponent implements OnInit, OnChanges {
  
   private emotionDataset:Array<Emotion>;
   public pieChartLabels:string[];
@@ -35,6 +35,22 @@ export class EmotionAnalysisComponent implements OnInit {
   }
 
   @Input() dataList:Array<Speeches>;
+
+
+  ngOnChanges() {
+    this.chart.data.datasets= [{
+      data: this.pieChartData ,
+      backgroundColor:this.colorscheme,
+      borderColor:this.colorscheme,
+      pointBackgroundColor: this.colorscheme,
+      pointBorderColor:this.colorscheme,
+      pointHoverBackgroundColor: this.colorscheme,
+      pointHoverBorderColor: this.colorscheme
+    }]
+    this.chart.data.labels = this.pieChartLabels;
+
+    this.chart.update();
+  }
 
   ngOnInit() {
      //Set up sentiment analysis
@@ -70,7 +86,6 @@ export class EmotionAnalysisComponent implements OnInit {
         }
       }
     })
-
     this.chart = new Chart("canvas" , {
       type: "doughnut",
       data: {
@@ -441,13 +456,18 @@ export class EmotionAnalysisComponent implements OnInit {
       this.biasData = this.sortBiasData(this.pieChartDataset);
       this.pieChartLabels = this.biasData[0];
       this.pieChartData = this.biasData[1]; 
-      this.ngOnInit();
+      this.ngOnChanges();
       //Show only one date
     }
     else {
       //show all data
       this.emotionDataset = this.processEmotion(this.dataList);
-      this.ngOnInit();
+      this.pieChartDataset = this.getPiechartData(this.emotionDataset);
+      this.biasData = this.sortBiasData(this.pieChartDataset);
+      this.pieChartLabels = this.biasData[0];
+      this.pieChartData = this.biasData[1]; 
+      console.log("is this working");
+      this.ngOnChanges();
 
     }
     
