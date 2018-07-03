@@ -167,7 +167,7 @@ export class UploadsComponent implements OnInit {
     
     var sentData = await this.http.post("https://mimiwebserver.azurewebsites.net/api/Uploads", JSON.stringify({uploadId: id.toString()   , password:this.upload.songName,userId:"string",songLink:date}), { headers: bearer }).toPromise(); 
     
-    const baseUrl = this.blob.generateBlobUrl(this.Config, this.upload.songName)
+    const baseUrl = this.blob.generateBlobUrl(this.Config, this.upload.songName.toUpperCase())
     this.config = {
       baseUrl: baseUrl,
       blockSize: 1024 * 32,

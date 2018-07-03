@@ -19,6 +19,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.webkit.URLUtil;
 import android.widget.Button;
 import android.widget.TextView;
 import java.io.UnsupportedEncodingException;
@@ -118,6 +119,7 @@ public class MainActivity extends AppCompatActivity {
         } */
 
         System.out.println("\nTesting 2 - Send Http POST request");
+        new GetUrlContentTask().execute("");
     /*    try {
             AsyncT asyncT = new AsyncT();
             asyncT.execute();
@@ -178,6 +180,11 @@ public class MainActivity extends AppCompatActivity {
         };
         registerReceiver(broadcastReceiver, intentFilter);
     } */
+
+    private int playGame = 0;
+    private int gameNum = 0;
+    private int maxLength = 0;
+    private int endOfGame = 0;
 
     private void setupAsr() {
         speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this);
@@ -240,13 +247,61 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
 
-                    if(text.equalsIgnoreCase("Game Time")){
-                       new GetUrlContentTask().execute("");
+                    maxLength =  gameData.size();
+                    if(playGame == 1){
 
-                       startAsr();
-                    } else {
+                        if(text.equalsIgnoreCase("stop game")){
+                            playGame = 0;
+                        } else if(text.equalsIgnoreCase(gameData.get(gameNum).answers)){
+                            mp = MediaPlayer.create(MainActivity.this, R.raw.correct);
+
+                            mp.start();
+                            while(mp.isPlaying());
+                            mp.stop();
+                            if((maxLength-1) == gameNum ){
+                                startTts("End of game");
+                                //playGame = 0;
+                                endOfGame = 1;
+                            } else {
+                                gameNum += 1;
+                                Log.d("number" , String.valueOf(gameNum));
+                                startTts(gameData.get(gameNum).questions);
+                            }
+
+                        } else {
+                            mp = MediaPlayer.create(MainActivity.this, R.raw.wrong);
+                            mp.start();
+                            while(mp.isPlaying());
+                            mp.stop();
+                            if((maxLength-1) == gameNum ){
+                                startTts("End of game");
+                                //playGame = 0;
+                                endOfGame = 1;
+                            } else {
+                                gameNum += 1;
+                                Log.d("wrong - number" , String.valueOf(gameNum));
+                                startTts(gameData.get(gameNum).questions);
+                            }
+                        }
+
+                    }
+
+                    if(text.equalsIgnoreCase("Game Time")){
+                        endOfGame = 0;
+                       playGame = 1;
+                       startTts(gameData.get(gameNum).questions);
+
+                    } else if(endOfGame == 1){
+                        playGame =0;
+                    } else if(playGame == 1){
+                        //startAsr();
+                    }
+                    else {
                         startNlu(text);
                     }
+
+
+
                 }
             }
 
@@ -294,7 +349,7 @@ public class MainActivity extends AppCompatActivity {
         String song = text.substring(0,4);
 
         if (text.equalsIgnoreCase("song1")) {
-            mp.stop();
+           // mp.stop();
             mp = MediaPlayer.create(MainActivity.this, R.raw.shark);
             mp.start();
         } else if(text.equalsIgnoreCase("song2")){
@@ -303,10 +358,27 @@ public class MainActivity extends AppCompatActivity {
             mp.start();
         } else if(song.equalsIgnoreCase("Sing")){
             String songName = text.substring(5);
-           // mp.stop();
-            mp = MediaPlayer.create(this, Uri.parse("https://mimibotupload.blob.core.windows.net/uploads/"+songName));
 
-            mp.start();
+
+
+                   mp = MediaPlayer.create(this, Uri.parse("https://mimibotupload.blob.core.windows.net/uploads/" + songName.toUpperCase()));
+                    if(mp == null){
+
+                       // startTts("Song does not exist");
+                    } else
+                    {
+                        mp.start();
+                    }
+
+
+
+                   //startTts("Song does not Exist");
+
+
+
+
+
+
         }
         else {
             Log.e("tts", "startTts: " );
