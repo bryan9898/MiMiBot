@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MimibotWebserver.Models;
 
 namespace MimibotWebserver.Models
 {
@@ -18,6 +19,7 @@ namespace MimibotWebserver.Models
         public DbSet<User> Users { get; set; }
         public DbSet<Upload> Uploads { get; set; }
         public DbSet<Game> Games { get; set; }
+        public DbSet<MimibotWebserver.Models.Mark> Mark { get; set; }
 
 
     }

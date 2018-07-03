@@ -32,6 +32,24 @@ namespace MimibotWebserver.Migrations
                     b.ToTable("Games");
                 });
 
+            modelBuilder.Entity("MimibotWebserver.Models.Mark", b =>
+                {
+                    b.Property<string>("MarkId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Date");
+
+                    b.Property<string>("MarkValue");
+
+                    b.Property<string>("Question");
+
+                    b.Property<string>("UserId");
+
+                    b.HasKey("MarkId");
+
+                    b.ToTable("Mark");
+                });
+
             modelBuilder.Entity("MimibotWebserver.Models.Speech", b =>
                 {
                     b.Property<string>("SpeechId")

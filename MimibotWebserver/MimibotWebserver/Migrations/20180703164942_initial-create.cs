@@ -20,6 +20,21 @@ namespace MimibotWebserver.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Mark",
+                columns: table => new
+                {
+                    MarkId = table.Column<string>(nullable: false),
+                    UserId = table.Column<string>(nullable: true),
+                    Question = table.Column<string>(nullable: true),
+                    MarkValue = table.Column<string>(nullable: true),
+                    Date = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Mark", x => x.MarkId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Speechs",
                 columns: table => new
                 {
@@ -68,6 +83,9 @@ namespace MimibotWebserver.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Games");
+
+            migrationBuilder.DropTable(
+                name: "Mark");
 
             migrationBuilder.DropTable(
                 name: "Speechs");
