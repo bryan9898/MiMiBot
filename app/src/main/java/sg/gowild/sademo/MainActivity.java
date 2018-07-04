@@ -1,43 +1,35 @@
 package sg.gowild.sademo;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Environment;
+import android.os.Bundle;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.speech.tts.TextToSpeech;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.webkit.URLUtil;
 import android.widget.Button;
 import android.widget.TextView;
-import java.io.UnsupportedEncodingException;
-
-import java.net.MalformedURLException;
-import android.media.MediaPlayer;
-import android.media.MediaPlayer.OnCompletionListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
-//import java.net.ProtocolException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.text.SimpleDateFormat;
@@ -46,6 +38,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
+
+import javax.net.ssl.HttpsURLConnection;
 
 import ai.api.AIConfiguration;
 import ai.api.AIDataService;
@@ -58,20 +53,8 @@ import ai.kitt.snowboy.SnowboyDetect;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.Base64;
-import java.util.Random;
 
-import javax.net.ssl.HttpsURLConnection;
+//import java.net.ProtocolException;
 
 public class MainActivity extends AppCompatActivity {
     // View Variables
@@ -92,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
     private SnowboyDetect snowboyDetect;
     private MediaPlayer mp;
     private final String USER_AGENT = "Mozilla/5.0";
+    private CloudSpeechRecognizer cloudSpeechRecognizer;
 
     static {
         System.loadLibrary("snowboy-detect-android");
@@ -106,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
         // TODO: Setup Components
         setupViews();
         //setupXiaoBaiButton();
-        setupAsr();
+        setupCloudAsr();
         setupTts();
         setupNlu();
         setupHotword();
@@ -166,6 +150,7 @@ public class MainActivity extends AppCompatActivity {
                 startAsr();
             }
         }); */
+
     }
 /*
     private void setupXiaoBaiButton() {
@@ -188,6 +173,139 @@ public class MainActivity extends AppCompatActivity {
     private int gameNum = 0;
     private int maxLength = 0;
     private int endOfGame = 0;
+
+    private void setupCloudAsr() {
+        InputStream authorizationInputStream = getResources().openRawResource(R.raw.auth);
+        try {
+            cloudSpeechRecognizer = new CloudSpeechRecognizer(this, authorizationInputStream);
+        } catch (IOException e) {
+            Log.e("cloudasr", e.getMessage(), e);
+            startHotword();
+        }
+    }
+
+
+
+    private void startCloudAsr() {
+        cloudSpeechRecognizer.startListening(this, "en-US",
+                new CloudSpeechRecognizer.OnAsrResultListener() {
+                    @Override
+                    public void onReadyForSpeech(Bundle params) {
+
+                        Log.d("asr","you can start speaking now");
+                        textView2.setText("You can start speaking now");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e("cloudasr", e.getMessage(), e);
+
+                        textView2.setText("Listening to Hotword");
+
+                        startHotword();
+                    }
+
+                    @Override
+                    public void onResult(String text, float confidence) {
+                        // This will run on Main/UI Thread
+                        //textView.setText(text);
+                        //startNlu(text);
+
+                        if (text == null || text.isEmpty()) {
+                            textView.setText("Please try again");
+                        } else {
+
+
+                            textView.setText(text);
+
+                            if(text.equalsIgnoreCase("Hello")){
+
+                            } else {
+                                try {
+                                    //sendPost(text);
+
+                                    new AsyncT().execute(text);
+
+
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+
+                            maxLength =  gameData.size();
+                            if(playGame == 1){
+
+                                if(text.equalsIgnoreCase("stop game")){
+                                    playGame = 0;
+                                } else if(text.equalsIgnoreCase(gameData.get(gameNum).answers)){
+                                    mp = MediaPlayer.create(MainActivity.this, R.raw.correct);
+
+                                    mp.start();
+                                    while(mp.isPlaying());
+                                    mp.stop();
+
+                                    new gameScore().execute("1",gameData.get(gameNum).questions);
+
+                                    if((maxLength-1) == gameNum ){
+                                        startTts("End of game");
+                                        //playGame = 0;
+                                        endOfGame = 1;
+                                    } else {
+                                        gameNum += 1;
+                                        Log.d("number" , String.valueOf(gameNum));
+                                        startTts(gameData.get(gameNum).questions);
+                                    }
+
+                                } else {
+                                    mp = MediaPlayer.create(MainActivity.this, R.raw.wrong);
+                                    mp.start();
+                                    while(mp.isPlaying());
+                                    mp.stop();
+                                    new gameScore().execute("0",gameData.get(gameNum).questions);
+
+                                    if((maxLength-1) == gameNum ){
+                                        startTts("End of game");
+                                        //playGame = 0;
+                                        endOfGame = 1;
+                                    } else {
+                                        gameNum += 1;
+                                        Log.d("wrong - number" , String.valueOf(gameNum));
+                                        startTts(gameData.get(gameNum).questions);
+                                    }
+                                }
+
+                            }
+
+                            if(text.equalsIgnoreCase("Game Time")){
+                                endOfGame = 0;
+                                playGame = 1;
+                                startTts(gameData.get(gameNum).questions);
+
+                            } else if(endOfGame == 1){
+                                playGame =0;
+                            } else if(playGame == 1){
+                                //startAsr();
+                            }
+                            else {
+                                startNlu(text);
+                            }
+
+
+
+                        }
+
+
+                    }
+
+
+
+
+
+                });
+    }
+
+
+
 
     private void setupAsr() {
         speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this);
@@ -354,8 +472,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void startTts(final String text) {
         // TODO: Start TTS
-        String song = text.substring(0,4);
-
+        String song="";
+        if(text.length() >= 5) {
+            song = text.substring(0, 4);
+        }
         if (text.equalsIgnoreCase("song1")) {
            // mp.stop();
             mp = MediaPlayer.create(MainActivity.this, R.raw.shark);
@@ -376,6 +496,8 @@ public class MainActivity extends AppCompatActivity {
                     } else
                     {
                         mp.start();
+                        while(mp.isPlaying());
+                        mp.stop();
                     }
 
 
@@ -412,7 +534,7 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     //mp.stop();
                     textToSpeech.stop();
-                    startAsr();
+                    startCloudAsr();
                 }
 
                 //startHotword();
@@ -518,7 +640,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("hotword", "stop listening to hotword");
 
                 // TODO: Add action after hotword is detected
-                startAsr();
+                startCloudAsr();
             }
         };
         Threadings.runInBackgroundThread(runnable);

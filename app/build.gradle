@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.google.protobuf'
 
 android {
     compileSdkVersion 27
@@ -9,11 +10,40 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+protobuf {
+    protoc {
+        artifact = 'com.google.protobuf:protoc:3.0.0'
+    }
+    plugins {
+        grpc {
+            artifact = 'io.grpc:protoc-gen-grpc-java:1.0.0'
+        }
+        javalite {
+            artifact = 'com.google.protobuf:protoc-gen-javalite:3.0.0'
+        }
+    }
+    generateProtoTasks {
+        all().each {
+            task ->
+                task.builtins {
+                    remove javanano
+                    java {
+                    }
+                }
+                task.plugins {
+                    grpc {
+                    }
+                }
         }
     }
 }
@@ -28,4 +58,31 @@ dependencies {
 
     implementation 'ai.api:libai:1.6.12'
     implementation 'com.squareup.okhttp3:okhttp:3.10.0'
+
+    implementation 'com.android.support:multidex:1.0.3'
+    implementation 'javax.annotation:javax.annotation-api:1.2'
+    implementation("io.grpc:grpc-protobuf:1.0.0") {
+        exclude module: 'jsr305'
+    }
+    implementation("io.grpc:grpc-stub:1.0.0") {
+        exclude module: 'jsr305'
+    }
+    implementation("io.grpc:grpc-auth:1.0.0") {
+        exclude module: 'jsr305'
+    }
+    implementation("io.grpc:grpc-okhttp:1.0.0") {
+        exclude module: 'jsr305'
+    }
+    implementation('com.google.auth:google-auth-library-oauth2-http:0.3.0') {
+        exclude module: 'jsr305'
+        exclude module: 'httpclient'
+    }
+    implementation 'info.guardianproject.netcipher:netcipher:1.2'
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'org.mockito:mockito-core:2.2.28'
+    implementation 'com.google.android.gms:play-services-auth:11.0.4'
+    implementation 'com.android.support:support-media-compat:27.1.1'
+    implementation 'com.android.support:support-v4:27.1.1'
+
+
 }
