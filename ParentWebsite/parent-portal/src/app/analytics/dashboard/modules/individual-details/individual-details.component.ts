@@ -120,7 +120,7 @@ export class IndividualDetailsComponent implements OnInit,OnChanges {
          
       labelArray.push(value);
       var numberData = Number.parseFloat(key);
-      var roundedOff = numberData.toPrecision(2);
+      var roundedOff = numberData.toPrecision(2) ;
       valuesArray.push(Number(roundedOff));
     
     })

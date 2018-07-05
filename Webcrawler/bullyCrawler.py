@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import scrapy
-
+import random
 
 counter = 0;
 def saveIntoFile(data , fileName):
@@ -33,7 +33,8 @@ class BullycrawlerSpider(scrapy.Spider):
         data = response.css('div.content').extract();
         for d in data:
             saveIntoFile(d, "bullying" + str(self.number));
-            self.number = self.number + 1;
+            self.number = random.randint(1,30000);
+            self.log(self.number)
         nextLink = response.css('a.right-box.right::attr(href)').extract_first();
         if nextLink:
             nextLink = response.urljoin(nextLink);

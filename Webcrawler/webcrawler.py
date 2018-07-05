@@ -1,9 +1,9 @@
 import scrapy
-
+import random
 
 counter = 0;
 def saveIntoFile(data , fileName):
-    f = open("../../sad/ " +  fileName + ".txt" , "d+");
+    f = open("../../sad/ " +  fileName + ".txt" , "w+");
     f.write(data);
     f.close()
 
@@ -47,9 +47,8 @@ class BullycrawlerSpider(scrapy.Spider):
         self.log("I just visted" + response.url);
         data = response.css('div.ipsType_normal.ipsType_richText.ipsContained').extract()
         for d in data:
-            if(self.number.)
             saveIntoFile(d, "depression" + str(self.number));
-            self.number = self.number + 1;
+            self.number = random.randint(1, 50000)
         nextLink = response.css('ul.ipsPagination > li.ipsPagination_next > a::attr(href) ').extract_first();
         if nextLink:
             nextLink = response.urljoin(nextLink);

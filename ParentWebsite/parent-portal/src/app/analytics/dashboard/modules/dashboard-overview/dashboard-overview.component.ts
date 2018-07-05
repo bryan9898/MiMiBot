@@ -30,6 +30,7 @@ export class DashboardOverviewComponent implements OnInit {
         var topEmotion = this.calculateTopEmotion(this.allEmotionalData);
         var phrase = "";
         for (var i = 0; i < topEmotion.length; i++) {
+          console.log(topEmotion)
           if (i == 0) {
             this.emotionName = topEmotion[i][0];
             var value = (Number(topEmotion[i][1]) / this.allEmotionalData.length) * 100;
@@ -63,24 +64,26 @@ export class DashboardOverviewComponent implements OnInit {
           topKeyword[1].forEach(data => {
             topKeywordMapping.set(data[0] , data[1]);
           })
+          console.log(topKeywordMapping);
           var keywordSentenceBase = "";
           for (var i = 0; i < topKeyword[0].length; i++) {
             if( i == 0)
             {
-              this.keywordName = topKeyword[0][i][0];
-              this.keywordValue = String(topKeywordMapping.get(topKeyword[0][1][0]));
-              this.keywordTotal = String(this.allEmotionalData.length);
+              console.log(topKeyword[i]);
+              this.keywordName = topKeyword[i][0][0];
+              this.keywordValue = ((topKeywordMapping.get(this.keywordName) / this.allEmotionalData.length) * 100).toPrecision(2).toString();
 
             }
             else if( i < topKeyword[0].length -1)
             {
-              keywordSentenceBase = keywordSentenceBase + " [" + topKeyword[0][i][0] + ":" + String(topKeywordMapping.get(topKeyword[0][i][0])) +   "/" + String(this.allEmotionalData.length) + "]" + " , ";
+              keywordSentenceBase = keywordSentenceBase + " [" + topKeyword[0][i][0] + " at " + ((topKeywordMapping.get(topKeyword[0][i][0]) / + this.allEmotionalData.length) * 100).toPrecision(2).toString() + "% ]" + " , ";
             }
             else {
-              keywordSentenceBase = keywordSentenceBase + " [" + topKeyword[0][i][0] + ":" + String(topKeywordMapping.get(topKeyword[0][i][0])) + "/" + String(this.allEmotionalData.length) + "]";
+              keywordSentenceBase = keywordSentenceBase + " [" + topKeyword[0][i][0] + " at " + ((topKeywordMapping.get(topKeyword[0][i][0]) / + this.allEmotionalData.length)* 100).toPrecision(2).toString() + "% ]";
               
             }
           }
+          console.log(topKeyword);
 
           this.keywordSetence = keywordSentenceBase;
 

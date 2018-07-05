@@ -45,6 +45,14 @@ export class DashboardComponent implements OnInit {
   
     try{
       this.dataList = await this.testing();
+      console.log(this.dataList);
+      for(var i = 0; i < this.dataList.length; i++)
+      {
+        if(this.dataList[i].$speechDetails.includes("game time"))
+        {
+          this.dataList.splice(i, 1);
+        }
+      }
     }
     catch(error)
     {
