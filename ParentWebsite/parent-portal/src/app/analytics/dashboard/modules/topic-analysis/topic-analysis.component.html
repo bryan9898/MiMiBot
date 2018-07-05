@@ -28,9 +28,14 @@
       [width]="options.width"
       [overflow]="options.overflow"
       [zoomOnHover]="zoomOnHoverOptions"
+      (clicked)="topicClicked($event)"
   ></angular-tag-cloud>
     </div>
   </div>
+
+  <div *ngIf="showTopicDetails">
+    <app-topic-details *ngFor="let emotion of activeSpeech" [emotion]="emotion" style="display: inline-block" ></app-topic-details>
+  </div> 
   
 
 

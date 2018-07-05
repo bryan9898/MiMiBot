@@ -1,5 +1,6 @@
 import { Component, OnInit , Input } from '@angular/core';
 import { Speeches } from 'src/app/class/speeches';
+import { Emotion } from 'src/app/class/emotion';
 
 @Component({
   selector: 'app-topic-details',
@@ -8,7 +9,8 @@ import { Speeches } from 'src/app/class/speeches';
 })
 export class TopicDetailsComponent implements OnInit {
 
-  @Input() speech:Speeches;
+  @Input() emotion:Emotion;
+  private speech:Speeches;
   private tags: string; 
   private sentence:string;
   constructor() { }
@@ -16,6 +18,7 @@ export class TopicDetailsComponent implements OnInit {
   ngOnInit() {
     var base = "";
     var i = 0; 
+    this.speech = this.emotion.$dataSet;
     this.speech.$topics.forEach(t => 
     {
       i++; 

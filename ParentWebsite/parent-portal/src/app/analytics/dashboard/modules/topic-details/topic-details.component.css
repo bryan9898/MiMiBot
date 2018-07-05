@@ -2,7 +2,8 @@
     margin-top: 5%;
     display: inline-block;
     margin: 2%;
-    min-width: 30vw;
+    width:auto;
+    max-width: 20vw;
     z-index: inherit;
   }
   

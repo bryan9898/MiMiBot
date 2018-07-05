@@ -19,6 +19,8 @@ export class TopicAnalysisComponent implements OnInit {
   private testing:string;
   private dataSetMapping:Map<string, number>; 
   private dataSetData:Array<any>;
+  private activeSpeech:Array<Emotion>;
+  private showTopicDetails = false;
   topicData: CloudData[];
   constructor(private as:AnalyticsService) { 
     this.analyticsService = as;
@@ -106,4 +108,22 @@ export class TopicAnalysisComponent implements OnInit {
      // Zoom will take affect after 0.8 seconds
   };
 
+  topicClicked(event) {
+    var clickedText = event.text;
+    var arrayOfClickedTopics:Array<Emotion> = new Array<Emotion>();
+    this.emotionDataset.forEach(data => {
+      for(var i = 0; i < data.$dataSet.$topics.length; i++)
+      {
+        console.log(data.$dataSet.$speechDetails);
+        console.log(data.$dataSet.$topics[i]);
+        console.log("---");        
+        if(data.$dataSet.$topics[i].toLowerCase() == clickedText.toLowerCase())
+        {
+          arrayOfClickedTopics.push(data);
+        }
+      }
+    })
+    this.activeSpeech = arrayOfClickedTopics;
+    this.showTopicDetails = true;
+  }
 }
