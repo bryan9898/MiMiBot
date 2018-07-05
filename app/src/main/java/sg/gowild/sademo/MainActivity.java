@@ -74,6 +74,9 @@ public class MainActivity extends AppCompatActivity {
     private boolean shouldDetect;
     private SnowboyDetect snowboyDetect;
     private MediaPlayer mp;
+    private MediaPlayer mpCorrect;
+    private MediaPlayer mpWrong;
+    private MediaPlayer mpStart;
     private final String USER_AGENT = "Mozilla/5.0";
     private CloudSpeechRecognizer cloudSpeechRecognizer;
 
@@ -91,9 +94,13 @@ public class MainActivity extends AppCompatActivity {
         setupViews();
         //setupXiaoBaiButton();
         setupCloudAsr();
+       // setupAsr();
         setupTts();
         setupNlu();
         setupHotword();
+       // mpCorrect = MediaPlayer.create(MainActivity.this, R.raw.correct);
+       // mpWrong = MediaPlayer.create(MainActivity.this, R.raw.wrong);
+       // mpStart = MediaPlayer.create(MainActivity.this, R.raw.ding);
         // talk to database
 
         MainActivity http = new MainActivity();
@@ -187,20 +194,22 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void startCloudAsr() {
+
+
         cloudSpeechRecognizer.startListening(this, "en-US",
                 new CloudSpeechRecognizer.OnAsrResultListener() {
                     @Override
                     public void onReadyForSpeech(Bundle params) {
 
                         Log.d("asr","you can start speaking now");
-                        textView2.setText("You can start speaking now");
+                        //textView2.setText("You can start speaking now");
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         Log.e("cloudasr", e.getMessage(), e);
 
-                        textView2.setText("Listening to Hotword");
+                       // textView2.setText("Listening to Hotword");
 
                         startHotword();
                     }
@@ -235,21 +244,23 @@ public class MainActivity extends AppCompatActivity {
                             maxLength =  gameData.size();
                             if(playGame == 1){
 
-                                if(text.equalsIgnoreCase("stop game")){
+                                if(text.equalsIgnoreCase("stop game") || text.contains("stop game") || text.contains("Stop Game")){
                                     playGame = 0;
                                 } else if(text.equalsIgnoreCase(gameData.get(gameNum).answers)){
-                                    mp = MediaPlayer.create(MainActivity.this, R.raw.correct);
-
-                                    mp.start();
-                                    while(mp.isPlaying());
-                                    mp.stop();
-
+                                   // mp = MediaPlayer.create(MainActivity.this, R.raw.correct);
+                                   // mpCorrect.seekTo(0);
+                                    mpCorrect = MediaPlayer.create(MainActivity.this, R.raw.correct);
+                                    mpCorrect.start();
+                                    while(mpCorrect.isPlaying());
+                                    mpCorrect.stop();
+                                    mpCorrect.release();
                                     new gameScore().execute("1",gameData.get(gameNum).questions);
 
                                     if((maxLength-1) == gameNum ){
-                                        startTts("End of game");
+                                        //startTts("End of game");
                                         //playGame = 0;
                                         endOfGame = 1;
+
                                     } else {
                                         gameNum += 1;
                                         Log.d("number" , String.valueOf(gameNum));
@@ -257,16 +268,21 @@ public class MainActivity extends AppCompatActivity {
                                     }
 
                                 } else {
-                                    mp = MediaPlayer.create(MainActivity.this, R.raw.wrong);
-                                    mp.start();
-                                    while(mp.isPlaying());
-                                    mp.stop();
+                                   // mp = MediaPlayer.create(MainActivity.this, R.raw.wrong);
+                                  //  mpWrong.seekTo(0);
+                                    mpWrong = MediaPlayer.create(MainActivity.this, R.raw.wrong);
+                                    mpWrong.start();
+                                    while(mpWrong.isPlaying());
+                                    mpWrong.stop();
+                                    mpWrong.release();
+
                                     new gameScore().execute("0",gameData.get(gameNum).questions);
 
                                     if((maxLength-1) == gameNum ){
-                                        startTts("End of game");
+                                        //startTts("End of game");
                                         //playGame = 0;
                                         endOfGame = 1;
+
                                     } else {
                                         gameNum += 1;
                                         Log.d("wrong - number" , String.valueOf(gameNum));
@@ -276,13 +292,22 @@ public class MainActivity extends AppCompatActivity {
 
                             }
 
-                            if(text.equalsIgnoreCase("Game Time")){
+                            if(text.equalsIgnoreCase("Game Time")||text.contains("game time") || text.contains("Game Time")){
                                 endOfGame = 0;
                                 playGame = 1;
                                 startTts(gameData.get(gameNum).questions);
 
                             } else if(endOfGame == 1){
                                 playGame =0;
+                                endOfGame = 0;
+                                mpStart = MediaPlayer.create(MainActivity.this, R.raw.ding);
+                                mpStart.start();
+                                while(mpStart.isPlaying());
+                                mpStart.stop();
+                                mpStart.release();
+
+                                startCloudAsr();
+                                //startHotword();
                             } else if(playGame == 1){
                                 //startAsr();
                             }
@@ -313,7 +338,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onReadyForSpeech(Bundle params) {
                 // Ignore
-                Log.d("asr","you can start speaking now");
+                Log.d("asr", "you can start speaking now");
                 textView2.setText("You can start speaking now");
             }
 
@@ -347,14 +372,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResults(Bundle results) {
                 List<String> texts = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
+
                 if (texts == null || texts.isEmpty()) {
                     textView.setText("Please try again");
                 } else {
+
                     String text = texts.get(0);
 
                     textView.setText(text);
 
-                    if(text.equalsIgnoreCase("Hello")){
+                    if (text.equalsIgnoreCase("Hello")) {
 
                     } else {
                         try {
@@ -368,68 +395,79 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
 
-                    maxLength =  gameData.size();
-                    if(playGame == 1){
+                    maxLength = gameData.size();
+                    if (playGame == 1) {
 
-                        if(text.equalsIgnoreCase("stop game")){
+                        if (text.equalsIgnoreCase("stop game") || text.contains("stop game") || text.contains("Stop Game")) {
                             playGame = 0;
-                        } else if(text.equalsIgnoreCase(gameData.get(gameNum).answers)){
-                            mp = MediaPlayer.create(MainActivity.this, R.raw.correct);
+                        } else if (text.equalsIgnoreCase(gameData.get(gameNum).answers)) {
 
-                            mp.start();
-                            while(mp.isPlaying());
-                            mp.stop();
+                            mpCorrect.seekTo(0);
+                            mpCorrect.start();
+                            while (mpCorrect.isPlaying()) ;
+                            mpCorrect.stop();
 
-                            new gameScore().execute("1",gameData.get(gameNum).questions);
+                            new gameScore().execute("1", gameData.get(gameNum).questions);
 
-                            if((maxLength-1) == gameNum ){
+                            if ((maxLength - 1) == gameNum) {
                                 startTts("End of game");
                                 //playGame = 0;
                                 endOfGame = 1;
+
                             } else {
                                 gameNum += 1;
-                                Log.d("number" , String.valueOf(gameNum));
+                                Log.d("number", String.valueOf(gameNum));
                                 startTts(gameData.get(gameNum).questions);
                             }
 
                         } else {
-                            mp = MediaPlayer.create(MainActivity.this, R.raw.wrong);
-                            mp.start();
-                            while(mp.isPlaying());
-                            mp.stop();
-                            new gameScore().execute("0",gameData.get(gameNum).questions);
+                            //mp = MediaPlayer.create(MainActivity.this, R.raw.wrong);
 
-                            if((maxLength-1) == gameNum ){
+                            mpWrong.start();
+                            while (mpWrong.isPlaying()) ;
+                            mpWrong.stop();
+                            new gameScore().execute("0", gameData.get(gameNum).questions);
+
+                            if ((maxLength - 1) == gameNum) {
                                 startTts("End of game");
                                 //playGame = 0;
                                 endOfGame = 1;
+                                //startCloudAsr();
                             } else {
                                 gameNum += 1;
-                                Log.d("wrong - number" , String.valueOf(gameNum));
+                                Log.d("wrong - number", String.valueOf(gameNum));
                                 startTts(gameData.get(gameNum).questions);
                             }
                         }
 
                     }
 
-                    if(text.equalsIgnoreCase("Game Time")){
+                    if (text.equalsIgnoreCase("Game Time") || text.contains("game time") || text.contains("Game Time")) {
                         endOfGame = 0;
-                       playGame = 1;
-                       startTts(gameData.get(gameNum).questions);
+                        playGame = 1;
+                        startTts(gameData.get(gameNum).questions);
 
-                    } else if(endOfGame == 1){
-                        playGame =0;
-                    } else if(playGame == 1){
+                    } else if (endOfGame == 1) {
+                        playGame = 0;
+                        //startCloudAsr();
+                        startHotword();
+                    } else if (playGame == 1) {
                         //startAsr();
-                    }
-                    else {
+                    } else {
                         startNlu(text);
                     }
 
 
-
                 }
-            }
+
+
+
+
+
+
+
+
+        }
 
             @Override
             public void onPartialResults(Bundle partialResults) {
@@ -498,16 +536,12 @@ public class MainActivity extends AppCompatActivity {
                         mp.start();
                         while(mp.isPlaying());
                         mp.stop();
+                        mp.release();
                     }
 
 
 
                    //startTts("Song does not Exist");
-
-
-
-
-
 
         }
         else {
@@ -528,12 +562,22 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
                 if(text.equalsIgnoreCase("stop")){
-                    textView2.setText("Listening to Hotword");
+                    //textView2.setText("Listening to Hotword");
                     //mp.stop();
+                    startHotword();
+                }else if(text.equalsIgnoreCase("Good Bye")){
+                  //  textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null);
                     startHotword();
                 } else {
                     //mp.stop();
                     textToSpeech.stop();
+                  // mp = MediaPlayer.create(MainActivity.this, R.raw.ding);
+
+                    mpStart = MediaPlayer.create(MainActivity.this, R.raw.ding);
+                    mpStart.start();
+                    while(mpStart.isPlaying());
+                    mpStart.stop();
+                    mpStart.release();
                     startCloudAsr();
                 }
 
@@ -593,7 +637,7 @@ public class MainActivity extends AppCompatActivity {
 
         // TODO: Set Sensitivity
         snowboyDetect = new SnowboyDetect(common.getAbsolutePath(), model.getAbsolutePath());
-        snowboyDetect.setSensitivity("0.50");
+        snowboyDetect.setSensitivity("0.55");
         snowboyDetect.applyFrontend(true);
     }
 
@@ -640,6 +684,12 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("hotword", "stop listening to hotword");
 
                 // TODO: Add action after hotword is detected
+               // mp = MediaPlayer.create(MainActivity.this, R.raw.ding);
+                mpStart = MediaPlayer.create(MainActivity.this, R.raw.ding);
+                mpStart.start();
+                while(mpStart.isPlaying());
+                mpStart.stop();
+                mpStart.release();
                 startCloudAsr();
             }
         };
@@ -673,7 +723,8 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         } catch (IOException | JSONException e) {
-            Log.e("weather", e.getMessage(), e);
+            Log.e("weather",
+                    e.getMessage(), e);
         }
 
         return "No weather info";
@@ -976,6 +1027,10 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
+
 }
+
+
 
 

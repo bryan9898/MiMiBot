@@ -99,7 +99,9 @@ public class CloudSpeechRecognizer {
         recorder.startRecording();
         listen = true;
         Log.d(TAG, "Microphone started recording");
+        Log.d("asr","you can start speaking now");
 
+        //textView2.setText("You can start speaking now");
         // Loop to Record Audio
         byte[] buffer = new byte[bufferSize];
         int readSize = recorder.read(buffer, 0, bufferSize);
@@ -124,9 +126,11 @@ public class CloudSpeechRecognizer {
         Log.d(TAG, "End of Request");
 
         // Stop Recording Audio
-        recorder.stop();
-        recorder.release();
-        recorder = null;
+        if(recorder != null) {
+            recorder.stop();
+            recorder.release();
+            recorder = null;
+        }
         Log.d(TAG, "Microphone stopped recording");
 
         // Stop Connection if still conneted
