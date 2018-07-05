@@ -3,9 +3,7 @@
     width: auto;
     display: inline-block;
     height: 50px;
-    margin-left: 1%;
-    margin-right: 1%;
-   
+    
     
     
 }
@@ -19,4 +17,7 @@
 .container-fluid {
     z-index: 0;
     position: relative;
+    
+    margin: 0px; 
+    padding: 0px;
 }

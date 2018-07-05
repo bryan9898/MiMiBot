@@ -26,13 +26,15 @@ export class DashboardComponent implements OnInit {
   private filteredDataset: Array<Speeches> = new Array<Speeches>();
   private loaded:Boolean = false;
   private showChart = false;
+  private showChart2 = false;
+
   private emotionDataset:Array<Emotion>;
   public pieChartLabels:string[];
   public pieChartData:number[];
   public pieChartDataset;
   public biasData;
   public pieChartType:string = 'doughnut';
-  public dataList:Array<Speeches> = null;
+  public dataList:Array<Speeches> = [];
   private analyticsService:AnalyticsService;
   private http;
   constructor(tks: TokenService , http: HttpClient , as:AnalyticsService) { 
@@ -45,7 +47,6 @@ export class DashboardComponent implements OnInit {
   
     try{
       this.dataList = await this.testing();
-      console.log(this.dataList);
       for(var i = 0; i < this.dataList.length; i++)
       {
         if(this.dataList[i].$speechDetails.includes("game time"))

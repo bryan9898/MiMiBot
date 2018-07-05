@@ -38,18 +38,22 @@ export class EmotionAnalysisComponent implements OnInit, OnChanges {
 
 
   ngOnChanges() {
-    this.chart.data.datasets= [{
-      data: this.pieChartData ,
-      backgroundColor:this.colorscheme,
-      borderColor:this.colorscheme,
-      pointBackgroundColor: this.colorscheme,
-      pointBorderColor:this.colorscheme,
-      pointHoverBackgroundColor: this.colorscheme,
-      pointHoverBorderColor: this.colorscheme
-    }]
-    this.chart.data.labels = this.pieChartLabels;
-
-    this.chart.update();
+    if(this.pieChartData != null)
+    {
+      this.chart.data.datasets= [{
+        data: this.pieChartData ,
+        backgroundColor:this.colorscheme,
+        borderColor:this.colorscheme,
+        pointBackgroundColor: this.colorscheme,
+        pointBorderColor:this.colorscheme,
+        pointHoverBackgroundColor: this.colorscheme,
+        pointHoverBorderColor: this.colorscheme
+      }]
+      this.chart.data.labels = this.pieChartLabels;
+  
+      this.chart.update();
+    }
+  
   }
 
   ngOnInit() {

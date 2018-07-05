@@ -1,28 +1,8 @@
 <div class="container-fluid">
-  <div class="dashboard-overview">
-      <app-dashboard-overview></app-dashboard-overview>
-  </div>
-  <h1>Topics Analysis</h1>
-  <p style="font-style: italic">"Ever wondered what topics your child talk about?"</p>
-    <div *ngIf="showChart">
-        <div style="display: block">
-          <canvas baseChart
-                  [datasets]="barChartData"
-                  [labels]="barChartLabels"
-                  [options]="barChartOptions"
-                  [legend]="barChartLegend"
-                  [chartType]="barChartType"
-                  [colors]="chartColors"
-                  (chartHover)="chartHovered($event)"
-                  (chartClick)="chartClicked($event)"></canvas>
-        </div>
-        
+    <div class="dashboard-overview">
+        <app-dashboard-overview></app-dashboard-overview>
     </div>
-
-    <div *ngIf="showTopicDetails">
-        <app-topic-details *ngFor="let speech of activeSpeech" [speech]="speech" style="display: inline-block" ></app-topic-details>
-    </div>
-
+    <app-topic-analysis></app-topic-analysis>
     <app-emotion-analysis *ngIf="showChart" [dataList]="dataList"></app-emotion-analysis>
 
 </div>
@@ -41,11 +21,11 @@
                 (chartHover)="pieHovered($event)"
                 (chartClick)="pieClicked($event)"></canvas>
       </div> -->
-    
-    
-    
-    
-    <!--
+
+
+
+
+<!--
     <div>
         <angular-tag-cloud
           [data]="data"

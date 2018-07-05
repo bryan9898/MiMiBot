@@ -11,13 +11,15 @@ export class DashboardOverviewComponent implements OnInit {
 
   private analyticsService: AnalyticsService;
   private allEmotionalData: Array<Emotion>;
-  private emotionValue: string = "testing";
-  private emotionName: string = "testing";
-  private keywordName: string = "testing";
-  private keywordValue: string = "testing";
-  private keywordTotal: string = "testing";
+  private emotionValue: string = "None";
+  private emotionName: string = "None";
+  private keywordName: string = "None";
+  private keywordValue: string = "None";
+  private keywordTotal: string = "None";
   private keywordSetence:string;
   private sentence: string;
+  private followUpEmotion:boolean; 
+  private followUpKeyword:boolean;
   constructor(as: AnalyticsService) {
     this.analyticsService = as;
   }
@@ -56,6 +58,8 @@ export class DashboardOverviewComponent implements OnInit {
             integer++;})
           })
 
+
+
           // this.emotionName = topEmotion[0];
           // var value = Number(topEmotion[1]) / this.allEmotionalData.length;
           // this.emotionValue = value.toPrecision(2).toString();;
@@ -89,7 +93,16 @@ export class DashboardOverviewComponent implements OnInit {
 
         }
       })
+      
+      if(this.sentence != null)
+      {
+        this.followUpEmotion = true;
+      }
 
+      if(this.keywordSetence != null)
+      {
+        this.followUpKeyword = true;
+      }
 
   }
 
@@ -108,12 +121,10 @@ export class DashboardOverviewComponent implements OnInit {
         }
       })
     })
-
     var keywordTransform: Array<any> = new Array<any>();
     keywordArray.forEach((v, k) => {
       keywordTransform.push([k, v]);
     });
-
     var max = keywordTransform[0][1];
     for (var counter = 1; counter < keywordTransform.length; counter++) {
       if (keywordTransform[counter][1] > max) {

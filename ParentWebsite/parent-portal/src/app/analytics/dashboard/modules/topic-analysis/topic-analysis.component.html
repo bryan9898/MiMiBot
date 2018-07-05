@@ -1,0 +1,29 @@
+<!-- <h1>Topics Analysis</h1>
+  <p style="font-style: italic">"Ever wondered what topics your child talk about?"</p>
+    <div *ngIf="showChart">
+        <div style="display: block">
+          <canvas baseChart
+                  [datasets]="barChartData"
+                  [labels]="barChartLabels"
+                  [options]="barChartOptions"
+                  [legend]="barChartLegend"
+                  [chartType]="barChartType"
+                  [colors]="chartColors"
+                  (chartHover)="chartHovered($event)"
+                  (chartClick)="chartClicked($event)"></canvas>
+        </div>
+        
+    </div>
+
+    <div *ngIf="showTopicDetails">
+        <app-topic-details *ngFor="let speech of activeSpeech" [speech]="speech" style="display: inline-block" ></app-topic-details>
+    </div> -->
+
+  <h1>Topics Analysis</h1>
+  <p style="font-style: italic">"Ever wondered what topics your child talk about?"</p>
+  <angular-tag-cloud style="margin: auto; width: 100%; height: auto; font-size: 10px; font-weight:bold"
+  [data]="CloudData"
+  [overflow]="options.overflow"
+  [zoomOnHover]="zoomOnHoverOptions"
+  (clicked)="cloudClicked($event)"></angular-tag-cloud>
+  
