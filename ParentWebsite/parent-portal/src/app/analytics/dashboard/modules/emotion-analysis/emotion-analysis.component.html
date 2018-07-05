@@ -31,6 +31,7 @@
           <angular-tag-cloud style="margin: auto; width: 100%; height: auto; font-size: 10px; font-weight:bold"
           [data]="CloudData"
           [overflow]="options.overflow"
+          [width]="options.width"
           [zoomOnHover]="zoomOnHoverOptions"
           (clicked)="cloudClicked($event)"></angular-tag-cloud>
       </div>

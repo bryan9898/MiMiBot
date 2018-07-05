@@ -216,7 +216,7 @@ export class EmotionAnalysisComponent implements OnInit, OnChanges {
     return ([biasSet , neutralSet]);
   }
 
-  processEmotion(dataList:Array<Speeches>)
+  public processEmotion(dataList:Array<Speeches>)
   {
 
     var setOfUnfilteredEmotion:Array<Map<string,string>> = new Array<Map<string,string>>();
@@ -395,6 +395,7 @@ export class EmotionAnalysisComponent implements OnInit, OnChanges {
     // if width is between 0 and 1 it will be set to the size of the upper element multiplied by the value 
     overflow: false,
     realignOnResize: true,
+    width: 1300
     
   }
 
@@ -470,7 +471,6 @@ export class EmotionAnalysisComponent implements OnInit, OnChanges {
       this.biasData = this.sortBiasData(this.pieChartDataset);
       this.pieChartLabels = this.biasData[0];
       this.pieChartData = this.biasData[1]; 
-      console.log("is this working");
       this.ngOnChanges();
 
     }

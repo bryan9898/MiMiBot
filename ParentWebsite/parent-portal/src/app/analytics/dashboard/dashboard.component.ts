@@ -17,6 +17,7 @@ import { AnalyticsService } from 'src/app/analytics/service/analytics.service';
 export class DashboardComponent implements OnInit {
 
 
+
   private dataSet:Array<Speeches> = new Array<Speeches>(); 
   private filteredDataSetLabels:any;
   public barChartLabels:string[];
@@ -54,6 +55,9 @@ export class DashboardComponent implements OnInit {
           this.dataList.splice(i, 1);
         }
       }
+       // change this user 
+       this.dataList = this.filterDataSetActual(this.dataList , "string");
+     
     }
     catch(error)
     {
@@ -71,28 +75,34 @@ export class DashboardComponent implements OnInit {
         labelArray.push(element);
         dataArray.push(this.filteredDataSetLabels[0][element]);
       });
-
       this.barChartLabels = labelArray;
       this.barChartData =  [
         {data: dataArray, label: 'Series A'}
       ];
-
-     
-     
-
-
-      // // console.log(labelArray);
-      // // console.log(dataArray + "check this");
-      // // this.barChartLabels = labelArray;
-      // // this.barChartLabels = labelArray; 
-      
     }
    
-    
-    
+  }
 
-    // var value = await this.sentimentAnalysis(); 
-
+  filterDataSetActual(dataset: any, userName: any): any {
+    var filteredLabels: string [][] = new Array<Array<string>>() ;
+    var start = true;
+    var a = 0; 
+    var mySet: Set<string> = new Set<string>();
+    var filterDataset:Array<Speeches> = new Array<Speeches>();
+    dataset.forEach(element => {
+      var current:Speeches = element;
+      if(current.$userId == userName)
+      {
+        var currentTopics = current.$topics;
+        for(var i = 0; i < currentTopics.length; i++)
+        {
+          mySet.add(currentTopics[i]);
+        }
+        filterDataset.push(element);
+        
+      }
+    })
+    return filterDataset;
   }
 
   sortBiasData(dataSet):any
@@ -368,7 +378,7 @@ export class DashboardComponent implements OnInit {
 
  
 
-  private filterDataset(dataset,  userName)
+  public filterDataset(dataset,  userName)
   {
     var filteredLabels: string [][] = new Array<Array<string>>() ;
     var start = true;

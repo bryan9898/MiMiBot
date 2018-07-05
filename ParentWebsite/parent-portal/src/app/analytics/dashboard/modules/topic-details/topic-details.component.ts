@@ -14,7 +14,6 @@ export class TopicDetailsComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    console.log(this.speech);
     var base = "";
     var i = 0; 
     this.speech.$topics.forEach(t => 

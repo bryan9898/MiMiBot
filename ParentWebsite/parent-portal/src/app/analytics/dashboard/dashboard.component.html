@@ -2,7 +2,7 @@
     <div class="dashboard-overview">
         <app-dashboard-overview></app-dashboard-overview>
     </div>
-    <app-topic-analysis></app-topic-analysis>
+    <app-topic-analysis *ngIf="showChart" [dataList]="dataList"></app-topic-analysis>
     <app-emotion-analysis *ngIf="showChart" [dataList]="dataList"></app-emotion-analysis>
 
 </div>

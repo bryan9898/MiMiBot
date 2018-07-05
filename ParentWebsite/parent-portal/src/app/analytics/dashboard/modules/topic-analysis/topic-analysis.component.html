@@ -21,9 +21,17 @@
 
   <h1>Topics Analysis</h1>
   <p style="font-style: italic">"Ever wondered what topics your child talk about?"</p>
-  <angular-tag-cloud style="margin: auto; width: 100%; height: auto; font-size: 10px; font-weight:bold"
-  [data]="CloudData"
-  [overflow]="options.overflow"
-  [zoomOnHover]="zoomOnHoverOptions"
-  (clicked)="cloudClicked($event)"></angular-tag-cloud>
+  <div class="row">
+    <div class="col-md-12"  >
+      <angular-tag-cloud style="margin: auto; width: 100%; height: auto; font-size: 10px; font-weight:bold ;"
+      [data]="topicData"
+      [width]="options.width"
+      [overflow]="options.overflow"
+      [zoomOnHover]="zoomOnHoverOptions"
+  ></angular-tag-cloud>
+    </div>
+  </div>
+  
+
+
   

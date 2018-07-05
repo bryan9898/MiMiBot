@@ -26,7 +26,6 @@ export class EmotionDetailsComponent implements OnInit {
 
   ngOnInit() {
     var dataSet:Speeches = this.currentEmotion[0].$dataSet;
-    console.log(dataSet);
     this.speechDetails = dataSet.$speechDetails;
     this.setColour(this.currentEmotion[1]);
     
