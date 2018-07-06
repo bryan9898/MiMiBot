@@ -28,7 +28,8 @@ export class DashboardComponent implements OnInit {
   private loaded:Boolean = false;
   private showChart = false;
   private showChart2 = false;
-
+private showGameChart = false;
+private chartClicked1 = false;
   private emotionDataset:Array<Emotion>;
   public pieChartLabels:string[];
   public pieChartData:number[];
@@ -48,6 +49,7 @@ export class DashboardComponent implements OnInit {
   
     try{
       this.dataList = await this.testing();
+      await this.getGameMarks();
       for(var i = 0; i < this.dataList.length; i++)
       {
         if(this.dataList[i].$speechDetails.includes("game time"))
@@ -82,6 +84,117 @@ export class DashboardComponent implements OnInit {
     }
    
   }
+
+//bryan's data
+
+  private GameData : game[] = [];
+    private monCounter = 0;
+    private tuesCounter = 0;
+    private wedCounter = 0;
+    private thursCounter = 0;
+    private friCounter = 0;
+    private satCounter = 0;
+    private sunCounter = 0;
+    private counterPage : game[] = [] ;
+    private totalMarks = 0;
+    private overallMarks = 0;
+     private z = 0;
+     //private GameSets :any;
+    
+    async getGameMarks() {
+      var bearer = {
+        'Content-Type' : 'application/json',
+        'Authorization': 'Bearer ' + sessionStorage.getItem("token")
+      }
+    
+       var GameSets = await this.http.get("https://mimiwebserver.azurewebsites.net/api/Marks" , {headers: bearer}).toPromise();
+       if(GameSets != null){
+        this.showGameChart = true;
+       }
+     // var dataList:Array<Speeches> = new Array<Speeches>();
+     for (this.z; this.z < GameSets.length; this.z++){
+        this.GameData.push({markId:GameSets[this.z].markId ,userId:GameSets[this.z].userId,question:GameSets[this.z].question ,markValue:GameSets[this.z].markValue,date:GameSets[this.z].date})
+        
+       //console.log(this.GameData[this.z].date);
+     }
+
+     for(var i = 0 ; i < this.GameData.length;i++){
+        if(this.GameData[i].date == this.barChartGameLabels[0]){
+          this.monCounter =  this.monCounter + 1;
+        } else if(this.GameData[i].date == this.barChartGameLabels[1]){
+          this.tuesCounter =  this.tuesCounter + 1;
+        }else if(this.GameData[i].date == this.barChartGameLabels[2]){
+          this.wedCounter =  this.wedCounter + 1;
+        }else if(this.GameData[i].date == this.barChartGameLabels[3]){
+          this.thursCounter =  this.thursCounter + 1;
+        }else if(this.GameData[i].date == this.barChartGameLabels[4]){
+          this.friCounter =  this.friCounter + 1;
+        }else if(this.GameData[i].date == this.barChartGameLabels[5]){
+          this.satCounter =  this.satCounter + 1;
+        }else if(this.GameData[i].date == this.barChartGameLabels[6]){
+          this.sunCounter = this.sunCounter + 1;
+        }
+     }
+     
+      this.barChartGameData = [
+        {data : [this.monCounter,this.tuesCounter , this.wedCounter ,  this.thursCounter ,  this.friCounter ,  this.satCounter , this.sunCounter] , label : 'Number of quizes on that day'}
+      
+      ];
+      //return dataList;
+    }
+
+
+//Bryan's bar chart
+
+  public barChartGameOptions:any = {
+    scaleShowVerticalLines: false,
+    responsive: true
+  };
+  public barChartGameLabels:string[] = ["Monday" , "Tuesday" , "Wednesday" , "Thursday" , "Friday" , "Saturday" , "Sunday"];
+  public barChartGameType:string = 'bar';
+  public barChartGameLegend:boolean = true;
+
+  public barChartGameData:any[] = [
+    {data: [0, 0, 0, 0, 0, 0, 0]}
+  
+  ];
+
+  public chartGameClicked(e:any):void {
+    console.log(e);
+    var day = e['active']['0']._model['label'];
+    var totalsize = this.counterPage.length;
+    this.totalMarks = 0;
+    this.overallMarks = 0;
+    for(var x = 0 ; x < totalsize ; x++){
+      
+      this.counterPage.pop();
+   
+    }
+    for(var i = 0 ; i < this.GameData.length;i++){
+      if(this.GameData[i].date == day){
+       
+        this.counterPage.push({markId:this.GameData[i].markId ,userId:this.GameData[i].userId,question:this.GameData[i].question ,markValue:this.GameData[i].markValue,date:this.GameData[i].date})
+        this.chartClicked1 = true;
+        
+        if(this.GameData[i].markValue == "1"){
+          this.totalMarks = this.totalMarks+1;
+        } else if(this.GameData[i].markValue == "0"){
+          this.totalMarks = this.totalMarks+0;
+        }
+       
+      }
+    }
+
+    this.overallMarks = this.counterPage.length;
+  }
+ 
+  public chartGameHovered(e:any):void {
+    console.log(e);
+  }
+ 
+  
+
+  //ends here
 
   filterDataSetActual(dataset: any, userName: any): any {
     var filteredLabels: string [][] = new Array<Array<string>>() ;
@@ -229,6 +342,13 @@ export class DashboardComponent implements OnInit {
 
     return dataList;
   }
+
+
+ 
+
+   
+
+
 
   convertToSpeeches(data)
   {
@@ -472,3 +592,20 @@ export class DashboardComponent implements OnInit {
     // ...
   ]
 }
+
+export interface gameScore {
+  markId:any;
+  userId:any;
+  question:any;
+  markValue:any;
+  date:any;
+ }
+
+ export interface game {
+  markId:any;
+  userId:any;
+  question:any;
+  markValue:any;
+  date:any;
+ 
+ }
