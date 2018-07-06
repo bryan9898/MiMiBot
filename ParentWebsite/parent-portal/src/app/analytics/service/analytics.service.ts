@@ -14,7 +14,34 @@ export class AnalyticsService {
 
   private emotionDataset = new BehaviorSubject<Array<Emotion>>(null);
   public allEmotionSet = this.emotionDataset.asObservable();
+
+  private colorIndex = new BehaviorSubject<string>(null);
+  public currentColor = this.colorIndex.asObservable();
+
+
+  //For topic modelling 
+  private topicStatus = new BehaviorSubject<Boolean>(false);
+  public currentTopicStatus = this.topicStatus.asObservable();
+
+  private topicSet = new BehaviorSubject<Emotion>(null); 
+  public currentTopicSet = this.topicSet.asObservable();
+
+  setCurrentTopicStatus(value:boolean)
+  {
+    this.topicStatus.next(value);
+  }
+
+  setCurrentTopicData(value:Emotion)
+  {
+    this.topicSet.next(value);
+  }
+
   constructor() { }
+
+  setCurrentColorIndex(value:string)
+  {
+    this.colorIndex.next(value);
+  }
 
   setCurrentEmotionIndStatus(value:boolean)
   {

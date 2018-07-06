@@ -36,7 +36,8 @@
   <div>
     <p *ngIf="showEmotionChart" style="font-style: italic">"A chart that summarizes the emotions of all sentences under <b><i>{{topic}}</i></b>"</p>
     <div style="display: block;">
-        <canvas  id="emotionChart" class="chartjs-render-monitor" ></canvas>
+        <canvas  id="emotionChart" class="chartjs-render-monitor" (click)="topicEmotionClicked($event)"
+         ></canvas>
         <!-- <canvas  baseChart
                 [data]="pieChartData"
                 [labels]="pieChartLabels"
@@ -50,9 +51,16 @@
   </div>
   
 
-  <!-- <div *ngIf="showTopicDetails">
-    <app-topic-details *ngFor="let emotion of activeSpeech" [emotion]="emotion" style="display: inline-block" ></app-topic-details>
-  </div>  -->
+  <div *ngIf="showTopicDetails" style="margin-top: 5%;">
+    <p style="font-style: italic">"All sentences that is tagged as <b><i>{{emotion}}</i></b> under {{topic}}"</p>
+    <app-topic-details *ngFor="let emotion of activeSpeech" [emotion]="emotion" style="display: inline-block; " ></app-topic-details>
+  </div> 
+ 
+  <div *ngIf="showIndividualDetails" style="margin-top: 5%;">
+    <h1>Details of selected speech</h1>
+    <p style="font-style: italic">" <b><i>Detailed</i></b> information regarding the selected <b><i>speech</i></b>"</p>
+    <app-individual-details [emotionClass]="currentTopicSet"></app-individual-details>
+  </div> 
   
 
 

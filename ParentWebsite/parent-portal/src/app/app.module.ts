@@ -36,6 +36,7 @@ import { BlobModule } from 'angular-azure-blob-service';
 import { DashboardOverviewComponent } from './analytics/dashboard/modules/dashboard-overview/dashboard-overview.component';
 import {MatGridListModule} from '@angular/material/grid-list';
 import { TopicAnalysisComponent } from './analytics/dashboard/modules/topic-analysis/topic-analysis.component';
+import { TopicIndDetailsComponent } from './analytics/dashboard/modules/topic-ind-details/topic-ind-details.component';
 const appRoutes: Routes = [
   { path: '', redirectTo: '/login' ,  pathMatch:'full' },
   { path:'login' , component: LoginComponent },
@@ -62,6 +63,7 @@ const appRoutes: Routes = [
     KeywordsDetailsComponent,
     DashboardOverviewComponent,
     TopicAnalysisComponent,
+    TopicIndDetailsComponent,
     
   ],
   imports: [

@@ -19,6 +19,7 @@ export class IndividualDetailsComponent implements OnInit,OnChanges {
   public analyticsService:AnalyticsService;
   public allEmotionDataSet:Array<Emotion>;
   public keywordSet:Array<Map<string, number>>;
+  public topicMap:Array<Map<string,number>>;
   constructor(as:AnalyticsService) {
     this.analyticsService = as;
    }
@@ -37,6 +38,7 @@ export class IndividualDetailsComponent implements OnInit,OnChanges {
     })
     var keywordMapping = this.getAllKeyword(this.emotionClass.$dataSet.$keywords);
     this.keywordSet = this.sortKeywordMapping(keywordMapping);
+    this.topicMap = this.getTopicsMapping(this.emotionClass.$dataSet.$topics);
   }
 
   sortKeywordMapping(keywordMapping)
@@ -63,7 +65,38 @@ export class IndividualDetailsComponent implements OnInit,OnChanges {
       this.allEmotionDataSet = data;
     })
     this.getAllKeyword(this.emotionClass.$dataSet.$keywords);
+    this.topicMap =  this.getTopicsMapping(this.emotionClass.$dataSet.$topics);
+  }
 
+  getTopicsMapping(topics:Array<string>)
+  {
+    var finalMap:Map<string , number> = new Map<string, number>();
+    var newMap:Map<string , number> = new Map<string ,number>();
+    this.allEmotionDataSet.forEach(data => {
+      data.$dataSet.$topics.forEach(topic => {
+        if(newMap.has(topic))
+        {
+          newMap.set(topic , newMap.get(topic)+1);
+        }
+        else {
+          newMap.set(topic , 1);
+        }
+      })
+    })
+    topics.forEach(data => {
+      if(newMap.has(data))
+      {
+        finalMap.set(data , newMap.get(data));
+      }
+    })
+
+    var finalArray:Array<any> = new Array<any>();
+    finalMap.forEach((value, key) => {
+      finalArray.push([key , value]);
+    })
+
+    return finalArray;
+    
   }
 
   getAllKeyword(dataset:Map<string, string>)

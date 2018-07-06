@@ -12,7 +12,11 @@
       <mat-card-subtitle class="cardsubtitle">Comprises of Emotions regarding: <b>{{biasEmotion}}</b>
       </mat-card-subtitle>	
     </mat-card-header>
-    <mat-card-title class="cardsubtitle"><b>Emotion Analysis</b></mat-card-title>
+    <div class="row">
+        <mat-card-title class="cardsubtitle col-sm-4"><b>Emotion Analysis</b></mat-card-title>
+        <div class="col-sm-2"></div>
+        
+    </div>
     <div class="row" style="margin-top: 3%; margin-left: 1%">
       <div class="col-sm-4">
         <mat-card-content>
@@ -25,8 +29,8 @@
             </canvas>
         </mat-card-content>
       </div>
-      <div class="col-sm-8">
-         
+      <div class="col-sm-2"></div>
+      <div class="col-sm-6">
       </div>
     </div>
     <mat-card-title class="cardsubtitle"><b>Keyword Analysis</b></mat-card-title>
@@ -34,6 +38,10 @@
         <app-keywords-details *ngFor="let map of keywordSet" [currentMapping]="map"></app-keywords-details>
     </div>
 
+    <mat-card-title class="cardsubtitle col-sm-6" style="margin-top:5%" ><b>Topic Analysis</b></mat-card-title>
+    <div class="row" style="margin-top:1% ; margin-left: 1%">
+        <app-topic-ind-details *ngFor="let map of topicMap" [currentMapping]="map"></app-topic-ind-details>
+    </div>
   
     <mat-card-actions class="cardButtonDiv">
       <!-- <button mat-button class="squarebuttonstyle cardButton" [ngClass]="{'one':oneTrue , 'two':twoTrue , 'three':threeTrue , 'four':fourTrue , 'five':fiveTrue, 'six':sixTrue}"

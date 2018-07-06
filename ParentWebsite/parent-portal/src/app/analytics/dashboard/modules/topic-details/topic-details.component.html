@@ -4,6 +4,9 @@
       <mat-card-title class="cardTitle">Sentence: {{sentence}}</mat-card-title>
       <mat-card-subtitle>Tags: {{tags}}</mat-card-subtitle>
     </mat-card-header>
+    <mat-card-actions class="cardButtonDiv">
+      <button mat-button class="squarebuttonstyle cardButton" [ngClass]="{'one':oneTrue , 'two':twoTrue , 'three':threeTrue , 'four':fourTrue , 'five':fiveTrue, 'six':sixTrue}" (click)="loadDetails()">Details</button>
+    </mat-card-actions>
   </mat-card>
 </div>
 

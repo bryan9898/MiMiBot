@@ -1,0 +1,30 @@
+.container-fluid {
+    /* background: transparent url(../../resources/hero.jpg) repeat center; */
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    padding: 0px; 
+    width: auto;
+    margin-left: 4%;
+    margin-right: 3%;
+    z-index: inherit;
+    display: inline-block;
+}
+
+.keyword {
+    font-size:1.2em;
+}
+
+.analyticsCard {
+    display: inline-block;
+    width: auto;
+    z-index: inherit;
+    margin-right: 10%;
+    margin-left: 1%;
+  }
+
+.cardsubtitle {
+    font-size: 15px;
+  }
+  

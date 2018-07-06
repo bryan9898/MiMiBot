@@ -287,6 +287,9 @@ export class EmotionAnalysisComponent implements OnInit, OnChanges {
 
   // events
   public pieClicked(e:any):void {
+    
+    this.analyticsService.setCurrentEmotionIndStatus(false);
+    this.analyticsService.setCurrentEmotionIndDataset(null);
     this.cloudDetails = false;
     this.chartDetails = false;
     this.emotionIndividual = false;
@@ -412,6 +415,9 @@ export class EmotionAnalysisComponent implements OnInit, OnChanges {
 
   cloudClicked(event:CloudData)
   {
+    
+    this.analyticsService.setCurrentEmotionIndStatus(false);
+    this.analyticsService.setCurrentEmotionIndDataset(null);
     this.emotionIndividual = false;
     this.allEmotions = new Array<Array<any>>();
     var keyword = event.text;

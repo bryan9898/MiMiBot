@@ -30,6 +30,8 @@ export class TopicAnalysisComponent implements OnInit {
   private biasData; 
   private pieChartLabels;
   private pieChartData;
+  private  currentTopicSet;
+  private showIndividualDetails
   topicData: CloudData[];
   constructor(private as:AnalyticsService) { 
     this.analyticsService = as;
@@ -42,6 +44,14 @@ export class TopicAnalysisComponent implements OnInit {
     this.dataSetMapping = this.processTopics(this.speechsDataset);
     this.dataSetData = this.processDatasetMapping(this.dataSetMapping);
     this.topicData = this.processLabelsandValues(this.dataSetData);
+    
+    this.analyticsService.currentTopicStatus.subscribe(data => {
+      this.showIndividualDetails = data;
+    })
+
+    this.analyticsService.currentTopicSet.subscribe(data => {
+      this.currentTopicSet = data;
+    })
   }
 
   processLabelsandValues(dataSetData:Array<any>)
@@ -55,7 +65,6 @@ export class TopicAnalysisComponent implements OnInit {
       finalArray.push(data);
     }
 
-    console.log(finalArray);
     return finalArray;
   }
 
@@ -118,8 +127,10 @@ export class TopicAnalysisComponent implements OnInit {
   };
 
   topicClicked(event) {
+    this.analyticsService.setCurrentTopicStatus(false);
+    this.analyticsService.setCurrentTopicData(null);
+    this.showTopicDetails = false;
     var clickedText = event.text;
-    console.log(clickedText);
     this.topic = clickedText;
     var arrayOfClickedTopics:Array<Emotion> = new Array<Emotion>();
     this.emotionDataset.forEach(data => {
@@ -137,12 +148,8 @@ export class TopicAnalysisComponent implements OnInit {
     this.biasData = this.sortBiasData(this.pieChartDataset);
     this.pieChartLabels = this.biasData[0];
     this.pieChartData = this.biasData[1];
-    console.log(this.pieChartLabels);
-    console.log(this.pieChartData);
-    if(this.pieChartLabels != null)
-    {
-      this.updateChart(this.pieChartData , this.pieChartLabels);
-    }
+    this.updateChart(this.pieChartData , this.pieChartLabels);
+    
     
   }
 
@@ -158,6 +165,8 @@ export class TopicAnalysisComponent implements OnInit {
 
   updateChart(data ,labels)
   {
+    console.log(labels);
+    console.log(data);
     if(this.emotionChart != null)
     {
       this.emotionChart.data.labels = labels; 
@@ -175,7 +184,6 @@ export class TopicAnalysisComponent implements OnInit {
     
     }
     else {
-      console.log("is the new chart being created?");
       this.emotionChart = new Chart('emotionChart' , 
       {
         type: 'doughnut',
@@ -309,5 +317,29 @@ export class TopicAnalysisComponent implements OnInit {
       return false;
     }
 
+  }
+
+  private emotion;
+  topicEmotionClicked(event)
+  {
+    var index = this.emotionChart.getElementAtEvent(event)[0]._index;
+    var combinedDataset:Array<any> = this.pieChartDataset[0]; 
+    var listOfEmotion:Array<Emotion> = new Array<Emotion>();
+    combinedDataset.push(this.pieChartDataset[1][0]);
+    
+    for(var i = 0; i < combinedDataset.length;i++)
+    {
+      if(combinedDataset[i][1] != 0)
+      {
+        listOfEmotion.push(combinedDataset[i]);
+      }
+    }
+    this.analyticsService.setCurrentTopicStatus(false);
+    this.analyticsService.setCurrentTopicData(null);
+    this.analyticsService.setCurrentColorIndex(index.toString());
+    this.emotion = listOfEmotion[index][0];
+    this.activeSpeech = listOfEmotion[index][2];
+    this.showTopicDetails = true;
+    
   }
 }
