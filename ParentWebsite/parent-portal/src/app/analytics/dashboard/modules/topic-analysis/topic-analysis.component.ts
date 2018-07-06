@@ -4,6 +4,8 @@ import { Emotion } from 'src/app/class/emotion';
 import { Speeches } from 'src/app/class/speeches';
 import { EmotionAnalysisComponent } from 'src/app/analytics/dashboard/modules/emotion-analysis/emotion-analysis.component';
 import { CloudData, CloudOptions , ZoomOnHoverOptions } from 'angular-tag-cloud-module';
+import * as Chart from 'chart.js';
+import 'chart.piecelabel.js';
 
 @Component({
   selector: 'app-topic-analysis',
@@ -21,6 +23,13 @@ export class TopicAnalysisComponent implements OnInit {
   private dataSetData:Array<any>;
   private activeSpeech:Array<Emotion>;
   private showTopicDetails = false;
+  private showEmotionChart = false;
+  private topic:string;
+  private emotionChart:any;
+  private pieChartDataset; 
+  private biasData; 
+  private pieChartLabels;
+  private pieChartData;
   topicData: CloudData[];
   constructor(private as:AnalyticsService) { 
     this.analyticsService = as;
@@ -110,13 +119,12 @@ export class TopicAnalysisComponent implements OnInit {
 
   topicClicked(event) {
     var clickedText = event.text;
+    console.log(clickedText);
+    this.topic = clickedText;
     var arrayOfClickedTopics:Array<Emotion> = new Array<Emotion>();
     this.emotionDataset.forEach(data => {
       for(var i = 0; i < data.$dataSet.$topics.length; i++)
-      {
-        console.log(data.$dataSet.$speechDetails);
-        console.log(data.$dataSet.$topics[i]);
-        console.log("---");        
+      {     
         if(data.$dataSet.$topics[i].toLowerCase() == clickedText.toLowerCase())
         {
           arrayOfClickedTopics.push(data);
@@ -124,6 +132,182 @@ export class TopicAnalysisComponent implements OnInit {
       }
     })
     this.activeSpeech = arrayOfClickedTopics;
-    this.showTopicDetails = true;
+    this.showEmotionChart = true;
+    this.pieChartDataset = this.getPiechartData(arrayOfClickedTopics);
+    this.biasData = this.sortBiasData(this.pieChartDataset);
+    this.pieChartLabels = this.biasData[0];
+    this.pieChartData = this.biasData[1];
+    console.log(this.pieChartLabels);
+    console.log(this.pieChartData);
+    if(this.pieChartLabels != null)
+    {
+      this.updateChart(this.pieChartData , this.pieChartLabels);
+    }
+    
+  }
+
+  public colorscheme = ['#ED5565','#FC6E51','#FFCE54', '#48CFAD' , '#4FC1E9'  , '#AC92EC'];
+  public pieChartOptions = 
+  {
+    pieceLabel: {
+      render: 'label',
+      color: 'black',
+      fontWeight: 'bold'
+   },
+  }
+
+  updateChart(data ,labels)
+  {
+    if(this.emotionChart != null)
+    {
+      this.emotionChart.data.labels = labels; 
+      this.emotionChart.data.datasets = [
+        {
+          data, 
+          backgroundColor:this.colorscheme,
+          borderColor:this.colorscheme,
+          pointBackgroundColor: this.colorscheme,
+          pointBorderColor:this.colorscheme,
+          pointHoverBackgroundColor: this.colorscheme,
+          pointHoverBorderColor: this.colorscheme
+        }];
+      this.emotionChart.update();
+    
+    }
+    else {
+      console.log("is the new chart being created?");
+      this.emotionChart = new Chart('emotionChart' , 
+      {
+        type: 'doughnut',
+        options: this.pieChartOptions,
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              data: data,
+              backgroundColor:this.colorscheme,
+              borderColor:this.colorscheme,
+              pointBackgroundColor: this.colorscheme,
+              pointBorderColor:this.colorscheme,
+              pointHoverBackgroundColor: this.colorscheme,
+              pointHoverBorderColor: this.colorscheme
+            }
+          ]
+        }
+      })
+    }
+  }
+
+  sortBiasData(dataSet):any
+  {
+    var labels:Array<string> = new Array<string>();
+    var value:Array<number> = new Array<number>();
+    
+    dataSet[0].forEach(element => {
+      if(element[1] != 0 )
+      {
+        labels.push(element[0]);
+        value.push(Number.parseFloat(element[1]));
+      }
+      });
+    
+    if(dataSet[1][0][1] != 0)
+    {
+      labels.push(dataSet[1][0][0]);
+      var test = dataSet[1][0][1];
+      value.push(test);
+    }
+    return ([labels, value]);
+  }
+
+  getPiechartData(dataSet:Array<Emotion>)
+  {
+    var biasSet:Array<Array<any>> = new Array<Array<any>>();
+    biasSet.push(["anger" , 0 , new Array<Emotion>()], ["fear" , 0 , new Array<Emotion>()] , ["joy" , 0 , new Array<Emotion>()] , ["sadness" , 0 , new Array<Emotion>()] , ["surprise" , 0 , new Array<Emotion>()]);
+    var neutralSet:Array<any> = new Array<any>();
+    neutralSet.push(["neutral" , 0 , new Array<Emotion>()]);
+    dataSet.forEach(ds => {
+      if(ds.$status == "bias")
+      {
+         ds.$biasEmotion.forEach(es => {
+           es.forEach((key:string, value:string) => {
+              for(var i =0; i < biasSet.length; i++)
+              {
+                if(biasSet[i][0].toLowerCase() == value.toLowerCase())
+                {
+                  biasSet[i][1] = biasSet[i][1] + 1; 
+                  biasSet[i][2].push(ds);
+                }
+              }
+           })
+         })
+      }
+      else
+      {
+        for(var i = 0; i < neutralSet.length; i++)
+        {
+          neutralSet[i][1] = neutralSet[i][1]+ 1;
+          neutralSet[i][2].push(ds);
+        }
+      }
+    })
+    return ([biasSet , neutralSet]);
+  }
+
+  public processEmotion(dataList:Array<Speeches>)
+  {
+
+    var setOfUnfilteredEmotion:Array<Map<string,string>> = new Array<Map<string,string>>();
+    
+    dataList.forEach(element => {
+      setOfUnfilteredEmotion.push(element.$sentiment)
+    });
+
+    var integer = 0; 
+    var emotionFilteredList:Array<any> = new Array<any>();
+    setOfUnfilteredEmotion.forEach(emotion => {
+      var biasEmotion:Array<Map<string,string>> = new Array<Map<string,string>>();
+      var neturalEmotion:Array<Map<string,string>> = new Array<Map<string,string>>();
+      emotion.forEach((value: string, key: string) => {
+        var valid = false;
+        valid = this.checkIfSentimentIsAbove20(value);
+        if(valid == true)
+        {
+          var newMap = new Map();
+          newMap.set(key, value);
+          biasEmotion.push(newMap);
+          
+        }
+        else {
+          var newMap = new Map();
+          newMap.set(key, value);
+          neturalEmotion.push(newMap);
+        }
+      })
+
+      var newEmotionClass = new Emotion(biasEmotion , neturalEmotion , dataList[integer]);
+      emotionFilteredList.push(newEmotionClass);
+      integer++;
+
+    })
+
+
+
+
+    return emotionFilteredList; 
+    
+  }
+
+  checkIfSentimentIsAbove20(data)
+  {
+    var floatData = Number.parseFloat(data);
+    if(floatData > 0.25)
+    {
+      return true; 
+    }
+    else {
+      return false;
+    }
+
   }
 }

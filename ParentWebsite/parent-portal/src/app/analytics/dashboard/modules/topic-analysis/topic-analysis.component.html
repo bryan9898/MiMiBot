@@ -20,7 +20,7 @@
     </div> -->
 
   <h1>Topics Analysis</h1>
-  <p style="font-style: italic">"Ever wondered what topics your child talk about?"</p>
+  <p style="font-style: italic">"Ever wondered what topics your child talks about?"</p>
   <div class="row">
     <div class="col-md-12"  >
       <angular-tag-cloud style="margin: auto; width: 100%; height: auto; font-size: 10px; font-weight:bold ;"
@@ -32,10 +32,27 @@
   ></angular-tag-cloud>
     </div>
   </div>
+  
+  <div>
+    <p *ngIf="showEmotionChart" style="font-style: italic">"A chart that summarizes the emotions of all sentences under <b><i>{{topic}}</i></b>"</p>
+    <div style="display: block;">
+        <canvas  id="emotionChart" class="chartjs-render-monitor" ></canvas>
+        <!-- <canvas  baseChart
+                [data]="pieChartData"
+                [labels]="pieChartLabels"
+                [chartType]="pieChartType"
+                [colors]="pieChartColor"
+                [options]="pieChartOptions"
+                (chartHover)="pieHovered($event)"
+                (chartClick)="pieClicked($event)"></canvas> -->
+    </div>
+    
+  </div>
+  
 
-  <div *ngIf="showTopicDetails">
+  <!-- <div *ngIf="showTopicDetails">
     <app-topic-details *ngFor="let emotion of activeSpeech" [emotion]="emotion" style="display: inline-block" ></app-topic-details>
-  </div> 
+  </div>  -->
   
 
 
