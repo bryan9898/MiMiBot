@@ -227,7 +227,7 @@ public class MainActivity extends AppCompatActivity {
 
                             textView.setText(text);
 
-                            if(text.equalsIgnoreCase("Hello")){
+                            if(text.equalsIgnoreCase("Hello") || text.equalsIgnoreCase("Good Bye") || text.equalsIgnoreCase("GoodBye"))  {
 
                             } else {
                                 try {
@@ -637,7 +637,7 @@ public class MainActivity extends AppCompatActivity {
 
         // TODO: Set Sensitivity
         snowboyDetect = new SnowboyDetect(common.getAbsolutePath(), model.getAbsolutePath());
-        snowboyDetect.setSensitivity("0.55");
+        snowboyDetect.setSensitivity("0.50");
         snowboyDetect.applyFrontend(true);
     }
 
