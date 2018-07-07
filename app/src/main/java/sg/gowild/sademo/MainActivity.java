@@ -637,7 +637,7 @@ public class MainActivity extends AppCompatActivity {
 
         // TODO: Set Sensitivity
         snowboyDetect = new SnowboyDetect(common.getAbsolutePath(), model.getAbsolutePath());
-        snowboyDetect.setSensitivity("0.50");
+        snowboyDetect.setSensitivity("0.55");
         snowboyDetect.applyFrontend(true);
     }
 
