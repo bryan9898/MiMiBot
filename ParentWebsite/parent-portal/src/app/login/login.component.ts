@@ -82,13 +82,14 @@ export class LoginComponent implements OnInit {
       console.log(this.model.$Username);
       let username: string = this.model.$Username; 
       let password: string = this.model.$Password;
+      console.log(this.model.$Password);
       var headerss = new HttpHeaders({
         'Content-Type' : 'application/json',
         'response-Type': 'XML/http',
         'Authorization': 'Basic ' + btoa(username + ":" + password)
       });
-      var token = await this.http.post(this.ROOT_URL + '/Users/token' ,  "123" ,  {headers:headerss , responseType: 'text' }).toPromise();
-      return token;
+      // var token = await this.http.post(this.ROOT_URL + '/Users/token' ,  "123" ,  {headers:headerss , responseType: 'text' }).toPromise();
+      return "Test";
       
      
    

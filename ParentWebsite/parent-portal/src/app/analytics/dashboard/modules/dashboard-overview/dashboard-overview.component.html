@@ -6,7 +6,8 @@
         <mat-card >
           <mat-card-title><b>Top Emotion: {{emotionName}}</b></mat-card-title>
           <mat-card-subtitle>Percentage of {{emotionName}} is {{emotionValue}}%</mat-card-subtitle>
-          <mat-card-subtitle *ngIf="followUpEmotion" style="font-size: 0.8em">followed by {{sentence}}</mat-card-subtitle>
+          <mat-card-subtitle *ngIf="emotionBoolean" style="font-size: 0.8em">followed by {{sentence}}</mat-card-subtitle>
+          <!-- <mat-card-subtitle  *ngIf="!emotionBoolean" style="font-size:0.8em">   </mat-card-subtitle> -->
         </mat-card>
     </div>
     <!--Top Keywords --> 
@@ -14,7 +15,8 @@
         <mat-card >
           <mat-card-title><b>Top Keyword: {{keywordName}}</b></mat-card-title>
           <mat-card-subtitle>{{keywordName}} was identified {{keywordValue}}% out of all the speeches</mat-card-subtitle>
-          <mat-card-subtitle *ngIf="followUpKeyword" style="font-size: 0.8em">followed by {{keywordSetence}} </mat-card-subtitle>
+          <mat-card-subtitle *ngIf="keywordBoolean" style="font-size: 0.8em">followed by {{keywordSetence}} </mat-card-subtitle>
+          <!-- <mat-card-subtitle  *ngIf="!keywordBoolean" style="font-size:0.8em">   </mat-card-subtitle> -->
         </mat-card>
     </div>
     <!-- Top Topics -->
@@ -23,6 +25,5 @@
 
         </mat-card> -->
     </div>
-    
   </div>
 </div>

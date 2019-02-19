@@ -1,45 +1,47 @@
 <div class="container-fluid">
-        <h1>Game Summary</h1>
-        <div *ngIf="showGameChart">
-                <div style="display: block">
-                  <canvas baseChart
-                          [datasets]="barChartGameData"
-                          [labels]="barChartGameLabels"
-                          [options]="barChartGameOptions"
-                          [legend]="barChartGameLegend"
-                          [chartType]="barChartGameType"
-                          (chartHover)="chartGameHovered($event)"
-                          (chartClick)="chartGameClicked($event)"></canvas>
-                </div>
-                
-        </div>
-        <div *ngIf="chartClicked1">
-        <h1>Game Score</h1>
-            <h4>Total Marks : {{totalMarks}}/{{overallMarks}}</h4>
-        <div class="row" class="container-row"  >
-          
-        <div class="col-sm-4" class="container-style" *ngFor="let games of counterPage  |  paginate: {itemsPerPage: 3, currentPage:page, id: '1'};let i = index;">
-                <mat-card >
-                  <mat-card-title><b>Question : {{games.question}}</b></mat-card-title>
-                  <mat-card-subtitle>Marks Awarded : {{games.markValue}}</mat-card-subtitle>
-                
-                </mat-card>
-            </div>
-         
-        </div>
-
-        <div style="text-align:Center;margin-right:70px;">
-            <pagination-controls (pageChange)="page = $event" 
-            autoHide="true" id='1'>
-            </pagination-controls>
-            </div>
-        </div>
+       
     <div class="dashboard-overview">
         <app-dashboard-overview></app-dashboard-overview>
     </div>
+    
     <app-topic-analysis *ngIf="showChart" [dataList]="dataList"></app-topic-analysis>
     <app-emotion-analysis *ngIf="showChart" [dataList]="dataList"></app-emotion-analysis>
 
+    <h1>Game Summary</h1>
+    <div *ngIf="showGameChart">
+            <div style="display: block">
+              <canvas baseChart
+                      [datasets]="barChartGameData"
+                      [labels]="barChartGameLabels"
+                      [options]="barChartGameOptions"
+                      [legend]="barChartGameLegend"
+                      [chartType]="barChartGameType"
+                      (chartHover)="chartGameHovered($event)"
+                      (chartClick)="chartGameClicked($event)"></canvas>
+            </div>
+            
+    </div>
+    <div *ngIf="chartClicked1">
+    <h1>Game Score</h1>
+        <h4>Total Marks : {{totalMarks}}/{{overallMarks}}</h4>
+    <div class="row" class="container-row"  >
+      
+    <div class="col-sm-4" class="container-style" *ngFor="let games of counterPage  |  paginate: {itemsPerPage: 3, currentPage:page, id: '1'};let i = index;">
+            <mat-card >
+              <mat-card-title><b>Question : {{games.question}}</b></mat-card-title>
+              <mat-card-subtitle>Marks Awarded : {{games.markValue}}</mat-card-subtitle>
+            
+            </mat-card>
+        </div>
+     
+    </div>
+
+    <div style="text-align:Center;margin-right:70px;">
+        <pagination-controls (pageChange)="page = $event" 
+        autoHide="true" id='1'>
+        </pagination-controls>
+        </div>
+    </div>
 </div>
 
 

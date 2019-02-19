@@ -20,6 +20,8 @@ export class DashboardOverviewComponent implements OnInit {
   private sentence: string;
   private followUpEmotion:boolean; 
   private followUpKeyword:boolean;
+  private emotionBoolean:boolean = false;
+  private keywordBoolean:boolean = false;
   constructor(as: AnalyticsService) {
     this.analyticsService = as;
   }
@@ -48,7 +50,6 @@ export class DashboardOverviewComponent implements OnInit {
             phrase = phrase + " " + topEmotion[i][0] + " at " + valuestr + "%";
           }
         }
-
         this.sentence = phrase;
         var integer = 0;
         
@@ -67,6 +68,8 @@ export class DashboardOverviewComponent implements OnInit {
           topKeyword[1].forEach(data => {
             topKeywordMapping.set(data[0] , data[1]);
           })
+
+          console.log(topKeywordMapping);
           var keywordSentenceBase = "";
           for (var i = 0; i < topKeyword[0].length; i++) {
             if( i == 0)
@@ -84,21 +87,31 @@ export class DashboardOverviewComponent implements OnInit {
               
             }
           }
-
+     
           this.keywordSetence = keywordSentenceBase;
+          console.log(this.keywordSetence.length);
+          if(this.sentence != null)
+          {
+            this.followUpEmotion = true;
+          }
 
+          if(this.sentence.length != 0)
+          {
+            this.emotionBoolean = true;
+          }
+
+          if(this.keywordSetence != null)
+          {
+            this.followUpKeyword = true;
+          
+          }
+          if(this.keywordSetence.length != 0)
+          {
+            this.keywordBoolean = true;
+          }
         }
       })
-      
-      if(this.sentence != null)
-      {
-        this.followUpEmotion = true;
-      }
-
-      if(this.keywordSetence != null)
-      {
-        this.followUpKeyword = true;
-      }
+    
 
   }
 
