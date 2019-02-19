@@ -1,0 +1,7 @@
+{
+    "appService.deploySubpath": "",
+    "appService.zipIgnorePattern": [
+        "node_modules{,/**}"
+    ],
+    "appService.defaultWebAppToDeploy": "/subscriptions/9ac34224-8235-4855-96af-74e2a2aa6f19/resourceGroups/appsvc_rg_linux_centralus/providers/Microsoft.Web/sites/mimiparentportal"
+}
