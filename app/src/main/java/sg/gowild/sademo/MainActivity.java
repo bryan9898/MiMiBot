@@ -227,7 +227,7 @@ public class MainActivity extends AppCompatActivity {
 
                             textView.setText(text);
 
-                            if(text.equalsIgnoreCase("Hello")){
+                            if(text.equalsIgnoreCase("Hello") || text.equalsIgnoreCase("Good Bye") || text.equalsIgnoreCase("GoodBye"))  {
 
                             } else {
                                 try {
