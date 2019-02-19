@@ -22,8 +22,8 @@ export class TopicAnalysisComponent implements OnInit {
   private dataSetMapping:Map<string, number>; 
   private dataSetData:Array<any>;
   private activeSpeech:Array<Emotion>;
-  private showTopicDetails = false;
-  private showEmotionChart = false;
+  showTopicDetails = false;
+  showEmotionChart = false;
   private topic:string;
   private emotionChart:any;
   private pieChartDataset; 
@@ -31,7 +31,7 @@ export class TopicAnalysisComponent implements OnInit {
   private pieChartLabels;
   private pieChartData;
   private  currentTopicSet;
-  private showIndividualDetails
+  showIndividualDetails
   topicData: CloudData[];
   constructor(private as:AnalyticsService) { 
     this.analyticsService = as;

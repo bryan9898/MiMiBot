@@ -12,8 +12,8 @@ export class TopicDetailsComponent implements OnInit {
 
   @Input() emotion:Emotion;
   private speech:Speeches;
-  private tags: string; 
-  private sentence:string;
+  tags: string; 
+  sentence:string;
   public oneTrue;
   public twoTrue;
   public threeTrue;
@@ -82,7 +82,7 @@ export class TopicDetailsComponent implements OnInit {
     }
   }
 
-  loadDetails(event)
+  loadDetails()
   {
     this.analyticService.setCurrentTopicStatus(true);
     this.analyticService.setCurrentTopicData(this.emotion);

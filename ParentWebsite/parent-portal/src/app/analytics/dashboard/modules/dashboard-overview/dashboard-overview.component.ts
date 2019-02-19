@@ -11,17 +11,17 @@ export class DashboardOverviewComponent implements OnInit {
 
   private analyticsService: AnalyticsService;
   private allEmotionalData: Array<Emotion>;
-  private emotionValue: string = "None";
-  private emotionName: string = "None";
-  private keywordName: string = "None";
-  private keywordValue: string = "None";
+  emotionValue: string = "None";
+  emotionName: string = "None";
+  keywordName: string = "None";
+  keywordValue: string = "None";
   private keywordTotal: string = "None";
   private keywordSetence:string;
   private sentence: string;
   private followUpEmotion:boolean; 
   private followUpKeyword:boolean;
-  private emotionBoolean:boolean = false;
-  private keywordBoolean:boolean = false;
+  emotionBoolean:boolean = false;
+  keywordBoolean:boolean = false;
   constructor(as: AnalyticsService) {
     this.analyticsService = as;
   }
