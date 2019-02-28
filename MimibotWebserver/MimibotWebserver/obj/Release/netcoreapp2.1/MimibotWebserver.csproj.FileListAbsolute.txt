@@ -12,3 +12,17 @@ E:\GitHub\MiMiBot\MimibotWebserver\MimibotWebserver\obj\Release\netcoreapp2.1\Mi
 E:\GitHub\MiMiBot\MimibotWebserver\MimibotWebserver\obj\Release\netcoreapp2.1\MimibotWebserver.dll
 E:\GitHub\MiMiBot\MimibotWebserver\MimibotWebserver\obj\Release\netcoreapp2.1\MimibotWebserver.pdb
 E:\GitHub\MiMiBot\MimibotWebserver\MimibotWebserver\obj\Release\netcoreapp2.1\MimibotWebserver.csprojResolveAssemblyReference.cache
+C:\Users\Justin\Documents\GitHub\MiMiBot\MimibotWebserver\MimibotWebserver\bin\Release\netcoreapp2.1\MimibotWebserver.deps.json
+C:\Users\Justin\Documents\GitHub\MiMiBot\MimibotWebserver\MimibotWebserver\bin\Release\netcoreapp2.1\MimibotWebserver.runtimeconfig.json
+C:\Users\Justin\Documents\GitHub\MiMiBot\MimibotWebserver\MimibotWebserver\bin\Release\netcoreapp2.1\MimibotWebserver.runtimeconfig.dev.json
+C:\Users\Justin\Documents\GitHub\MiMiBot\MimibotWebserver\MimibotWebserver\bin\Release\netcoreapp2.1\MimibotWebserver.dll
+C:\Users\Justin\Documents\GitHub\MiMiBot\MimibotWebserver\MimibotWebserver\bin\Release\netcoreapp2.1\MimibotWebserver.pdb
+C:\Users\Justin\Documents\GitHub\MiMiBot\MimibotWebserver\MimibotWebserver\obj\Release\netcoreapp2.1\MimibotWebserver.csproj.CoreCompileInputs.cache
+C:\Users\Justin\Documents\GitHub\MiMiBot\MimibotWebserver\MimibotWebserver\obj\Release\netcoreapp2.1\MimibotWebserver.RazorAssemblyInfo.cache
+C:\Users\Justin\Documents\GitHub\MiMiBot\MimibotWebserver\MimibotWebserver\obj\Release\netcoreapp2.1\MimibotWebserver.RazorAssemblyInfo.cs
+C:\Users\Justin\Documents\GitHub\MiMiBot\MimibotWebserver\MimibotWebserver\obj\Release\netcoreapp2.1\MimibotWebserver.AssemblyInfoInputs.cache
+C:\Users\Justin\Documents\GitHub\MiMiBot\MimibotWebserver\MimibotWebserver\obj\Release\netcoreapp2.1\MimibotWebserver.AssemblyInfo.cs
+C:\Users\Justin\Documents\GitHub\MiMiBot\MimibotWebserver\MimibotWebserver\obj\Release\netcoreapp2.1\MimibotWebserver.RazorTargetAssemblyInfo.cache
+C:\Users\Justin\Documents\GitHub\MiMiBot\MimibotWebserver\MimibotWebserver\obj\Release\netcoreapp2.1\MimibotWebserver.dll
+C:\Users\Justin\Documents\GitHub\MiMiBot\MimibotWebserver\MimibotWebserver\obj\Release\netcoreapp2.1\MimibotWebserver.pdb
+C:\Users\Justin\Documents\GitHub\MiMiBot\MimibotWebserver\MimibotWebserver\obj\Release\netcoreapp2.1\MimibotWebserver.csprojAssemblyReference.cache

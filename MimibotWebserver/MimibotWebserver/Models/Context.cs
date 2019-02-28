@@ -20,6 +20,7 @@ namespace MimibotWebserver.Models
         public DbSet<Upload> Uploads { get; set; }
         public DbSet<Game> Games { get; set; }
         public DbSet<MimibotWebserver.Models.Mark> Mark { get; set; }
+        public DbSet<Sms> Sms { get; set; }
 
 
     }

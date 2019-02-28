@@ -14,7 +14,7 @@ namespace MimibotWebserver.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.0-rtm-30799")
+                .HasAnnotation("ProductVersion", "2.1.3-rtm-32065")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -48,6 +48,24 @@ namespace MimibotWebserver.Migrations
                     b.HasKey("MarkId");
 
                     b.ToTable("Mark");
+                });
+
+            modelBuilder.Entity("MimibotWebserver.Models.Sms", b =>
+                {
+                    b.Property<string>("SmsId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Details");
+
+                    b.Property<string>("PhoneNumber");
+
+                    b.Property<string>("Relationship");
+
+                    b.Property<string>("UserId");
+
+                    b.HasKey("SmsId");
+
+                    b.ToTable("Sms");
                 });
 
             modelBuilder.Entity("MimibotWebserver.Models.Speech", b =>
@@ -92,6 +110,10 @@ namespace MimibotWebserver.Migrations
                 {
                     b.Property<string>("UserId")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<string>("FatherNo");
+
+                    b.Property<string>("MotherNo");
 
                     b.Property<string>("Name");
 

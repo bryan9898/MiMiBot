@@ -2,7 +2,7 @@
 
 namespace MimibotWebserver.Migrations
 {
-    public partial class initialcreate : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -32,6 +32,21 @@ namespace MimibotWebserver.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Mark", x => x.MarkId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Sms",
+                columns: table => new
+                {
+                    SmsId = table.Column<string>(nullable: false),
+                    Details = table.Column<string>(nullable: true),
+                    UserId = table.Column<string>(nullable: true),
+                    Relationship = table.Column<string>(nullable: true),
+                    PhoneNumber = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Sms", x => x.SmsId);
                 });
 
             migrationBuilder.CreateTable(
@@ -71,7 +86,9 @@ namespace MimibotWebserver.Migrations
                 {
                     UserId = table.Column<string>(nullable: false),
                     Password = table.Column<string>(nullable: true),
-                    Name = table.Column<string>(nullable: true)
+                    Name = table.Column<string>(nullable: true),
+                    FatherNo = table.Column<string>(nullable: true),
+                    MotherNo = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -86,6 +103,9 @@ namespace MimibotWebserver.Migrations
 
             migrationBuilder.DropTable(
                 name: "Mark");
+
+            migrationBuilder.DropTable(
+                name: "Sms");
 
             migrationBuilder.DropTable(
                 name: "Speechs");
