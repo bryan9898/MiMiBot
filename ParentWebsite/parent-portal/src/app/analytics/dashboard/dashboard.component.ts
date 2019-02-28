@@ -26,10 +26,10 @@ export class DashboardComponent implements OnInit {
   public tks: TokenService;
   private filteredDataset: Array<Speeches> = new Array<Speeches>();
   private loaded:Boolean = false;
-  private showChart = false;
+  showChart = false;
   private showChart2 = false;
-private showGameChart = false;
-private chartClicked1 = false;
+  showGameChart = false;
+  chartClicked1 = false;
   private emotionDataset:Array<Emotion>;
   public pieChartLabels:string[];
   public pieChartData:number[];

@@ -92,7 +92,7 @@ export class UploadsComponent implements OnInit {
 
   }
 
-  private x: number = 0;
+  x: number = 0;
 
   private currentModuleName: Array<ModulesModel> = new Array<ModulesModel>();
   async ngOnInit() {

@@ -1,6 +1,6 @@
 export class Users {
 
-    private Username:string; 
+    public Username:string; 
     private Password:string; 
     private Name:string; 
 

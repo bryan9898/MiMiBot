@@ -2,7 +2,7 @@
   <div class="row" style="display:inline-block; width:100%;">
     <h1 style="float:left">Emotion Analysis</h1>
     <mat-form-field class="filterButton">
-      <mat-select placeholder="View Summary" [(ngModel)]="selected" (ngModelChange)="filter(selected)" >
+      <mat-select placeholder="View Summary" [(ngModel)]="selected" (ngModelChange)="filter()" >
         <mat-option value="1">Today</mat-option>
         <mat-option value="2">This week</mat-option>
         <mat-option value="3">All time</mat-option>

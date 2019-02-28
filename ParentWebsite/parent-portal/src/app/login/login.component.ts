@@ -36,10 +36,10 @@ export class LoginComponent implements OnInit {
   }
   
   private token : string;
-  public model = new Users(); 
-  private invalid = false;
+  model = new Users(); 
+  public invalid = false;
   private errorMsg = "hello";
-  private routerLinkDetails = "/login";
+  public routerLinkDetails = "/login";
   private router;
   private tks;
 
@@ -47,7 +47,7 @@ export class LoginComponent implements OnInit {
     this.tks.clearStorage();
   }
   
-  private async login()
+  async login()
   {
         try{
           this.checkValid();
@@ -77,18 +77,22 @@ export class LoginComponent implements OnInit {
         
   }
 
-  private async checkLogin(model)
+   username: string;
+   password: string;
+
+  async checkLogin(model)
   { 
       console.log(this.model.$Username);
-      let username: string = this.model.$Username; 
-      let password: string = this.model.$Password;
+      this.username = this.model.$Username; 
+      this.password= this.model.$Password;
+      console.log(this.model.$Password);
       var headerss = new HttpHeaders({
         'Content-Type' : 'application/json',
         'response-Type': 'XML/http',
-        'Authorization': 'Basic ' + btoa(username + ":" + password)
+        'Authorization': 'Basic ' + btoa(this.username + ":" + this.password)
       });
-      var token = await this.http.post(this.ROOT_URL + '/Users/token' ,  "123" ,  {headers:headerss , responseType: 'text' }).toPromise();
-      return token;
+      // var token = await this.http.post(this.ROOT_URL + '/Users/token' ,  "123" ,  {headers:headerss , responseType: 'text' }).toPromise();
+      return "Test";
       
      
    
